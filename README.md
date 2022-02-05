@@ -85,5 +85,5 @@ $ git push heroku main
 ```
 web dynoをアクティブにする
 ```
-$ heroku ps:scale web=1
+$ heroku ps:scale worker=1
 ```
