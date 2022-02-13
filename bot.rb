@@ -4,6 +4,7 @@ require 'discordrb'
 require 'dotenv/load'
 
 TOKEN = ENV['TOKEN']
+GUILD_ID = ENV['GUILD_ID']
 CLIENT_ID = ENV['CLIENT_ID']
 PREFIX = ENV['PREFIX']
 
