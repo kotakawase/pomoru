@@ -3,10 +3,14 @@
 require 'discordrb'
 require 'dotenv/load'
 
+TOKEN = ENV['TOKEN']
+CLIENT_ID = ENV['CLIENT_ID']
+PREFIX = ENV['PREFIX']
+
 bot = Discordrb::Commands::CommandBot.new(
-  token: ENV['TOKEN'],
-  client_id: ENV['CLIENT_ID'],
-  prefix: ENV['PREFIX']
+  token: TOKEN,
+  client_id: CLIENT_ID,
+  prefix: PREFIX
 )
 
 bot.command :start do |event|
