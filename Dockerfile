@@ -15,4 +15,4 @@ RUN wget https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.t
       && cp ./ffmpeg*64-static/ffmpeg /usr/local/bin/
 RUN bundle install
 
-CMD ["bundle", "exec", "ruby", "bot.rb"]
+CMD ["bundle", "exec", "ruby", "run.rb"]
