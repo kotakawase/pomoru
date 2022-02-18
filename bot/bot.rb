@@ -8,10 +8,10 @@ module Bot
   CLIENT_ID = ENV['CLIENT_ID']
   PREFIX = ENV['PREFIX']
   BOT = Discordrb::Commands::CommandBot.new(
-      token: TOKEN,
-      client_id: CLIENT_ID,
-      prefix: PREFIX,
-      help_command: false,
+    token: TOKEN,
+    client_id: CLIENT_ID,
+    prefix: PREFIX,
+    help_command: false
   )
 
   def self.load_modules(cls, path)
@@ -27,6 +27,6 @@ module Bot
   load_modules(:Events, 'events')
 
   BOT.run :async
-  puts "Bot is running!"
+  puts 'Bot is running!'
   BOT.sync
 end
