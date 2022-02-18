@@ -17,6 +17,18 @@ module Bot::Commands
       end
     end
 
+    # command :pause do |event|
+    # end
+
+    # command :resume do |event|
+    # end
+
+    # command :restart do |event|
+    # end
+
+    # command :skip do |event|
+    # end
+
     command :end do |event|
       channel = event.user.voice_channel
       if channel
@@ -26,5 +38,8 @@ module Bot::Commands
         event.send_message('Can not disconnect')
       end
     end
+
+    # command :edit do |event|
+    # end
   end
 end
