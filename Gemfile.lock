@@ -53,6 +53,7 @@ GEM
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
     ruby-progressbar (1.11.0)
+    timecop (0.9.4)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.8)
@@ -71,6 +72,7 @@ DEPENDENCIES
   dotenv
   rubocop
   rubocop-fjord (~> 0.2.0)
+  timecop
 
 BUNDLED WITH
    2.3.3
