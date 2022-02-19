@@ -33,7 +33,8 @@ module Bot::Commands
       channel = event.user.voice_channel
       if channel
         event.bot.voice_destroy(event.server.id)
-        next 'Good Bye!'
+        event.send_message('Good Bye!')
+        # next 'Good Bye!'
       else
         event.send_message('Can not disconnect')
       end
