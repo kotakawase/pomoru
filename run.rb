@@ -1,3 +1,3 @@
 # frozen_string_literal: true
 
-require_relative 'lib/bot/bot'
+require_relative 'lib/bot'
