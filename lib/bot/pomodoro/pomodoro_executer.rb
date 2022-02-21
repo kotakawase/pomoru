@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative './pomodoro'
 require_relative './short_break'
 require_relative './long_break'

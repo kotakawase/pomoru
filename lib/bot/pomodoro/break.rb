@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative './timer_base'
 
 class Break < TimerBase
@@ -11,6 +13,6 @@ class Break < TimerBase
               when :long
                 LONG_MINUTES
               end
-    super(minutes: minutes)
+    super(minutes:)
   end
 end
