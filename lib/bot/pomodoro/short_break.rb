@@ -3,7 +3,7 @@
 require_relative './break'
 
 class ShortBreak < Break
-  def initialize
-    super(type: :short)
+  def initialize(minutes)
+    super(minutes)
   end
 end
