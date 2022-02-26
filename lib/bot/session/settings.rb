@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Settings
   attr_reader :pomodoro, :short_break, :long_break, :intervals
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Stats
   attr_accessor :pomos_completed, :minutes_completed
 

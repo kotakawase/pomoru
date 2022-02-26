@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Timer
   attr_writer :running
   attr_accessor :end, :remaining
@@ -11,14 +13,15 @@ class Timer
   end
 
   class << self
-    def set_time_remaining(session)
-      if session.state == State::SHORT_BREAK
-        delay = session.settings.short_break * 60
-      elsif session.state == State::LONG_BREAK
-        delay = session.settings.long_break * 60
-      else
-        delay = session.settings.pomodoro * 60
-      end
+    def time_remaining(session)
+      delay = case session.state
+              when State::SHORT_BREAK
+                session.settings.short_break * 60
+              when State::LONG_BREAK
+                session.settings.long_break * 60
+              else
+                session.settings.pomodoro * 60
+              end
       session.timer.remaining = delay
       session.timer.end = Time.now + delay
     end
