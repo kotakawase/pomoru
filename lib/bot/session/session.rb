@@ -4,7 +4,7 @@ require_relative './timer'
 require_relative './stats'
 
 class Session
-  attr_reader :settings, :timer, :stats
+  attr_reader :settings, :timer, :ctx, :stats
   attr_accessor :state
 
   def initialize(state: nil, set: settings, ctx: content)

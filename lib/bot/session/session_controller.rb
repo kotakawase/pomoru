@@ -8,7 +8,7 @@ class SessionController
     def start(event, session)
       channel = event.user.voice_channel
       if channel.nil?
-        event.send_message('ボイスチャンネルに接続できません。接続するには[pmt!start]コマンドを入力するユーザーがボイスチャンネルに参加している必要があります。')
+        event.send_message("ボイスチャンネルに参加して#{session.ctx}を入力してください。")
       else
         event.bot.voice_connect(channel)
         event.send_message("#{channel.name} に参加しました。")
