@@ -3,7 +3,4 @@
 require_relative './break'
 
 class LongBreak < Break
-  def initialize(minutes)
-    super(minutes)
-  end
 end
