@@ -13,7 +13,7 @@ class Timer
   end
 
   class << self
-    def remaining_time_update(session)
+    def time_remaining_update(session)
       delay = case session.state
               when State::SHORT_BREAK
                 session.settings.short_break * 60

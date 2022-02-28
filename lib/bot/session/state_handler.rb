@@ -16,7 +16,7 @@ class StateHandler
       else
         session.state = State::POMODORO
       end
-      Timer.remaining_time_update(session)
+      Timer.time_remaining_update(session)
       event.send_message("Starting #{session.state}")
     end
   end
