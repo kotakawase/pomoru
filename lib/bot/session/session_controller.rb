@@ -40,7 +40,7 @@ class SessionController
       loop do
         session.timer.running = true
         # timer_end = session.timer.end
-        # sleep session.timer.remaining
+        sleep session.timer.remaining
         # event.voice.play_file("#{Dir.pwd}/sounds/sounds_pomo_start.mp3")
         StateHandler.transition(event, session)
       end
