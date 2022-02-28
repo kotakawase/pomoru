@@ -12,9 +12,7 @@ module Bot::Commands
 
     command :status do |event|
       session = SessionManeger.get_session(event)
-      if session
-        event.send_message("#{Timer.time_remaining(session)}")
-      end
+      event.send_message(Timer.time_remaining(session).to_s) if session
     end
 
     # command :stats do |event|
