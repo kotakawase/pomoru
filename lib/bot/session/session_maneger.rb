@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class SessionManeger
-  ACTIVE_SESSIONS = {}.freeze
+  # rubocop:disable Style/MutableConstant
+  ACTIVE_SESSIONS = {}
+  # rubocop:enable Style/MutableConstant
 
   class << self
     def activate(event, session)
