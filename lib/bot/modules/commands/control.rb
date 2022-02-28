@@ -40,7 +40,7 @@ module Bot::Commands
     command :end do |event|
       session = SessionManeger.get_session(event)
       if session
-        if session.stats.pomos_completed > 0
+        if session.stats.pomos_completed.positive?
           event.send_message('Great job!')
         else
           event.send_message('See you again soon!')
