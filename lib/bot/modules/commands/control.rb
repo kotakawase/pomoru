@@ -5,6 +5,7 @@ require_relative '../../session/session'
 require_relative '../../session/state'
 require_relative '../../session/settings'
 require_relative '../../session/session_controller'
+require_relative '../../session/session_maneger'
 
 module Bot::Commands
   module Control
@@ -37,14 +38,15 @@ module Bot::Commands
     # end
 
     command :end do |event|
-      channel = event.user.voice_channel
-      if channel
-        event.bot.voice_destroy(event.server.id)
-        event.send_message('Good Bye!')
-        # next 'Good Bye!'
-      else
-        event.send_message('Can not disconnect')
+      session = SessionManeger.get_session(event)
+      if session
+        if session.stats.pomos_completed.positive?
+          event.send_message('Great job!')
+        else
+          event.send_message('See you again soon!')
+        end
       end
+      SessionController.end(event)
     end
 
     # command :edit do |event|
