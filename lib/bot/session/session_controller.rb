@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative './session'
-require_relative './session_maneger'
+require_relative './session_manager'
 require_relative './state_handler'
 
 class SessionController

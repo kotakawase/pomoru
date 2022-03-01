@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'discordrb'
-require_relative '../../session/session_maneger'
+require_relative '../../session/session_manager'
 
 module Bot::Commands
   module Info

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SessionManeger
+class SessionManager
   # rubocop:disable Style/MutableConstant
   ACTIVE_SESSIONS = {}
   # rubocop:enable Style/MutableConstant
