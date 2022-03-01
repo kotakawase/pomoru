@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'discordrb'
+require_relative '../../session/session_manager'
 
 module Bot::Commands
   module Info
@@ -9,8 +10,10 @@ module Bot::Commands
     # command :help do |event|
     # end
 
-    # command :status do |event|
-    # end
+    command :status do |event|
+      session = SessionManeger.get_session(event)
+      event.send_message(Timer.time_remaining(session).to_s) if session
+    end
 
     # command :stats do |event|
     # end

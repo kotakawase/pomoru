@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-class SessionManeger
-  ACTIVE_SESSIONS = {}.freeze
+class SessionManager
+  # rubocop:disable Style/MutableConstant
+  ACTIVE_SESSIONS = {}
+  # rubocop:enable Style/MutableConstant
 
   class << self
     def activate(event, session)
@@ -12,6 +14,8 @@ class SessionManeger
       session = ACTIVE_SESSIONS[session_id_from(event)]
       session || event.send_message('No active session.')
     end
+
+    private
 
     def session_id_from(event)
       event.server.id.to_s + event.channel.id.to_s

@@ -5,7 +5,7 @@ require_relative '../../session/session'
 require_relative '../../session/state'
 require_relative '../../session/settings'
 require_relative '../../session/session_controller'
-require_relative '../../session/session_maneger'
+require_relative '../../session/session_manager'
 
 module Bot::Commands
   module Control
