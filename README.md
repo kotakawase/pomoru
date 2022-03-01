@@ -1,6 +1,6 @@
-# pomodoro-timer-bot
+# pomoru
 ## About
-`pomodoro-timer-bot`はDiscord上でポモドーロテクニックを使うことができるDiscord botです。
+`pomoru`はDiscord上でポモドーロテクニックを使うことができるDiscord botです。
 
 ## Features
 - ポモドーロスタート時にアラートを再生。
@@ -28,19 +28,19 @@
 Docker imageを作成もしくはdockerhubからpullします（注：まだ未公開）
 ```bash
 # Docker image
-$ git clone https://github.com/kotakawase/pomodoro-timer-bot.git
-$ cd pomodoro-timer-bot
-$ docker build -t pomodoro-timer-bot .
+$ git clone https://github.com/kotakawase/pomoru.git
+$ cd pomoru
+$ docker build -t pomoru .
 
 # dockerhubからpull
-$ docker pull pomodoro-timer-bot
+$ docker pull pomoru
 ```
 
 Docker imageが作成されていることを確認
 ```
 $ docker images
-REPOSITORY                  TAG       IMAGE ID       CREATED         SIZE
-pomodoro-timer-bot          latest    XXXXXXXXXXXX   X days ago      XXXMB
+REPOSITORY                 TAG       IMAGE ID       CREATED        SIZE
+pomoru                     latest    XXXXXXXXXXXX   X weeks ago    XXXMB
 ```
 
 環境変数を設定
@@ -56,7 +56,7 @@ PREFIX=pmt!
 ## Run
 コンテナを起動
 ```bash
-$ docker run --env-file ~/.env pomodoro-timer-bot
+$ docker run --env-file ~/.env pomoru
 ```
 
 ## Deploying to Heroku
@@ -64,8 +64,8 @@ $ docker run --env-file ~/.env pomodoro-timer-bot
 
 リポジトリをCloneしてフォルダに移動
 ```bash
-$ git clone https://github.com/kotakawase/pomodoro-timer-bot.git
-$ cd pomodoro-timer-bot
+$ git clone https://github.com/kotakawase/pomoru.git
+$ cd pomoru
 ```
 Heroku上に任意のアプリケーションを作成
 ```
@@ -89,4 +89,4 @@ $ heroku ps:scale worker=1
 ```
 
 ## License
-The bot is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+pomoru is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
