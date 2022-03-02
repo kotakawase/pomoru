@@ -20,10 +20,8 @@ class SessionController
         end
         SessionManager.activate(event, session)
         # event.voice.play_file("#{Dir.pwd}/sounds/sounds_pomo_start.mp3")
-        while true
-          if !run(event, session)
-            break
-          end
+        loop do
+          break unless run(event, session)
         end
       end
     end
@@ -39,10 +37,8 @@ class SessionController
     end
 
     def resume(event, session)
-      while true
-        if !run(event, session)
-          break
-        end
+      loop do
+        break unless run(event, session)
       end
     end
 
@@ -53,13 +49,10 @@ class SessionController
       timer_end = session.timer.end
       sleep session.timer.remaining
       session = SessionManager::ACTIVE_SESSIONS[SessionManager.session_id_from(event)]
-      if !(session && session.timer.running && timer_end == session.timer.end)
-        return false
-      else
-        # event.voice.play_file("#{Dir.pwd}/sounds/sounds_pomo_start.mp3")
-        StateHandler.transition(event, session)
-      end
-      return true
+      return false unless session&.timer&.running && timer_end == session.timer.end
+
+      # event.voice.play_file("#{Dir.pwd}/sounds/sounds_pomo_start.mp3")
+      StateHandler.transition(event, session)
     end
   end
 end

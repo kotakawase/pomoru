@@ -29,7 +29,7 @@ module Bot::Commands
       session = SessionManager.get_session(event)
       timer = session.timer
       if session
-        if !timer.running
+        unless timer.running
           event.send_message('Timer is already paused.')
           return
         end
