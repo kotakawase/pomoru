@@ -18,7 +18,7 @@ class SessionController
           settings = session.settings
           embed.description = "Pomodoro: #{settings.pomodoro}min\nShort break: #{settings.short_break}min\nLong break: #{settings.long_break}min\nInterbals: #{settings.intervals}"
         end
-        SessionManeger.activate(event, session)
+        SessionManager.activate(event, session)
         # event.voice.play_file("#{Dir.pwd}/sounds/sounds_pomo_start.mp3")
         run(event, session)
       end
