@@ -25,11 +25,34 @@ module Bot::Commands
       SessionController.start(event, session)
     end
 
-    # command :pause do |event|
-    # end
+    command :pause do |event|
+      session = SessionManager.get_session(event)
+      timer = session.timer
+      if session
+        unless timer.running
+          event.send_message('Timer is already paused.')
+          return
+        end
+        timer.running = false
+        timer.remaining = timer.end.to_i - Time.now.to_i
+        event.send_message("Pausing #{session.state}.")
+      end
+    end
 
-    # command :resume do |event|
-    # end
+    command :resume do |event|
+      session = SessionManager.get_session(event)
+      timer = session.timer
+      if session
+        if session.timer.running
+          event.send_message('Timer is already running.')
+          return
+        end
+        timer.running = true
+        timer.end = Time.now + timer.remaining
+        event.send_message("Resuming #{session.state}.")
+        SessionController.resume(event, session)
+      end
+    end
 
     # command :restart do |event|
     # end

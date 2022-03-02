@@ -20,7 +20,9 @@ class SessionController
         end
         SessionManager.activate(event, session)
         # event.voice.play_file("#{Dir.pwd}/sounds/sounds_pomo_start.mp3")
-        run(event, session)
+        loop do
+          break unless run(event, session)
+        end
       end
     end
 
@@ -34,16 +36,23 @@ class SessionController
       end
     end
 
+    def resume(event, session)
+      loop do
+        break unless run(event, session)
+      end
+    end
+
     private
 
     def run(event, session)
-      loop do
-        session.timer.running = true
-        # timer_end = session.timer.end
-        sleep session.timer.remaining
-        # event.voice.play_file("#{Dir.pwd}/sounds/sounds_pomo_start.mp3")
-        StateHandler.transition(event, session)
-      end
+      session.timer.running = true
+      timer_end = session.timer.end
+      sleep session.timer.remaining
+      session = SessionManager::ACTIVE_SESSIONS[SessionManager.session_id_from(event)]
+      return false unless session&.timer&.running && timer_end == session.timer.end
+
+      # event.voice.play_file("#{Dir.pwd}/sounds/sounds_pomo_start.mp3")
+      StateHandler.transition(event, session)
     end
   end
 end
