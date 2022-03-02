@@ -27,6 +27,6 @@ module Bot
   load_modules(:Events, 'events')
 
   BOT.run :async
-  puts 'Bot is running!'
+  puts 'pomoru is running!'
   BOT.sync
 end

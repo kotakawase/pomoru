@@ -1,7 +1,7 @@
 FROM ruby:3.1
 
-WORKDIR /pomodoro-timer-bot
-COPY . /pomodoro-timer-bot
+WORKDIR /pomoru
+COPY . /pomoru
 
 # throw errors if Gemfile has been modified since Gemfile.lock
 RUN bundle config --global frozen 1

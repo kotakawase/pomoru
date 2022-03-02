@@ -38,7 +38,7 @@ module Bot::Commands
     # end
 
     command :end do |event|
-      session = SessionManeger.get_session(event)
+      session = SessionManager.get_session(event)
       if session
         if session.stats.pomos_completed.positive?
           event.send_message('Great job!')
