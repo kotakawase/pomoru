@@ -29,7 +29,7 @@ class Timer
       time_remaining = if session.timer.running
                          session.timer.end.to_i - Time.now.to_i
                        else
-                         session.timer.remaining.to_i - Time.now.to_i
+                         session.timer.remaining.to_i
                        end
       remaining_minites = time_remaining / 60
       remaining_seconds = format('%02d', time_remaining - (remaining_minites * 60))
