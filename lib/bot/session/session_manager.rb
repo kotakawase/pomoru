@@ -15,8 +15,6 @@ class SessionManager
       session || event.send_message('No active session.')
     end
 
-    private
-
     def session_id_from(event)
       event.server.id.to_s + event.channel.id.to_s
     end
