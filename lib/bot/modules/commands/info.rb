@@ -19,7 +19,7 @@ module Bot::Commands
       session = SessionManager.get_session(event)
       stats = session.stats
       if session
-        if stats.pomos_completed > 0
+        if stats.pomos_completed.positive?
           event.send_message("You completed #{stats.pomos_completed} pomodoro (#{stats.minutes_completed}minutes)")
         else
           event.send_message('You haven\'t completed any pomodoros yet.')
