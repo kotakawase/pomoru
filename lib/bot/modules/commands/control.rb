@@ -77,11 +77,11 @@ module Bot::Commands
       session = SessionManager.get_session(event)
       if session
         SessionController.edit(event, session, Settings.new(
-          pomodoro,
-          short_break,
-          long_break,
-          intervals
-        ))
+                                                 pomodoro,
+                                                 short_break,
+                                                 long_break,
+                                                 intervals
+                                               ))
         Timer.time_remaining_update(session)
         SessionController.resume(event, session)
       end
