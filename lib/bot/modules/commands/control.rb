@@ -6,6 +6,7 @@ require_relative '../../session/state'
 require_relative '../../session/settings'
 require_relative '../../session/session_controller'
 require_relative '../../session/session_manager'
+require_relative '../../session/timer'
 
 module Bot::Commands
   module Control
@@ -72,7 +73,18 @@ module Bot::Commands
       SessionController.end(event)
     end
 
-    # command :edit do |event|
-    # end
+    command :edit do |event, pomodoro = nil, short_break = nil, long_break = nil, intervals = nil|
+      session = SessionManager.get_session(event)
+      if session
+        SessionController.edit(event, session, Settings.new(
+          pomodoro,
+          short_break,
+          long_break,
+          intervals
+        ))
+        Timer.time_remaining_update(session)
+        SessionController.resume(event, session)
+      end
+    end
   end
 end

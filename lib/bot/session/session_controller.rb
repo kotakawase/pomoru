@@ -2,6 +2,7 @@
 
 require_relative './session'
 require_relative './session_manager'
+require_relative './settings'
 require_relative './state_handler'
 
 class SessionController
@@ -40,6 +41,14 @@ class SessionController
       loop do
         break unless run(event, session)
       end
+    end
+
+    def edit(event, session, new_settings)
+      short_break = new_settings.short_break || session.settings.short_break
+      long_break = new_settings.long_break || session.settings.long_break
+      intervals = new_settings.intervals || session.settings.intervals
+      session.settings = Settings.new(new_settings.pomodoro, short_break, long_break, intervals)
+      event.send_message('Continuing pomodoro session with new settings!')
     end
 
     private
