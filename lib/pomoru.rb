@@ -17,7 +17,7 @@ module Bot
   def self.load_modules(cls, path)
     new_module = Module.new
     const_set(cls.to_sym, new_module)
-    Dir["lib/bot/modules/#{path}/*rb"].each { |file| load file }
+    Dir["lib/pomoru/modules/#{path}/*rb"].each { |file| load file }
     new_module.constants.each do |mod|
       BOT.include! new_module.const_get(mod)
     end
