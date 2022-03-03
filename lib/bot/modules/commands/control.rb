@@ -54,11 +54,28 @@ module Bot::Commands
       end
     end
 
-    # command :restart do |event|
-    # end
+    command :restart do |event|
+      session = SessionManager.get_session(event)
+      if session
+        Timer.time_remaining_update(session)
+        event.send_message("Restarting #{session.state}.")
+        SessionController.resume(event, session)
+      end
+    end
 
-    # command :skip do |event|
-    # end
+    command :skip do |event|
+      session = SessionManager.get_session(event)
+      stats = session.stats
+      if session
+        if stats.pomos_completed >= 0 && session.state == State::POMODORO
+          stats.pomos_completed -= 1
+          stats.minutes_completed -= session.settings.pomodoro
+        end
+        event.send_message("Skipping #{session.state}.")
+        StateHandler.transition(event, session)
+        SessionController.resume(event, session)
+      end
+    end
 
     command :end do |event|
       session = SessionManager.get_session(event)
