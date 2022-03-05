@@ -10,7 +10,7 @@ class SessionManager
       ACTIVE_SESSIONS[session_id_from(event)] = session
     end
 
-    def deactivate(event, session)
+    def deactivate(event)
       ACTIVE_SESSIONS.delete(session_id_from(event))
     end
 

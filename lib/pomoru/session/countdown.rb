@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'discordrb'
 require_relative './session_controller'
 require_relative './session_manager'
@@ -17,13 +19,13 @@ class Countdown
       timer = session.timer
       timer.remaining = timer.end.to_i - Time.now.to_i
       countdown_msg = session.message
-      if timer.remaining < 0
+      if timer.remaining.negative?
         embed = Discordrb::Webhooks::Embed.new(
           title: countdown_msg.embeds[0].title,
           description: 'DONE!'
         )
         countdown_msg.edit('', embed)
-        SessionController.end(event, session)
+        SessionController.end(event)
         return
       end
       embed = Discordrb::Webhooks::Embed.new(
@@ -35,11 +37,12 @@ class Countdown
 
     def start(event, session)
       session.timer.running = true
-      while true
+      loop do
         time_remaining = session.timer.remaining
         sleep 1
         session = SessionManager::ACTIVE_SESSIONS[SessionManager.session_id_from(event)]
         break unless session&.timer&.running && time_remaining == session.timer.remaining
+
         update_message(event, session)
       end
     end

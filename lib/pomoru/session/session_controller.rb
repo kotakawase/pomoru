@@ -27,10 +27,10 @@ class SessionController
       end
     end
 
-    def end(event, session)
+    def end(event)
       channel = event.user.voice_channel
       if channel
-        SessionManager.deactivate(event, session)
+        SessionManager.deactivate(event)
         event.bot.voice_destroy(event.server.id)
         event.send_message('Good Bye!')
       else

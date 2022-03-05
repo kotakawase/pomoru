@@ -24,7 +24,7 @@ module Bot::Commands
       # Countdown.handle_connection(event)
       SessionManager.activate(event, session)
       embed = Discordrb::Webhooks::Embed.new(
-        title: title,
+        title:,
         description: "#{Timer.time_remaining(session)} left!"
       )
       session.message = event.send_embed('', embed)

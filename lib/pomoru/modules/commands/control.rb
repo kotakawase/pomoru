@@ -87,7 +87,7 @@ module Bot::Commands
           event.send_message('See you again soon!')
         end
       end
-      SessionController.end(event, session)
+      SessionController.end(event)
     end
 
     command :edit do |event, pomodoro = nil, short_break = nil, long_break = nil, intervals = nil|
