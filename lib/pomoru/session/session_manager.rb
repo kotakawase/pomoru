@@ -10,6 +10,10 @@ class SessionManager
       ACTIVE_SESSIONS[session_id_from(event)] = session
     end
 
+    def deactivate(event)
+      ACTIVE_SESSIONS.delete(session_id_from(event))
+    end
+
     def get_session(event)
       session = ACTIVE_SESSIONS[session_id_from(event)]
       session || event.send_message('No active session.')
