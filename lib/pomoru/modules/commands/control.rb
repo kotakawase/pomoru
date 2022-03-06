@@ -6,6 +6,7 @@ require_relative '../../session/state'
 require_relative '../../session/settings'
 require_relative '../../session/session_controller'
 require_relative '../../session/session_manager'
+require_relative '../../session/message_builder'
 require_relative '../../session/timer'
 
 module Bot::Commands
@@ -95,7 +96,7 @@ module Bot::Commands
       session = SessionManager.get_session(event)
       if session
         if session.stats.pomos_completed.positive?
-          event.send_message("Great job!You completed #{session.stats.pomos_completed} pomodoro (#{session.stats.minutes_completed}minutes)")
+          event.send_message("Great job!#{stats_msg(session.stats)}")
         else
           event.send_message('See you again soon!')
         end

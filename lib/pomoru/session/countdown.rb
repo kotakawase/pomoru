@@ -19,9 +19,10 @@ class Countdown
       timer = session.timer
       timer.remaining = timer.end.to_i - Time.now.to_i
       countdown_msg = session.message
+      embed_title = countdown_msg.embeds[0].title
       if timer.remaining.negative?
         embed = Discordrb::Webhooks::Embed.new(
-          title: countdown_msg.embeds[0].title,
+          title: embed_title,
           description: 'DONE!'
         )
         countdown_msg.edit('', embed)
@@ -29,7 +30,7 @@ class Countdown
         return
       end
       embed = Discordrb::Webhooks::Embed.new(
-        title: countdown_msg.embeds[0].title,
+        title: embed_title,
         description: "#{Timer.time_remaining(session)} left!"
       )
       countdown_msg.edit('', embed)
