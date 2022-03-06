@@ -30,9 +30,7 @@ module Bot::Commands
 
     command :settings do |event|
       session = SessionManager.get_session(event)
-      if session
-        event.send_embed('', settings_embed(session))
-      end
+      event.send_embed('', settings_embed(session)) if session
     end
 
     command :servers do |event|
