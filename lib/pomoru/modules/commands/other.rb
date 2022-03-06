@@ -19,16 +19,16 @@ module Bot::Commands
       session = Session.new(
         state: State::COUNTDOWN,
         set: Settings.new(duration),
-        ctx: event.content
+        ctx: event
       )
       # Countdown.handle_connection(event)
-      SessionManager.activate(event, session)
+      SessionManager.activate(session)
       embed = Discordrb::Webhooks::Embed.new(
         title:,
         description: "#{Timer.time_remaining(session)} left!"
       )
       session.message = event.send_embed('', embed)
-      Countdown.start(event, session)
+      Countdown.start(session)
     end
 
     # command :remind do |event|

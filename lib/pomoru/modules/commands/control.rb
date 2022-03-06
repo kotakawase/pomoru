@@ -13,6 +13,16 @@ module Bot::Commands
     extend Discordrb::Commands::CommandContainer
 
     command :start do |event, pomodoro = 25, short_break = 5, long_break = 15, intervals = 4|
+      session = SessionManager::ACTIVE_SESSIONS[SessionManager.session_id_from(event)]
+      if session
+        event.send_message('There is already an active session on the server.')
+        return
+      end
+      channel = event.user.voice_channel
+      if channel.nil?
+        event.send_message('Join a voice channel to use pomoru!')
+        return
+      end
       session = Session.new(
         state: State::POMODORO,
         set: Settings.new(
@@ -21,15 +31,15 @@ module Bot::Commands
           long_break,
           intervals
         ),
-        ctx: event.content
+        ctx: event
       )
-      SessionController.start(event, session)
+      SessionController.start(session)
     end
 
     command :pause do |event|
       session = SessionManager.get_session(event)
-      timer = session.timer
       if session
+        timer = session.timer
         unless timer.running
           event.send_message('Timer is already paused.')
           return
@@ -42,8 +52,8 @@ module Bot::Commands
 
     command :resume do |event|
       session = SessionManager.get_session(event)
-      timer = session.timer
       if session
+        timer = session.timer
         if session.timer.running
           event.send_message('Timer is already running.')
           return
@@ -51,7 +61,7 @@ module Bot::Commands
         timer.running = true
         timer.end = Time.now + timer.remaining
         event.send_message("Resuming #{session.state}.")
-        SessionController.resume(event, session)
+        SessionController.resume(session)
       end
     end
 
@@ -60,21 +70,21 @@ module Bot::Commands
       if session
         Timer.time_remaining_update(session)
         event.send_message("Restarting #{session.state}.")
-        SessionController.resume(event, session)
+        SessionController.resume(session)
       end
     end
 
     command :skip do |event|
       session = SessionManager.get_session(event)
-      stats = session.stats
       if session
+        stats = session.stats
         if stats.pomos_completed >= 0 && session.state == State::POMODORO
           stats.pomos_completed -= 1
           stats.minutes_completed -= session.settings.pomodoro
         end
         event.send_message("Skipping #{session.state}.")
-        StateHandler.transition(event, session)
-        SessionController.resume(event, session)
+        StateHandler.transition(session)
+        SessionController.resume(session)
       end
     end
 
@@ -82,25 +92,25 @@ module Bot::Commands
       session = SessionManager.get_session(event)
       if session
         if session.stats.pomos_completed.positive?
-          event.send_message('Great job!')
+          event.send_message("Great job!You completed #{session.stats.pomos_completed} pomodoro (#{session.stats.minutes_completed}minutes)")
         else
           event.send_message('See you again soon!')
         end
+        SessionController.end(session)
       end
-      SessionController.end(event)
     end
 
     command :edit do |event, pomodoro = nil, short_break = nil, long_break = nil, intervals = nil|
       session = SessionManager.get_session(event)
       if session
-        SessionController.edit(event, session, Settings.new(
+        SessionController.edit(session, Settings.new(
                                                  pomodoro,
                                                  short_break,
                                                  long_break,
                                                  intervals
                                                ))
         Timer.time_remaining_update(session)
-        SessionController.resume(event, session)
+        SessionController.resume(session)
       end
     end
   end

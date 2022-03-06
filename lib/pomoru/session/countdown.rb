@@ -15,7 +15,7 @@ class Countdown
     #   end
     # end
 
-    def update_message(event, session)
+    def update_message(session)
       timer = session.timer
       timer.remaining = timer.end.to_i - Time.now.to_i
       countdown_msg = session.message
@@ -25,7 +25,7 @@ class Countdown
           description: 'DONE!'
         )
         countdown_msg.edit('', embed)
-        SessionController.end(event)
+        SessionController.end(session)
         return
       end
       embed = Discordrb::Webhooks::Embed.new(
@@ -35,15 +35,15 @@ class Countdown
       countdown_msg.edit('', embed)
     end
 
-    def start(event, session)
+    def start(session)
       session.timer.running = true
       loop do
         time_remaining = session.timer.remaining
         sleep 1
-        session = SessionManager::ACTIVE_SESSIONS[SessionManager.session_id_from(event)]
+        session = SessionManager::ACTIVE_SESSIONS[SessionManager.session_id_from(session.event)]
         break unless session&.timer&.running && time_remaining == session.timer.remaining
 
-        update_message(event, session)
+        update_message(session)
       end
     end
   end

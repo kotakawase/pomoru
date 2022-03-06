@@ -17,8 +17,8 @@ module Bot::Commands
 
     command :stats do |event|
       session = SessionManager.get_session(event)
-      stats = session.stats
       if session
+        stats = session.stats
         if stats.pomos_completed.positive?
           event.send_message("You completed #{stats.pomos_completed} pomodoro (#{stats.minutes_completed}minutes)")
         else
@@ -29,8 +29,8 @@ module Bot::Commands
 
     command :settings do |event|
       session = SessionManager.get_session(event)
-      settings = session.settings
       if session
+        settings = session.settings
         event.send_embed do |embed|
           embed.title = 'Session settings'
           embed.description = "Pomodoro: #{settings.pomodoro}min\nShort break: #{settings.short_break}min\nLong break: #{settings.long_break}min\nInterbals: #{settings.intervals}"
