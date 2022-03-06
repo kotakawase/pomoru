@@ -16,10 +16,8 @@ class SessionManager
 
     def get_session(event)
       session = ACTIVE_SESSIONS[session_id_from(event)]
-      if !session
-        event.send_message('No active session.')
-      end
-      return session
+      event.send_message('No active session.') unless session
+      session
     end
 
     def session_id_from(event)

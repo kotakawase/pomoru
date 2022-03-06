@@ -13,9 +13,8 @@ module Bot::Commands
     extend Discordrb::Commands::CommandContainer
 
     command :start do |event, pomodoro = 25, short_break = 5, long_break = 15, intervals = 4|
-      if Settings.is_invalid?(event, pomodoro, short_break, long_break, intervals)
-        return
-      end
+      return if Settings.invalid?(event, pomodoro, short_break, long_break, intervals)
+
       session = SessionManager::ACTIVE_SESSIONS[SessionManager.session_id_from(event)]
       if session
         event.send_message('There is already an active session on the server.')
@@ -107,15 +106,14 @@ module Bot::Commands
     command :edit do |event, pomodoro = nil, short_break = nil, long_break = nil, intervals = nil|
       session = SessionManager.get_session(event)
       if session
-        if Settings.is_invalid?(event, pomodoro, short_break, long_break, intervals)
-          return
-        end
+        return if Settings.invalid?(event, pomodoro, short_break, long_break, intervals)
+
         SessionController.edit(session, Settings.new(
-                                                 pomodoro,
-                                                 short_break,
-                                                 long_break,
-                                                 intervals
-                                               ))
+                                          pomodoro,
+                                          short_break,
+                                          long_break,
+                                          intervals
+                                        ))
         Timer.time_remaining_update(session)
         SessionController.resume(session)
       end

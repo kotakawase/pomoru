@@ -13,18 +13,20 @@ class Settings
   end
 
   def to_i(timer)
-    timer.to_i unless timer.nil?
+    timer&.to_i
   end
 
-  def self.is_invalid?(event, *timers)
-    if (MAX_INTERVAL_MINUTES >= timers[0].to_i && (timers[0].to_i > 0 || timers[0].nil?)) \
-      && (MAX_INTERVAL_MINUTES >= timers[1].to_i && (timers[1].to_i > 0 || timers[1].nil?)) \
-      && (MAX_INTERVAL_MINUTES >= timers[2].to_i && (timers[2].to_i > 0 || timers[2].nil?)) \
-      && (MAX_INTERVAL_MINUTES >= timers[3].to_i && (timers[3].to_i > 0 || timers[3].nil?))
-      return false
-    else
+  def self.invalid?(event, *timers)
+    hantei = 0
+    timers.each do |timer|
+      hantei += 1 unless MAX_INTERVAL_MINUTES >= timer.to_i && (timer.to_i.positive? || timer.nil?)
+    end
+
+    if hantei.positive?
       event.send_message("Use durations between 1 and #{MAX_INTERVAL_MINUTES} minutes.")
-      return true
+      true
+    else
+      false
     end
   end
 end
