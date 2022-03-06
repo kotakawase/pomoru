@@ -5,7 +5,6 @@ class Timer
 
   def initialize(set)
     @duration = set.pomodoro * 60
-    @set = set
     @running = false
     @remaining = @duration
     @end = Time.now + @duration
