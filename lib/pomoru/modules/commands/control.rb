@@ -7,6 +7,7 @@ require_relative '../../session/settings'
 require_relative '../../session/session_controller'
 require_relative '../../session/session_manager'
 require_relative '../../session/message_builder'
+require_relative '../../session/user_messages'
 require_relative '../../session/timer'
 
 module Bot::Commands
@@ -96,7 +97,7 @@ module Bot::Commands
       session = SessionManager.get_session(event)
       if session
         if session.stats.pomos_completed.positive?
-          event.send_message("Great job!#{stats_msg(session.stats)}")
+          event.send_message("Great job!#{MessageBuilder.stats_msg(session.stats)}")
         else
           event.send_message('See you again soon!')
         end
@@ -107,6 +108,10 @@ module Bot::Commands
     command :edit do |event, pomodoro = nil, short_break = nil, long_break = nil, intervals = nil|
       session = SessionManager.get_session(event)
       if session
+        if pomodoro.nil?
+          event.send_message(MISSING_ARG_ERR.to_s)
+          return
+        end
         return if Settings.invalid?(event, pomodoro, short_break, long_break, intervals)
 
         SessionController.edit(session, Settings.new(

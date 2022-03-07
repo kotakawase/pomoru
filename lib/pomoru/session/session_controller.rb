@@ -13,8 +13,7 @@ class SessionController
       session.event.bot.voice_connect(channel)
       session.event.send_message("#{channel.name} に参加しました。")
       SessionManager.activate(session)
-
-      send_start_msg(session)
+      SessionMessenger.send_start_msg(session)
       # event.voice.play_file()
       loop do
         break unless run(session)
@@ -37,7 +36,7 @@ class SessionController
       long_break = new_settings.long_break || session.settings.long_break
       intervals = new_settings.intervals || session.settings.intervals
       session.settings = Settings.new(new_settings.pomodoro, short_break, long_break, intervals)
-      send_edit_msg(session)
+      SessionMessenger.send_edit_msg(session)
     end
 
     private

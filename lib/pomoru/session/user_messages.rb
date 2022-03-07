@@ -7,3 +7,5 @@ GREETINGS = [
   'Let\'s ketchup on some work!',
   'Hello pomodoro!'
 ].freeze
+
+MISSING_ARG_ERR = 'Pass in at least one number.'

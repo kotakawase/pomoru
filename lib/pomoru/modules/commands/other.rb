@@ -24,7 +24,7 @@ module Bot::Commands
       )
       # Countdown.handle_connection(event)
       SessionManager.activate(session)
-      send_countdown_msg(session, title)
+      SessionMessenger.send_countdown_msg(session, title)
       Countdown.start(session)
     end
 

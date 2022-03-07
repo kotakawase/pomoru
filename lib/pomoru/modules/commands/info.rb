@@ -21,7 +21,7 @@ module Bot::Commands
       if session
         stats = session.stats
         if stats.pomos_completed.positive?
-          event.send_message(stats_msg(session.stats))
+          event.send_message(MessageBuilder.stats_msg(session.stats))
         else
           event.send_message('You haven\'t completed any pomodoros yet.')
         end
@@ -30,7 +30,7 @@ module Bot::Commands
 
     command :settings do |event|
       session = SessionManager.get_session(event)
-      event.send_embed('', settings_embed(session)) if session
+      event.send_embed('', MessageBuilder.settings_embed(session)) if session
     end
 
     command :servers do |event|
