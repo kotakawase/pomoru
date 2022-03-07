@@ -8,3 +8,7 @@ AllCops:
 
 Layout/LineLength:
   Max: 180
+
+Metrics/ModuleLength:
+  Exclude:
+    - lib/pomoru/modules/commands/control.rb
