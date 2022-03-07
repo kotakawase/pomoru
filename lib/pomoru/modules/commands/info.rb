@@ -2,6 +2,7 @@
 
 require 'discordrb'
 require_relative '../../session/session_manager'
+require_relative '../../session/message_builder'
 
 module Bot::Commands
   module Info
@@ -17,10 +18,10 @@ module Bot::Commands
 
     command :stats do |event|
       session = SessionManager.get_session(event)
-      stats = session.stats
       if session
+        stats = session.stats
         if stats.pomos_completed.positive?
-          event.send_message("You completed #{stats.pomos_completed} pomodoro (#{stats.minutes_completed}minutes)")
+          event.send_message(MessageBuilder.stats_msg(session.stats))
         else
           event.send_message('You haven\'t completed any pomodoros yet.')
         end
@@ -29,13 +30,7 @@ module Bot::Commands
 
     command :settings do |event|
       session = SessionManager.get_session(event)
-      settings = session.settings
-      if session
-        event.send_embed do |embed|
-          embed.title = 'Session settings'
-          embed.description = "Pomodoro: #{settings.pomodoro}min\nShort break: #{settings.short_break}min\nLong break: #{settings.long_break}min\nInterbals: #{settings.intervals}"
-        end
-      end
+      event.send_embed('', MessageBuilder.settings_embed(session)) if session
     end
 
     command :servers do |event|

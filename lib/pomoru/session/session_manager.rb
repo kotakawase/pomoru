@@ -6,17 +6,18 @@ class SessionManager
   # rubocop:enable Style/MutableConstant
 
   class << self
-    def activate(event, session)
-      ACTIVE_SESSIONS[session_id_from(event)] = session
+    def activate(session)
+      ACTIVE_SESSIONS[session_id_from(session.event)] = session
     end
 
-    def deactivate(event)
-      ACTIVE_SESSIONS.delete(session_id_from(event))
+    def deactivate(session)
+      ACTIVE_SESSIONS.delete(session_id_from(session.event))
     end
 
     def get_session(event)
       session = ACTIVE_SESSIONS[session_id_from(event)]
-      session || event.send_message('No active session.')
+      event.send_message('No active session.') unless session
+      session
     end
 
     def session_id_from(event)

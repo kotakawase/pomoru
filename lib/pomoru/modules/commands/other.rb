@@ -4,6 +4,7 @@ require 'discordrb'
 require_relative '../../session/session_manager'
 require_relative '../../session/session'
 require_relative '../../session/settings'
+require_relative '../../session/session_messenger'
 require_relative '../../session/countdown'
 
 module Bot::Commands
@@ -19,16 +20,12 @@ module Bot::Commands
       session = Session.new(
         state: State::COUNTDOWN,
         set: Settings.new(duration),
-        ctx: event.content
+        ctx: event
       )
       # Countdown.handle_connection(event)
-      SessionManager.activate(event, session)
-      embed = Discordrb::Webhooks::Embed.new(
-        title:,
-        description: "#{Timer.time_remaining(session)} left!"
-      )
-      session.message = event.send_embed('', embed)
-      Countdown.start(event, session)
+      SessionManager.activate(session)
+      SessionMessenger.send_countdown_msg(session, title)
+      Countdown.start(session)
     end
 
     # command :remind do |event|

@@ -2,7 +2,7 @@
 
 class State
   POMODORO = 'pomodoro'
-  SHORT_BREAK = 'short_break'
-  LONG_BREAK = 'long_break'
+  SHORT_BREAK = 'short break'
+  LONG_BREAK = 'long break'
   COUNTDOWN = 'countdown'
 end

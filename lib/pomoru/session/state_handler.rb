@@ -2,7 +2,7 @@
 
 class StateHandler
   class << self
-    def transition(event, session)
+    def transition(session)
       session.timer.running = false
       if session.state == State::POMODORO
         stats = session.stats
@@ -17,7 +17,7 @@ class StateHandler
         session.state = State::POMODORO
       end
       Timer.time_remaining_update(session)
-      event.send_message("Starting #{session.state}")
+      session.event.send_message("Starting #{session.state}")
     end
   end
 end
