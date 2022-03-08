@@ -10,7 +10,7 @@ module Bot::Commands
   module Subscribe
     extend Discordrb::Commands::CommandContainer
 
-    command :autoshush do |event, who = String.new|
+    command :autoshush do |event, who = ''|
       session = SessionManager.get_session(event)
       if session
         unless VoiceAccessor.get_voice_channel(session)

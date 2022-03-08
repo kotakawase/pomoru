@@ -1,31 +1,27 @@
+# frozen_string_literal: true
+
 module VoiceAccessor
   module_function
 
   def get_voice_client(session)
-    voice_client = session.event.voice
-    return voice_client
+    session.event.voice
   end
 
   def get_voice_channel(session)
     vc = get_voice_client(session)
-    unless vc
-      return
-    end
-    return vc.channel
+    return unless vc
+
+    vc.channel
   end
 
   def get_members_in_voice_channel(session)
     vc = get_voice_channel(session)
-    unless vc
-      return Array.new
-    end
+    return [] unless vc
 
     members = vc.users
     members.each do |member|
-      if member.current_bot?
-        members.delete(member)
-      end
+      members.delete(member) if member.current_bot?
     end
-    return members
+    members
   end
 end

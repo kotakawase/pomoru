@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require_relative './voice_accessor'
 
 class AutoShush
-  ALL = "all"
-  ME = "me"
+  ALL = 'all'
+  ME = 'me'
 
   def initializa
     @all = false
@@ -10,23 +12,23 @@ class AutoShush
 
   def handle_all(session)
     author = session.event.author
-    vc_name = VoiceAccessor.get_voice_channel(session)
+    vc_name = VoiceAccessor.get_voice_channel(session).name
 
     # permission?でも検討する
     # meは別途対応
-    unless author.defined_permission?(:mute_members) && author.defined_permission?(:deafen_members) || author.defined_permission?(:adminstrator)
-      session.event.send_message('You do not have permission to mute and deafen other members.')
-      return
-    else
+    if (author.defined_permission?(:mute_members) && author.defined_permission?(:deafen_members)) || author.defined_permission?(:adminstrator)
       if @all
         @all = false
         unshush(session)
-        session.event.send_message('Auto-shush has been turned off for the channel.')
+        session.event.send_message("Auto-shush has been turned off for the #{vc_name} channel.")
       else
         @all = true
         shush(session)
-        session.event.send_message('Auto-shush has been turned on for the channel.')
+        session.event.send_message("Auto-shush has been turned on for the #{vc_name} channel.")
       end
+    else
+      session.event.send_message('You do not have permission to mute and deafen other members.')
+      nil
     end
   end
 
