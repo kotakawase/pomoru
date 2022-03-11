@@ -7,7 +7,8 @@ module SessionMessenger
   module_function
 
   def send_start_msg(session)
-    session.event.send_embed(GREETINGS.sample.to_s, MessageBuilder.settings_embed(session))
+    session.event.send_embed(GREETINGS.sample.to_s, MessageBuilder.status_embed(session))
+    session.event.send_embed('', MessageBuilder.settings_embed(session))
   end
 
   def send_edit_msg(session)
@@ -21,5 +22,9 @@ module SessionMessenger
       description: "#{Timer.time_remaining(session)} left!"
     )
     session.message = session.event.send_embed('', embed)
+  end
+
+  def send_remind_msg(session)
+    session.event.send_embed('Reminder alerts turned on.', MessageBuilder.reminders_embed(session))
   end
 end

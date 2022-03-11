@@ -3,6 +3,18 @@
 module MessageBuilder
   module_function
 
+  def status_embed(session)
+    status_str = "Current intervals: Pomodoro\n \
+      Status: Running\n \
+      Reminder alerts: Off\n \
+      Autoshush: Off"
+
+    Discordrb::Webhooks::Embed.new(
+      title: 'Timer',
+      description: status_str
+    )
+  end
+
   def settings_embed(session)
     settings = session.settings
     settings_str = "Pomodoro: #{settings.pomodoro}min\n \
@@ -18,5 +30,17 @@ module MessageBuilder
 
   def stats_msg(stats)
     "You completed #{stats.pomos_completed} pomodoro (#{stats.minutes_completed}minutes)"
+  end
+
+  def reminders_embed(session)
+    reminders = session.reminders
+    reminders_str = "Pomodoro: #{reminders.pomodoro}min\n \
+      Short break: #{reminders.short_break}min\n \
+      Long break: #{reminders.long_break}min"
+
+    Discordrb::Webhooks::Embed.new(
+      title: 'Reminder alerts',
+      description: reminders_str
+    )
   end
 end
