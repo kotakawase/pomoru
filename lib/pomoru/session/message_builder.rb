@@ -33,7 +33,7 @@ module MessageBuilder
   end
 
   def reminders_embed(session)
-    reminders = session.reminders
+    reminders = session.reminder
     reminders_str = "Pomodoro: #{reminders.pomodoro}min\n \
       Short break: #{reminders.short_break}min\n \
       Long break: #{reminders.long_break}min"

@@ -39,6 +39,21 @@ class SessionController
       SessionMessenger.send_edit_msg(session)
     end
 
+    def remind(session, new_reminder)
+      pomodoro_reminder = new_reminder.pomodoro || session.reminder.pomodoro
+      short_break_reminder = new_reminder.short_break || session.reminder.short_break
+      long_break_reminder = new_reminder.long_break || session.reminder.long_break
+
+      # ポモドーロタイマーがデフォルトのリマインドの時間より小さい場合は自動で最小値に変換する
+      settings = session.settings
+      pomodoro_reminder = 1 if settings.pomodoro <= pomodoro_reminder
+      short_break_reminder = 1 if settings.short_break <= short_break_reminder
+      long_break_reminder = 1 if settings.long_break <= long_break_reminder
+      # ここまで
+      session.reminder = Reminder.new(pomodoro_reminder, short_break_reminder, long_break_reminder)
+      SessionMessenger.send_remind_msg(session)
+    end
+
     private
 
     def run(session)
