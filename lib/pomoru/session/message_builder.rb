@@ -34,9 +34,24 @@ module MessageBuilder
 
   def reminders_embed(session)
     reminders = session.reminder
-    reminders_str = "Pomodoro: #{reminders.pomodoro}min\n \
-      Short break: #{reminders.short_break}min\n \
-      Long break: #{reminders.long_break}min"
+    pomo_txt = if reminders.pomodoro == "None"
+      "#{reminders.pomodoro}"
+    else
+      "#{reminders.pomodoro}min"
+    end
+    short_txt = if reminders.short_break == "None"
+      "#{reminders.short_break}"
+    else
+      "#{reminders.short_break}min"
+    end
+    long_txt = if reminders.long_break == "None"
+      "#{reminders.long_break}"
+    else
+      "#{reminders.long_break}min"
+    end
+    reminders_str = "Pomodoro: #{pomo_txt}\n \
+      Short break: #{short_txt}\n \
+      Long break: #{long_txt}"
 
     Discordrb::Webhooks::Embed.new(
       title: 'Reminder alerts',

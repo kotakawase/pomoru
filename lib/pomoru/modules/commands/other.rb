@@ -7,6 +7,7 @@ require_relative '../../session/settings'
 require_relative '../../session/session_messenger'
 require_relative '../../session/countdown'
 require_relative '../../session/reminder'
+require_relative '../../session/session_controller'
 
 module Bot::Commands
   module Other
@@ -41,8 +42,8 @@ module Bot::Commands
             short_break,
             long_break
           ))
-          session.reminder.start(session)
-          # SessionController.resume(session)
+          session.reminder.running = true
+          SessionController.resume(session)
         end
       end
     end

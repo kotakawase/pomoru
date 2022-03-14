@@ -25,6 +25,11 @@ module SessionMessenger
   end
 
   def send_remind_msg(session)
-    session.event.send_embed('Reminder alerts turned on.', MessageBuilder.reminders_embed(session))
+    reminders = session.reminder
+    unless reminders.pomodoro && reminders.short_break && reminders.long_break == "None"
+      session.event.send_embed('Reminder alerts turned on.', MessageBuilder.reminders_embed(session))
+    else
+      session.event.send_message("All reminder times are 0.")
+    end
   end
 end
