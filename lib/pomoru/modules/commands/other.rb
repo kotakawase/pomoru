@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 require 'discordrb'
-require_relative '../../session/session_manager'
-require_relative '../../session/session'
-require_relative '../../session/settings'
-require_relative '../../session/session_messenger'
 require_relative '../../session/countdown'
 require_relative '../../session/reminder'
+require_relative '../../session/session'
 require_relative '../../session/session_controller'
+require_relative '../../session/session_manager'
+require_relative '../../session/session_messenger'
+require_relative '../../settings'
 
 module Bot::Commands
   module Other
