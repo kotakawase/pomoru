@@ -9,3 +9,4 @@ GREETINGS = [
 ].freeze
 
 MISSING_ARG_ERR = 'Pass in at least one number.'
+AUTOSHUSH_ARG_ERR = 'Pass a valid parameter "me" or "all".'
