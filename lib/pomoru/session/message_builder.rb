@@ -5,9 +5,9 @@ module MessageBuilder
 
   def status_embed(session)
     state = session.state.capitalize
-    status = session.timer.running ? "Running" : "Pausing"
-    reminder = session.reminder.running ? "On" : "Off"
-    autoshush = session.autoshush.all ? "On" : "Off"
+    status = session.timer.running ? 'Running' : 'Pausing'
+    reminder = session.reminder.running ? 'On' : 'Off'
+    autoshush = session.autoshush.all ? 'On' : 'Off'
     status_str = "Current intervals: #{state}\n \
       Status: #{status}\n \
       Reminder alerts: #{reminder}\n \
