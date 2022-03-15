@@ -14,7 +14,10 @@ module Bot::Commands
     command :status do |event|
       session = SessionManager.get_session(event)
       if session
-        event.send_embed('', MessageBuilder.status_embed(session))
+        session.message.unpin
+        embed = MessageBuilder.status_embed(session)
+        session.message = session.event.send_embed('', embed)
+        session.message.pin
         event.send_message(Timer.time_remaining(session).to_s)
       end
     end

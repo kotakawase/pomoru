@@ -15,7 +15,7 @@ class SessionController
       session.event.send_message("#{channel.name} に参加しました。")
       SessionManager.activate(session)
       SessionMessenger.send_start_msg(session)
-      # event.voice.play_file()
+      # session.event.voice.play_file()
       loop do
         break unless run(session)
       end
@@ -23,6 +23,7 @@ class SessionController
 
     def end(session)
       SessionManager.deactivate(session)
+      session.message.unpin
       session.event.bot.voice_destroy(session.event.server.id)
     end
 
@@ -67,7 +68,6 @@ class SessionController
     private
 
     def run(session)
-      session.timer.running = true
       timer_end = session.timer.end
       if session.reminder.running
         return false unless session.reminder.run(session)

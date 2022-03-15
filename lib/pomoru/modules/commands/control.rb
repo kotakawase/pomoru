@@ -38,6 +38,7 @@ module Bot::Commands
         ),
         ctx: event
       )
+      session.timer.running = true
       SessionController.start(session)
     end
 
@@ -51,6 +52,7 @@ module Bot::Commands
         end
         timer.running = false
         timer.remaining = timer.end.to_i - Time.now.to_i
+        session.message.edit(GREETINGS.sample.to_s, MessageBuilder.status_embed(session))
         event.send_message("Pausing #{session.state}.")
       end
     end
@@ -65,6 +67,7 @@ module Bot::Commands
         end
         timer.running = true
         timer.end = Time.now + timer.remaining
+        session.message.edit(GREETINGS.sample.to_s, MessageBuilder.status_embed(session))
         event.send_message("Resuming #{session.state}.")
         SessionController.resume(session)
       end

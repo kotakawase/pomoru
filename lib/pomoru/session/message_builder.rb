@@ -3,11 +3,15 @@
 module MessageBuilder
   module_function
 
-  def status_embed(_session)
-    status_str = "Current intervals: Pomodoro\n \
-      Status: Running\n \
-      Reminder alerts: Off\n \
-      Autoshush: Off"
+  def status_embed(session)
+    state = session.state.capitalize
+    status = session.timer.running ? 'Running' : 'Pausing'
+    reminder = session.reminder.running ? 'On' : 'Off'
+    autoshush = session.autoshush.all ? 'On' : 'Off'
+    status_str = "Current intervals: #{state}\n \
+      Status: #{status}\n \
+      Reminder alerts: #{reminder}\n \
+      Autoshush: #{autoshush}"
 
     Discordrb::Webhooks::Embed.new(
       title: 'Timer',
