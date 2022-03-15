@@ -3,6 +3,8 @@
 require_relative './voice_accessor'
 
 class AutoShush
+  attr_reader :all
+
   ALL = 'all'
   ME = 'me'
 
@@ -20,10 +22,12 @@ class AutoShush
       if @all
         @all = false
         unshush(session)
+        session.message.edit(GREETINGS.sample.to_s, MessageBuilder.status_embed(session))
         session.event.send_message("Auto-shush has been turned off for the #{vc_name} channel.")
       else
         @all = true
         shush(session)
+        session.message.edit(GREETINGS.sample.to_s, MessageBuilder.status_embed(session))
         session.event.send_message("Auto-shush has been turned on for the #{vc_name} channel.")
       end
     else

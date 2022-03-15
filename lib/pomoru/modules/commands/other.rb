@@ -43,6 +43,7 @@ module Bot::Commands
                                               long_break
                                             ))
           session.reminder.running = true
+          session.message.edit(GREETINGS.sample.to_s, MessageBuilder.status_embed(session))
           SessionController.resume(session)
         end
       end
@@ -57,6 +58,7 @@ module Bot::Commands
           return
         end
         reminder.running = false
+        session.message.edit(GREETINGS.sample.to_s, MessageBuilder.status_embed(session))
         event.send_message('Turning off reminder alerts.')
       end
     end
