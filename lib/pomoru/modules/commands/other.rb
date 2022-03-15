@@ -63,7 +63,21 @@ module Bot::Commands
       end
     end
 
-    # command :volume do |event|
-    # end
+    command :volume do |event, volume = nil|
+      session = SessionManager.get_session(event)
+      if session
+        if volume.nil?
+          event.send_message("Volume is now #{event.voice.filter_volume}/2.")
+          return
+        end
+        volume = volume == "0.5" ? volume.to_f : volume.to_i
+        if volume >= 3
+          event.send_message('Use a number between 0 and 2.')
+          return
+        end
+        event.voice.filter_volume = volume
+        event.send_message("Changed the volume to #{volume}/2.")
+      end
+    end
   end
 end
