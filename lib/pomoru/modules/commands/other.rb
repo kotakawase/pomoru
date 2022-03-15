@@ -38,10 +38,10 @@ module Bot::Commands
           return
         else
           SessionController.remind(session, Reminder.new(
-            pomodoro,
-            short_break,
-            long_break
-          ))
+                                              pomodoro,
+                                              short_break,
+                                              long_break
+                                            ))
           session.reminder.running = true
           SessionController.resume(session)
         end

@@ -3,7 +3,7 @@
 module MessageBuilder
   module_function
 
-  def status_embed(session)
+  def status_embed(_session)
     status_str = "Current intervals: Pomodoro\n \
       Status: Running\n \
       Reminder alerts: Off\n \
@@ -17,9 +17,9 @@ module MessageBuilder
 
   def settings_embed(session)
     settings = session.settings
-    settings_str = "Pomodoro: #{settings.pomodoro}min\n \
-      Short break: #{settings.short_break}min\n \
-      Long break: #{settings.long_break}min\n \
+    settings_str = "Pomodoro: #{settings.pomodoro} min\n \
+      Short break: #{settings.short_break} min\n \
+      Long break: #{settings.long_break} min\n \
       Interbals: #{settings.intervals}"
 
     Discordrb::Webhooks::Embed.new(
@@ -34,21 +34,9 @@ module MessageBuilder
 
   def reminders_embed(session)
     reminders = session.reminder
-    pomo_txt = if reminders.pomodoro == "None"
-      "#{reminders.pomodoro}"
-    else
-      "#{reminders.pomodoro}min"
-    end
-    short_txt = if reminders.short_break == "None"
-      "#{reminders.short_break}"
-    else
-      "#{reminders.short_break}min"
-    end
-    long_txt = if reminders.long_break == "None"
-      "#{reminders.long_break}"
-    else
-      "#{reminders.long_break}min"
-    end
+    pomo_txt = molding_reminder_txt(reminders.pomodoro)
+    short_txt = molding_reminder_txt(reminders.short_break)
+    long_txt = molding_reminder_txt(reminders.long_break)
     reminders_str = "Pomodoro: #{pomo_txt}\n \
       Short break: #{short_txt}\n \
       Long break: #{long_txt}"
@@ -58,4 +46,14 @@ module MessageBuilder
       description: reminders_str
     )
   end
+
+  def molding_reminder_txt(reminder)
+    if reminder == 'None'
+      reminder.to_s
+    else
+      "#{reminder} min"
+    end
+  end
+
+  private_class_method :molding_reminder_txt
 end
