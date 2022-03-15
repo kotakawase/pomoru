@@ -6,6 +6,8 @@ require_relative '../../session/session'
 require_relative '../../session/settings'
 require_relative '../../session/session_messenger'
 require_relative '../../session/countdown'
+require_relative '../../session/reminder'
+require_relative '../../session/session_controller'
 
 module Bot::Commands
   module Other
@@ -28,11 +30,36 @@ module Bot::Commands
       Countdown.start(session)
     end
 
-    # command :remind do |event|
-    # end
+    command :remind do |event, pomodoro, short_break, long_break|
+      session = SessionManager.get_session(event)
+      if session
+        if pomodoro.nil? && session.reminder.running
+          SessionMessenger.send_remind_msg(session)
+          return
+        else
+          SessionController.remind(session, Reminder.new(
+                                              pomodoro,
+                                              short_break,
+                                              long_break
+                                            ))
+          session.reminder.running = true
+          SessionController.resume(session)
+        end
+      end
+    end
 
-    # command :remind_off do |event|
-    # end
+    command :remind_off do |event|
+      session = SessionManager.get_session(event)
+      if session
+        reminder = session.reminder
+        unless reminder.running
+          event.send_message('Reminder alerts is already off.')
+          return
+        end
+        reminder.running = false
+        event.send_message('Turning off reminder alerts.')
+      end
+    end
 
     # command :volume do |event|
     # end
