@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require_relative './timer'
-require_relative './stats'
-require_relative './reminder'
 require_relative './autoshush'
+require_relative './reminder'
+require_relative '../stats'
+require_relative '../timer'
 
 class Session
   attr_reader :timer, :event, :stats, :autoshush

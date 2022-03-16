@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require_relative './session'
-require_relative './session_messenger'
-require_relative './session_manager'
-require_relative './settings'
 require_relative './reminder'
-require_relative './state_handler'
+require_relative './session'
+require_relative './session_manager'
+require_relative './session_messenger'
+require_relative '../settings'
+require_relative '../state_handler'
 
 class SessionController
   class << self

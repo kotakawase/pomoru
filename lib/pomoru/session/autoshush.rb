@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative './voice_accessor'
+require_relative '../voice/voice_accessor'
 
 class AutoShush
   attr_reader :all

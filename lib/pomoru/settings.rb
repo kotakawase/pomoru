@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative './config'
+require_relative './config/config'
 
 class Settings
   attr_reader :pomodoro, :short_break, :long_break, :intervals

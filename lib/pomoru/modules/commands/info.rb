@@ -2,7 +2,7 @@
 
 require 'discordrb'
 require_relative '../../session/session_manager'
-require_relative '../../session/message_builder'
+require_relative '../../message_builder'
 
 module Bot::Commands
   module Info

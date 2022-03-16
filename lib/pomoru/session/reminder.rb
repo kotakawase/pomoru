@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative './state'
 require_relative './session_manager'
+require_relative '../state'
 
 class Reminder
   attr_reader :pomodoro, :short_break, :long_break, :end, :time_executed

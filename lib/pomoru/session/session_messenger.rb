@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative './user_messages'
-require_relative './message_builder'
+require_relative '../config/user_messages'
+require_relative '../message_builder'
 
 module SessionMessenger
   module_function
