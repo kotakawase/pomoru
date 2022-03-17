@@ -8,15 +8,21 @@ module Bot::Commands
   module Info
     extend Discordrb::Commands::CommandContainer
 
-    # command :help do |event|
-    # end
+    command :help do |event, command = nil|
+      help_embed = MessageBuilder.help_embed(command)
+      if help_embed
+        event.send_embed('', help_embed)
+      else
+        event.send_message('Enter a valid command.')
+      end
+    end
 
     command :status do |event|
       session = SessionManager.get_session(event)
       if session
         session.message.unpin
-        embed = MessageBuilder.status_embed(session)
-        session.message = session.event.send_embed('', embed)
+        status_embed = MessageBuilder.status_embed(session)
+        session.message = session.event.send_embed('', status_embed)
         session.message.pin
         event.send_message(Timer.time_remaining(session).to_s)
       end
