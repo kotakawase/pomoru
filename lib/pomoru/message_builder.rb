@@ -15,10 +15,7 @@ module MessageBuilder
       Reminder alerts: #{reminder}\n \
       Autoshush: #{autoshush}"
 
-    Discordrb::Webhooks::Embed.new(
-      title: 'Timer',
-      description: status_str
-    )
+    create_embed('Timer', status_str)
   end
 
   def settings_embed(session)
@@ -28,10 +25,7 @@ module MessageBuilder
       Long break: #{settings.long_break} min\n \
       Interbals: #{settings.intervals}"
 
-    Discordrb::Webhooks::Embed.new(
-      title: 'Session settings',
-      description: settings_str
-    )
+    create_embed('Session settings', settings_str)
   end
 
   def stats_msg(stats)
@@ -40,32 +34,24 @@ module MessageBuilder
 
   def help_embed(command)
     if command.nil?
-      embed = Discordrb::Webhooks::Embed.new(
-        title: 'Help menu',
-        description: SUMMARY
-      )
+      embed = create_embed('Help menu', SUMMARY)
       COMMANDS.each do |key, value|
         values = ''
-        value.values.each do |v|
-          values += "#{v[:command]}\n"
-        end
+        value.each_value { |v| values += "#{v[:command]}\n" }
         embed.add_field(
           name: key,
           value: "```\n#{values}```",
           inline: false
         )
       end
-      return embed
+      embed
     else
-      COMMANDS.each do |key, value|
+      COMMANDS.each_value do |value|
         cmd_info = value[command.intern]
-        if cmd_info
-          embed = Discordrb::Webhooks::Embed.new(
-            title: cmd_info[:command],
-            description: cmd_info[:use]
-          )
-          return embed
-        end
+        next unless cmd_info
+
+        embed = create_embed(cmd_info[:command], cmd_info[:use])
+        return embed
       end
     end
   end
@@ -79,10 +65,7 @@ module MessageBuilder
       Short break: #{short_txt}\n \
       Long break: #{long_txt}"
 
-    Discordrb::Webhooks::Embed.new(
-      title: 'Reminder alerts',
-      description: reminders_str
-    )
+    create_embed('Reminder alerts', reminders_str)
   end
 
   def molding_reminder_txt(reminder)
@@ -93,5 +76,12 @@ module MessageBuilder
     end
   end
 
-  private_class_method :molding_reminder_txt
+  def create_embed(title, description)
+    Discordrb::Webhooks::Embed.new(
+      title:,
+      description:
+    )
+  end
+
+  private_class_method :molding_reminder_txt, :create_embed
 end
