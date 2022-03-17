@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative './config/help'
+
 module MessageBuilder
   module_function
 
@@ -34,6 +36,38 @@ module MessageBuilder
 
   def stats_msg(stats)
     "You completed #{stats.pomos_completed} pomodoro (#{stats.minutes_completed}minutes)"
+  end
+
+  def help_embed(command)
+    if command.nil?
+      embed = Discordrb::Webhooks::Embed.new(
+        title: 'Help menu',
+        description: SUMMARY
+      )
+      COMMANDS.each do |key, value|
+        values = ''
+        value.values.each do |v|
+          values += "#{v[:command]}\n"
+        end
+        embed.add_field(
+          name: key,
+          value: "```\n#{values}```",
+          inline: false
+        )
+      end
+      return embed
+    else
+      COMMANDS.each do |key, value|
+        cmd_info = value[command.intern]
+        if cmd_info
+          embed = Discordrb::Webhooks::Embed.new(
+            title: cmd_info[:command],
+            description: cmd_info[:use]
+          )
+          return embed
+        end
+      end
+    end
   end
 
   def reminders_embed(session)
