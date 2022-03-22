@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 
 gem 'discordrb'
 gem 'dotenv'
+gem 'rake'
 
 group :development do
   gem 'rubocop', require: false

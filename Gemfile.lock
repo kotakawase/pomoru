@@ -29,6 +29,7 @@ GEM
     parser (3.1.0.0)
       ast (~> 2.4.1)
     rainbow (3.1.1)
+    rake (13.0.6)
     regexp_parser (2.2.0)
     rest-client (2.1.0)
       http-accept (>= 1.7.0, < 2.0)
@@ -74,6 +75,7 @@ DEPENDENCIES
   discordrb
   dotenv
   minitest
+  rake
   rubocop
   rubocop-fjord (~> 0.2.0)
   rubocop-minitest
