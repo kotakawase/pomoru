@@ -16,16 +16,18 @@ module Bot::Commands
     extend Discordrb::Commands::CommandContainer
 
     command :start do |event, pomodoro = 25, short_break = 5, long_break = 15, intervals = 4|
-      return if Settings.invalid?(event, pomodoro, short_break, long_break, intervals)
-
+      channel = event.user.voice_channel
+      if channel.nil?
+        event.send_message('Join a voice channel to use pomoru!')
+        return
+      end
       session = SessionManager::ACTIVE_SESSIONS[SessionManager.session_id_from(event)]
       if session
         event.send_message('There is already an active session on the server.')
         return
       end
-      channel = event.user.voice_channel
-      if channel.nil?
-        event.send_message('Join a voice channel to use pomoru!')
+      if Settings.invalid?(pomodoro, short_break, long_break, intervals)
+        event.send_message("Use durations between 1 and #{MAX_INTERVAL_MINUTES} minutes.")
         return
       end
 
@@ -116,8 +118,10 @@ module Bot::Commands
           event.send_message(MISSING_ARG_ERR.to_s)
           return
         end
-        return if Settings.invalid?(event, pomodoro, short_break, long_break, intervals)
-
+        if Settings.invalid?(pomodoro, short_break, long_break, intervals)
+          event.send_message("Use durations between 1 and #{MAX_INTERVAL_MINUTES} minutes.")
+          return
+        end
         SessionController.edit(session, Settings.new(
                                           pomodoro,
                                           short_break,
