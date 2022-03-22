@@ -27,7 +27,7 @@ class Reminder
     if session.timer.end != @end && @end > Time.now
       remind_remaining = @end.to_i - Time.now.to_i
       sleep remind_remaining
-      return false unless latest_reminder?(session, time_executed, reminder_end)
+      return false unless latest_reminder?(session, time_executed, reminder_end) && session.reminder.running
 
       session.event.send_message("#{(session.timer.end.to_i - Time.now.to_i) / 60} minute left until end of #{session.state}!")
       # session.event.voice.play_file()
@@ -58,6 +58,6 @@ class Reminder
 
   def latest_reminder?(session, time_executed, reminder_end)
     session = SessionManager::ACTIVE_SESSIONS[SessionManager.session_id_from(session.event)]
-    session&.timer&.running && reminder_end == session.reminder.end && time_executed == session.reminder.time_executed && session.reminder.running
+    session&.timer&.running && reminder_end == session.reminder.end && time_executed == session.reminder.time_executed
   end
 end
