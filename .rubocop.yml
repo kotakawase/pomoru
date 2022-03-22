@@ -1,5 +1,6 @@
 require:
   - rubocop-minitest
+  - rubocop-rake
 
 inherit_gem:
   rubocop-fjord:
