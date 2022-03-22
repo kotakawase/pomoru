@@ -94,6 +94,7 @@ module Bot::Commands
         end
         event.send_message("Skipping #{session.state}.")
         StateHandler.transition(session)
+        session.message.edit(GREETINGS.sample.to_s, MessageBuilder.status_embed(session))
         SessionController.resume(session)
       end
     end

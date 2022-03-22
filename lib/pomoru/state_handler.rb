@@ -19,8 +19,7 @@ class StateHandler
         session.state = State::POMODORO
       end
       session.timer.time_remaining_update(session)
-      session.message.edit(GREETINGS.sample.to_s, MessageBuilder.status_embed(session))
-      session.event.send_message("Starting #{session.state}")
+      session.state
     end
   end
 end

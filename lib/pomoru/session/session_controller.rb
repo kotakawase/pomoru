@@ -12,7 +12,6 @@ class SessionController
     def start(session)
       channel = session.event.user.voice_channel
       session.event.bot.voice_connect(channel)
-      session.event.send_message("#{channel.name} に参加しました。")
       SessionManager.activate(session)
       SessionMessenger.send_start_msg(session)
       # session.event.voice.play_file()
@@ -68,16 +67,18 @@ class SessionController
     private
 
     def run(session)
-      timer_end = session.timer.end
       if session.reminder.running
         return false unless session.reminder.run(session)
       else
+        timer_end = session.timer.end
         sleep session.timer.remaining
         session = SessionManager::ACTIVE_SESSIONS[SessionManager.session_id_from(session.event)]
         return false unless latest_session?(session, timer_end)
       end
       # event.voice.play_file()
       StateHandler.transition(session)
+      session.message.edit(GREETINGS.sample.to_s, MessageBuilder.status_embed(session))
+      session.event.send_message("Starting #{session.state}")
     end
 
     def latest_session?(session, timer_end)
