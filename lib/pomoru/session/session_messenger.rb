@@ -21,7 +21,7 @@ module SessionMessenger
   def send_countdown_msg(session, title)
     embed = Discordrb::Webhooks::Embed.new(
       title:,
-      description: "#{Timer.time_remaining(session)} left!"
+      description: "#{session.timer.time_remaining(session)} left!"
     )
     session.message = session.event.send_embed('', embed)
   end

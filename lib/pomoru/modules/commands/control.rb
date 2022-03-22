@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'discordrb'
+require_relative '../../config/config'
 require_relative '../../config/user_messages'
 require_relative '../../session/session'
 require_relative '../../session/session_controller'
@@ -76,7 +77,7 @@ module Bot::Commands
     command :restart do |event|
       session = SessionManager.get_session(event)
       if session
-        Timer.time_remaining_update(session)
+        session.timer.time_remaining_update(session)
         event.send_message("Restarting #{session.state}.")
         SessionController.resume(session)
       end
@@ -123,7 +124,7 @@ module Bot::Commands
                                           long_break,
                                           intervals
                                         ))
-        Timer.time_remaining_update(session)
+        session.timer.time_remaining_update(session)
         SessionController.resume(session)
       end
     end

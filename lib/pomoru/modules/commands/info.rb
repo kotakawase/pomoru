@@ -24,7 +24,7 @@ module Bot::Commands
         status_embed = MessageBuilder.status_embed(session)
         session.message = session.event.send_embed('', status_embed)
         session.message.pin
-        event.send_message(Timer.time_remaining(session).to_s)
+        event.send_message(session.timer.time_remaining(session).to_s)
       end
     end
 
