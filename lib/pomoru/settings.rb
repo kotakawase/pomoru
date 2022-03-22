@@ -16,17 +16,11 @@ class Settings
     timer&.to_i
   end
 
-  def self.invalid?(event, *timers)
+  def self.invalid?(*timers)
     hantei = 0
     timers.each do |timer|
       hantei += 1 unless MAX_INTERVAL_MINUTES >= timer.to_i && (timer.to_i.positive? || timer.nil?)
     end
-
-    if hantei.positive?
-      event.send_message("Use durations between 1 and #{MAX_INTERVAL_MINUTES} minutes.")
-      true
-    else
-      false
-    end
+    hantei.positive?
   end
 end

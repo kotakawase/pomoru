@@ -1,3 +1,6 @@
+require:
+  - rubocop-minitest
+
 inherit_gem:
   rubocop-fjord:
     - "config/rubocop.yml"
@@ -11,4 +14,4 @@ Layout/LineLength:
 
 Metrics/ModuleLength:
   Exclude:
-    - lib/pomoru/modules/commands/control.rb
+    - lib/pomoru/commands/control.rb

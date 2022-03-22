@@ -31,7 +31,7 @@ class Countdown
       end
       embed = Discordrb::Webhooks::Embed.new(
         title: embed_title,
-        description: "#{Timer.time_remaining(session)} left!"
+        description: "#{timer.time_remaining(session)} left!"
       )
       countdown_msg.edit('', embed)
     end

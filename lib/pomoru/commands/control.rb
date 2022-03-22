@@ -1,30 +1,32 @@
 # frozen_string_literal: true
 
 require 'discordrb'
-require_relative '../../config/user_messages'
-require_relative '../../session/session'
-require_relative '../../session/session_controller'
-require_relative '../../session/session_manager'
-require_relative '../../message_builder'
-require_relative '../../settings'
-require_relative '../../state'
-require_relative '../../timer'
+require_relative '../config/config'
+require_relative '../config/user_messages'
+require_relative '../session/session'
+require_relative '../session/session_controller'
+require_relative '../session/session_manager'
+require_relative '../message_builder'
+require_relative '../settings'
+require_relative '../state'
+require_relative '../timer'
 
 module Bot::Commands
   module Control
     extend Discordrb::Commands::CommandContainer
 
     command :start do |event, pomodoro = 25, short_break = 5, long_break = 15, intervals = 4|
-      return if Settings.invalid?(event, pomodoro, short_break, long_break, intervals)
-
+      if event.user.voice_channel.nil?
+        event.send_message('Join a voice channel to use pomoru!')
+        return
+      end
       session = SessionManager::ACTIVE_SESSIONS[SessionManager.session_id_from(event)]
       if session
         event.send_message('There is already an active session on the server.')
         return
       end
-      channel = event.user.voice_channel
-      if channel.nil?
-        event.send_message('Join a voice channel to use pomoru!')
+      if Settings.invalid?(pomodoro, short_break, long_break, intervals)
+        event.send_message("Use durations between 1 and #{MAX_INTERVAL_MINUTES} minutes.")
         return
       end
 
@@ -76,7 +78,7 @@ module Bot::Commands
     command :restart do |event|
       session = SessionManager.get_session(event)
       if session
-        Timer.time_remaining_update(session)
+        session.timer.time_remaining_update(session)
         event.send_message("Restarting #{session.state}.")
         SessionController.resume(session)
       end
@@ -92,6 +94,7 @@ module Bot::Commands
         end
         event.send_message("Skipping #{session.state}.")
         StateHandler.transition(session)
+        session.message.edit(GREETINGS.sample.to_s, MessageBuilder.status_embed(session))
         SessionController.resume(session)
       end
     end
@@ -115,15 +118,17 @@ module Bot::Commands
           event.send_message(MISSING_ARG_ERR.to_s)
           return
         end
-        return if Settings.invalid?(event, pomodoro, short_break, long_break, intervals)
-
+        if Settings.invalid?(pomodoro, short_break, long_break, intervals)
+          event.send_message("Use durations between 1 and #{MAX_INTERVAL_MINUTES} minutes.")
+          return
+        end
         SessionController.edit(session, Settings.new(
                                           pomodoro,
                                           short_break,
                                           long_break,
                                           intervals
                                         ))
-        Timer.time_remaining_update(session)
+        session.timer.time_remaining_update(session)
         SessionController.resume(session)
       end
     end
