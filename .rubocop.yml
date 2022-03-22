@@ -11,4 +11,4 @@ Layout/LineLength:
 
 Metrics/ModuleLength:
   Exclude:
-    - lib/pomoru/modules/commands/control.rb
+    - lib/pomoru/commands/control.rb

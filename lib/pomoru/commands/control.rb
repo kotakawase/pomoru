@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 require 'discordrb'
-require_relative '../../config/config'
-require_relative '../../config/user_messages'
-require_relative '../../session/session'
-require_relative '../../session/session_controller'
-require_relative '../../session/session_manager'
-require_relative '../../message_builder'
-require_relative '../../settings'
-require_relative '../../state'
-require_relative '../../timer'
+require_relative '../config/config'
+require_relative '../config/user_messages'
+require_relative '../session/session'
+require_relative '../session/session_controller'
+require_relative '../session/session_manager'
+require_relative '../message_builder'
+require_relative '../settings'
+require_relative '../state'
+require_relative '../timer'
 
 module Bot::Commands
   module Control

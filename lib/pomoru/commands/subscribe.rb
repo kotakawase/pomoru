@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 require 'discordrb'
-require_relative '../../config/user_messages'
-require_relative '../../session/autoshush'
-require_relative '../../session/session_manager'
-require_relative '../../voice/voice_accessor'
+require_relative '../config/user_messages'
+require_relative '../session/autoshush'
+require_relative '../session/session_manager'
+require_relative '../voice/voice_accessor'
 
 module Bot::Commands
   module Subscribe
