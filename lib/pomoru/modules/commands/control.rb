@@ -16,8 +16,7 @@ module Bot::Commands
     extend Discordrb::Commands::CommandContainer
 
     command :start do |event, pomodoro = 25, short_break = 5, long_break = 15, intervals = 4|
-      channel = event.user.voice_channel
-      if channel.nil?
+      if event.user.voice_channel.nil?
         event.send_message('Join a voice channel to use pomoru!')
         return
       end

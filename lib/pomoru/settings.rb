@@ -21,6 +21,6 @@ class Settings
     timers.each do |timer|
       hantei += 1 unless MAX_INTERVAL_MINUTES >= timer.to_i && (timer.to_i.positive? || timer.nil?)
     end
-    hantei.positive? ? true : false
+    hantei.positive?
   end
 end
