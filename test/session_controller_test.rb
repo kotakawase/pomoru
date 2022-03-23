@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'minitest/autorun'
 require_relative '../lib/pomoru/session/reminder'
 require_relative '../lib/pomoru/session/session_controller'
@@ -57,9 +59,9 @@ class SessionControllerTest < Minitest::Test
   def test_set_the_pomodoro_timer_to_a_lower_value_when_the_reminder_is_on
     @session.reminder.running = true
     SessionController.edit(@session, Settings.new(4, 1, 4))
-    assert_equal("None", @session.reminder.pomodoro)
-    assert_equal("None", @session.reminder.short_break)
-    assert_equal("None", @session.reminder.long_break)
+    assert_equal('None', @session.reminder.pomodoro)
+    assert_equal('None', @session.reminder.short_break)
+    assert_equal('None', @session.reminder.long_break)
   end
 
   # remind
@@ -92,8 +94,8 @@ class SessionControllerTest < Minitest::Test
 
   def test_all_reminder_settings_are_0
     SessionController.remind(@session, Reminder.new(0, 0, 0))
-    assert_equal("None", @session.reminder.pomodoro)
-    assert_equal("None", @session.reminder.short_break)
-    assert_equal("None", @session.reminder.long_break)
+    assert_equal('None', @session.reminder.pomodoro)
+    assert_equal('None', @session.reminder.short_break)
+    assert_equal('None', @session.reminder.long_break)
   end
 end

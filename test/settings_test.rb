@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'minitest/autorun'
 require_relative '../lib/pomoru/session/session'
 require_relative '../lib/pomoru/settings'
@@ -27,24 +29,24 @@ class SettingsTest < Minitest::Test
     long_break = settings.long_break
     intervals = settings.intervals
     # 設定は有効の場合はfalseが返る
-    assert_equal(false, Settings.invalid?(pomodoro, short_break, long_break, intervals))
+    refute(Settings.invalid?(pomodoro, short_break, long_break, intervals))
   end
 
   def test_valid_when_pomodoro_setting_is_60
-    assert_equal(false, Settings.invalid?(60))
+    refute(Settings.invalid?(60))
   end
 
   def test_valid_when_short_break_setting_is_60
     settings = @session.settings
     pomodoro = settings.pomodoro
-    assert_equal(false, Settings.invalid?(pomodoro, 60))
+    refute(Settings.invalid?(pomodoro, 60))
   end
 
   def test_valid_when_longbreak_break_setting_is_60
     settings = @session.settings
     pomodoro = settings.pomodoro
     short_break = settings.short_break
-    assert_equal(false, Settings.invalid?(pomodoro, short_break, 60))
+    refute(Settings.invalid?(pomodoro, short_break, 60))
   end
 
   def test_valid_when_intervals_setting_is_60
@@ -52,24 +54,24 @@ class SettingsTest < Minitest::Test
     pomodoro = settings.pomodoro
     short_break = settings.short_break
     long_break = settings.long_break
-    assert_equal(false, Settings.invalid?(pomodoro, short_break, long_break, 60))
+    refute(Settings.invalid?(pomodoro, short_break, long_break, 60))
   end
 
   def test_invalid_when_pomodoro_setting_is_60_or_more
-    assert_equal(true, Settings.invalid?(61))
+    assert(Settings.invalid?(61))
   end
 
   def test_invalid_when_short_break_setting_is_60_or_more
     settings = @session.settings
     pomodoro = settings.pomodoro
-    assert_equal(true, Settings.invalid?(pomodoro, 61))
+    assert(Settings.invalid?(pomodoro, 61))
   end
 
   def test_invalid_when_longbreak_break_setting_is_60_or_more
     settings = @session.settings
     pomodoro = settings.pomodoro
     short_break = settings.short_break
-    assert_equal(true, Settings.invalid?(pomodoro, short_break, 61))
+    assert(Settings.invalid?(pomodoro, short_break, 61))
   end
 
   def test_invalid_when_intervals_setting_is_60_or_more
@@ -77,24 +79,24 @@ class SettingsTest < Minitest::Test
     pomodoro = settings.pomodoro
     short_break = settings.short_break
     long_break = settings.long_break
-    assert_equal(true, Settings.invalid?(pomodoro, short_break, long_break, 61))
+    assert(Settings.invalid?(pomodoro, short_break, long_break, 61))
   end
 
   def test_invalid_if_pomodoro_setting_is_0
-    assert_equal(true, Settings.invalid?(0))
+    assert(Settings.invalid?(0))
   end
 
   def test_invalid_if_short_break_setting_is_0
     settings = @session.settings
     pomodoro = settings.pomodoro
-    assert_equal(true, Settings.invalid?(pomodoro, 0))
+    assert(Settings.invalid?(pomodoro, 0))
   end
 
   def test_invalid_if_longbreak_break_setting_is_0
     settings = @session.settings
     pomodoro = settings.pomodoro
     short_break = settings.short_break
-    assert_equal(true, Settings.invalid?(pomodoro, short_break, 0))
+    assert(Settings.invalid?(pomodoro, short_break, 0))
   end
 
   def test_invalid_if_intervals_setting_is_0
@@ -102,6 +104,6 @@ class SettingsTest < Minitest::Test
     pomodoro = settings.pomodoro
     short_break = settings.short_break
     long_break = settings.long_break
-    assert_equal(true, Settings.invalid?(pomodoro, short_break, long_break, 0))
+    assert(Settings.invalid?(pomodoro, short_break, long_break, 0))
   end
 end
