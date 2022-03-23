@@ -128,6 +128,8 @@ module Bot::Commands
                                           long_break,
                                           intervals
                                         ))
+        SessionMessenger.send_edit_msg(session)
+        SessionMessenger.send_remind_msg(session) if session.reminder.running
         session.timer.time_remaining_update(session)
         SessionController.resume(session)
       end
