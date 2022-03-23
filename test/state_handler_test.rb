@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'minitest/autorun'
-require 'discordrb'
 require_relative '../lib/pomoru/session/session'
 require_relative '../lib/pomoru/settings'
 require_relative '../lib/pomoru/state_handler'
