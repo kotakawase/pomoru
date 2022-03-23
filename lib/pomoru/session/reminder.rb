@@ -39,6 +39,39 @@ class Reminder
     true
   end
 
+  class << self
+    def automatically_update_reminders_after_editing(session, short_break, long_break, new_settings)
+      # ポモドーロタイマーがリマインドの時間より小さい時間でeditされた場合は自動で最小値に変換する
+      reminders = session.reminder
+      pomodoro_reminder = convert_pomodoro_timer_reminders(new_settings.pomodoro, reminders.pomodoro.to_i, Reminder::POMO_REMIND)
+      short_break_reminder = convert_pomodoro_timer_reminders_for_editing(short_break, reminders.short_break.to_i)
+      long_break_reminder = convert_pomodoro_timer_reminders(long_break, reminders.long_break.to_i, Reminder::LONG_REMIND)
+      session.reminder = Reminder.new(pomodoro_reminder, short_break_reminder, long_break_reminder)
+      session.reminder.running = true
+      session.settings
+    end
+
+    def convert_pomodoro_timer_reminders(setting, remind, value)
+      if (setting < value && setting <= remind) || remind.zero?
+        'None'
+      elsif setting <= remind
+        1
+      elsif setting > remind
+        remind
+      end
+    end
+
+    private
+
+    def convert_pomodoro_timer_reminders_for_editing(setting, remind)
+      if setting == Reminder::SHORT_REMIND || setting <= remind || remind.zero?
+        'None'
+      else
+        remind
+      end
+    end
+  end
+
   private
 
   def to_i(timer)

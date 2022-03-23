@@ -42,6 +42,7 @@ module Bot::Commands
                                               short_break,
                                               long_break
                                             ))
+          SessionMessenger.send_remind_msg(session)
           session.reminder.running = true
           session.message.edit(GREETINGS.sample.to_s, MessageBuilder.status_embed(session))
           SessionController.resume(session)

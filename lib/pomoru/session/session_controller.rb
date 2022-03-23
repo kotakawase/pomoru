@@ -37,17 +37,11 @@ class SessionController
       long_break = new_settings.long_break || session.settings.long_break
       intervals = new_settings.intervals || session.settings.intervals
       session.settings = Settings.new(new_settings.pomodoro, short_break, long_break, intervals)
-      SessionMessenger.send_edit_msg(session)
-      return unless session.reminder.running
-
-      # ポモドーロタイマーがリマインドの時間より小さい時間でeditされた場合は自動で最小値に変換する
-      reminders = session.reminder
-      pomodoro_reminder = convert_pomodoro_timer_reminders(new_settings.pomodoro, reminders.pomodoro.to_i, Reminder::POMO_REMIND)
-      short_break_reminder = convert_pomodoro_timer_reminders_for_editing(short_break, reminders.short_break.to_i)
-      long_break_reminder = convert_pomodoro_timer_reminders(long_break, reminders.long_break.to_i, Reminder::LONG_REMIND)
-      session.reminder = Reminder.new(pomodoro_reminder, short_break_reminder, long_break_reminder)
-      session.reminder.running = true
-      SessionMessenger.send_remind_msg(session)
+      if session.reminder.running
+        Reminder.automatically_update_reminders_after_editing(session, short_break, long_break, new_settings)
+      else
+        session.settings
+      end
     end
 
     def remind(session, new_reminder)
@@ -57,11 +51,10 @@ class SessionController
 
       # ポモドーロタイマーがデフォルトのリマインドの時間より小さい場合は自動で最小値に変換する
       settings = session.settings
-      pomodoro_reminder = convert_pomodoro_timer_reminders(settings.pomodoro, pomodoro_reminder.to_i, Reminder::POMO_REMIND)
-      short_break_reminder = convert_pomodoro_timer_reminders(settings.short_break, short_break_reminder.to_i, Reminder::SHORT_REMIND)
-      long_break_reminder = convert_pomodoro_timer_reminders(settings.long_break, long_break_reminder.to_i, Reminder::LONG_REMIND)
+      pomodoro_reminder = Reminder.convert_pomodoro_timer_reminders(settings.pomodoro, pomodoro_reminder.to_i, Reminder::POMO_REMIND)
+      short_break_reminder = Reminder.convert_pomodoro_timer_reminders(settings.short_break, short_break_reminder.to_i, Reminder::SHORT_REMIND)
+      long_break_reminder = Reminder.convert_pomodoro_timer_reminders(settings.long_break, long_break_reminder.to_i, Reminder::LONG_REMIND)
       session.reminder = Reminder.new(pomodoro_reminder, short_break_reminder, long_break_reminder)
-      SessionMessenger.send_remind_msg(session)
     end
 
     private
@@ -83,24 +76,6 @@ class SessionController
 
     def latest_session?(session, timer_end)
       session&.timer&.running && timer_end == session.timer.end && !session.reminder.running
-    end
-
-    def convert_pomodoro_timer_reminders(setting, remind, value)
-      if (setting < value && setting <= remind) || remind.zero?
-        'None'
-      elsif setting <= remind
-        1
-      elsif setting > remind
-        remind
-      end
-    end
-
-    def convert_pomodoro_timer_reminders_for_editing(setting, remind)
-      if setting == Reminder::SHORT_REMIND || setting <= remind || remind.zero?
-        'None'
-      else
-        remind
-      end
     end
   end
 end

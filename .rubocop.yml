@@ -16,3 +16,9 @@ Layout/LineLength:
 Metrics/ModuleLength:
   Exclude:
     - lib/pomoru/commands/control.rb
+
+Minitest/MultipleAssertions:
+  Max: 4
+
+Naming/VariableNumber:
+  CheckMethodNames: false
