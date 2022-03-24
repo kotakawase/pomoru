@@ -23,5 +23,12 @@ class SessionManager
     def session_id_from(event)
       event.server.id.to_s + event.channel.id.to_s
     end
+
+    def kill_if_thread(session)
+      if !VoiceAccessor.get_voice_channel(session) || VoiceAccessor.get_members_in_voice_channel(session).length == 0
+        session.event.bot.execute_command(:end, session.event, "")
+        return true
+      end
+    end
   end
 end
