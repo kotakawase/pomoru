@@ -22,7 +22,7 @@ module Bot::Commands
       end
       session = SessionManager::ACTIVE_SESSIONS[SessionManager.session_id_from(event)]
       if session
-        event.send_message('There is already an active session on the server.')
+        event.send_message(ACTIVE_SESSION_EXISTS_ERR)
         return
       end
       if Settings.invalid?(pomodoro, short_break, long_break, intervals)
@@ -130,7 +130,6 @@ module Bot::Commands
                                         ))
         SessionMessenger.send_edit_msg(session)
         SessionMessenger.send_remind_msg(session) if session.reminder.running
-        session.timer.time_remaining_update(session)
         SessionController.resume(session)
       end
     end

@@ -4,14 +4,15 @@ require_relative './reminder'
 require_relative './session'
 require_relative './session_manager'
 require_relative './session_messenger'
+require_relative '../voice/voice_accessor'
+require_relative '../voice/voice_manager'
 require_relative '../settings'
 require_relative '../state_handler'
 
 class SessionController
   class << self
     def start(session)
-      channel = session.event.user.voice_channel
-      session.event.bot.voice_connect(channel)
+      return unless VoiceManager.connect(session)
       SessionManager.activate(session)
       SessionMessenger.send_start_msg(session)
       # session.event.voice.play_file()
@@ -21,9 +22,11 @@ class SessionController
     end
 
     def end(session)
-      SessionManager.deactivate(session)
       session.message.unpin
-      session.event.bot.voice_destroy(session.event.server.id)
+      SessionManager.deactivate(session)
+      if VoiceAccessor.get_voice_client(session)
+        VoiceManager.disconnect(session)
+      end
     end
 
     def resume(session)
@@ -68,6 +71,7 @@ class SessionController
         session = SessionManager::ACTIVE_SESSIONS[SessionManager.session_id_from(session.event)]
         return false unless latest_session?(session, timer_end)
       end
+      return false if SessionManager.kill_if_thread(session)
       # event.voice.play_file()
       StateHandler.transition(session)
       session.message.edit(GREETINGS.sample.to_s, MessageBuilder.status_embed(session))

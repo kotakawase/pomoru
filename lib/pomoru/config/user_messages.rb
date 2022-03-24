@@ -10,3 +10,4 @@ GREETINGS = [
 
 MISSING_ARG_ERR = 'Pass in at least one number.'
 AUTOSHUSH_ARG_ERR = 'Pass a valid parameter "me" or "all".'
+ACTIVE_SESSION_EXISTS_ERR = 'There is already an active session on the server.'
