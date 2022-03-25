@@ -76,7 +76,7 @@ class Reminder
     end
 
     def convert_pomodoro_timer_reminders_for_remaining(setting, remind)
-      if setting == Reminder::SHORT_REMIND || setting < 5 && setting == remind || remind.zero?
+      if setting == Reminder::SHORT_REMIND || (setting < 5 && setting == remind) || remind.zero?
         'None'
       elsif setting <= remind
         1
