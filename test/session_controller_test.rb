@@ -50,18 +50,45 @@ class SessionControllerTest < Minitest::Test
 
   def test_set_the_pomodoro_timer_to_the_same_value_when_reminders_are_on
     @session.reminder.running = true
-    SessionController.edit(@session, Settings.new(5, 2, 5))
+    SessionController.edit(@session, Settings.new(5, 1, 5))
     assert_equal(1, @session.reminder.pomodoro)
-    assert_equal(1, @session.reminder.short_break)
+    assert_equal('None', @session.reminder.short_break)
     assert_equal(1, @session.reminder.long_break)
   end
 
   def test_set_the_pomodoro_timer_to_a_lower_value_when_the_reminder_is_on
     @session.reminder.running = true
-    SessionController.edit(@session, Settings.new(4, 1, 4))
+    SessionController.edit(@session, Settings.new(4, 0, 4))
     assert_equal('None', @session.reminder.pomodoro)
     assert_equal('None', @session.reminder.short_break)
     assert_equal('None', @session.reminder.long_break)
+  end
+
+  # when remind is executed after edit
+  def test_if_pomodoro_and_long_break_are_lower_than_the_default_value_and_have_the_same_value
+    SessionController.edit(@session, Settings.new(4, 1, 4))
+    SessionController.remind(@session, Reminder.new(4, 1, 4))
+    assert_equal('None', @session.reminder.pomodoro)
+    assert_equal('None', @session.reminder.long_break)
+  end
+
+  def test_when_short_break_is_lower_than_the_default_value_and_has_the_same_value
+    SessionController.edit(@session, Settings.new(5, 4, 5))
+    SessionController.remind(@session, Reminder.new(5, 4, 5))
+    assert_equal('None', @session.reminder.short_break)
+  end
+
+  def test_if_pomodoro_and_long_break_are_lower_than_the_default_value_and_not_the_same_value
+    SessionController.edit(@session, Settings.new(4, 1, 4))
+    SessionController.remind(@session, Reminder.new(3, 1, 2))
+    assert_equal(3, @session.reminder.pomodoro)
+    assert_equal(2, @session.reminder.long_break)
+  end
+
+  def test_when_short_break_is_lower_than_the_default_value_and_not_the_same_value
+    SessionController.edit(@session, Settings.new(5, 4, 5))
+    SessionController.remind(@session, Reminder.new(5, 3, 5))
+    assert_equal(3, @session.reminder.short_break)
   end
 
   # remind

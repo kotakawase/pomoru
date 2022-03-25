@@ -13,6 +13,7 @@ class SessionController
   class << self
     def start(session)
       return unless VoiceManager.connect(session)
+
       SessionManager.activate(session)
       SessionMessenger.send_start_msg(session)
       # session.event.voice.play_file()
@@ -24,9 +25,7 @@ class SessionController
     def end(session)
       session.message.unpin
       SessionManager.deactivate(session)
-      if VoiceAccessor.get_voice_client(session)
-        VoiceManager.disconnect(session)
-      end
+      VoiceManager.disconnect(session) if VoiceAccessor.get_voice_client(session)
     end
 
     def resume(session)
@@ -41,23 +40,17 @@ class SessionController
       intervals = new_settings.intervals || session.settings.intervals
       session.settings = Settings.new(new_settings.pomodoro, short_break, long_break, intervals)
       if session.reminder.running
-        Reminder.automatically_update_reminders_after_editing(session, short_break, long_break, new_settings)
-      else
-        session.settings
+        Reminder.automatically_update_reminders(session, new_settings.pomodoro, short_break, long_break, intervals)
+        session.reminder.running = true
       end
+      session.settings
     end
 
     def remind(session, new_reminder)
       pomodoro_reminder = new_reminder.pomodoro || session.reminder.pomodoro
       short_break_reminder = new_reminder.short_break || session.reminder.short_break
       long_break_reminder = new_reminder.long_break || session.reminder.long_break
-
-      # ポモドーロタイマーがデフォルトのリマインドの時間より小さい場合は自動で最小値に変換する
-      settings = session.settings
-      pomodoro_reminder = Reminder.convert_pomodoro_timer_reminders(settings.pomodoro, pomodoro_reminder.to_i, Reminder::POMO_REMIND)
-      short_break_reminder = Reminder.convert_pomodoro_timer_reminders(settings.short_break, short_break_reminder.to_i, Reminder::SHORT_REMIND)
-      long_break_reminder = Reminder.convert_pomodoro_timer_reminders(settings.long_break, long_break_reminder.to_i, Reminder::LONG_REMIND)
-      session.reminder = Reminder.new(pomodoro_reminder, short_break_reminder, long_break_reminder)
+      Reminder.automatically_update_reminders(session, pomodoro_reminder.to_i, short_break_reminder.to_i, long_break_reminder.to_i)
     end
 
     private
@@ -72,6 +65,7 @@ class SessionController
         return false unless latest_session?(session, timer_end)
       end
       return false if SessionManager.kill_if_thread(session)
+
       # event.voice.play_file()
       StateHandler.transition(session)
       session.message.edit(GREETINGS.sample.to_s, MessageBuilder.status_embed(session))

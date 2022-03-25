@@ -25,10 +25,7 @@ class SessionManager
     end
 
     def kill_if_thread(session)
-      if !VoiceAccessor.get_voice_channel(session) || VoiceAccessor.get_members_in_voice_channel(session).length == 0
-        session.event.bot.execute_command(:end, session.event, "")
-        return true
-      end
+      return unless !VoiceAccessor.get_voice_channel(session) || VoiceAccessor.get_members_in_voice_channel(session).length.zero?
     end
   end
 end

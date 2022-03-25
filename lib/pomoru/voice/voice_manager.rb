@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dotenv/load'
 require_relative '../config/user_messages'
 
@@ -17,10 +19,8 @@ class VoiceManager
       end
       voice_client = event.bot.voice_connect(event.user.voice_channel)
       event.bot.member(event.server.id, CLIENT_ID).server_deafen
-      if voice_client
-        CONNECTED_SESSIONS[voice_channel_id_from(event)] = session
-      end
-      return true
+      CONNECTED_SESSIONS[voice_channel_id_from(event)] = session if voice_client
+      true
     end
 
     def disconnect(session)
