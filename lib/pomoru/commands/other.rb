@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'discordrb'
+require_relative '../config/user_messages'
 require_relative '../session/countdown'
 require_relative '../session/reminder'
 require_relative '../session/session'
@@ -16,7 +17,7 @@ module Bot::Commands
     command :countdown do |event, duration = nil, title = 'Countdown'|
       session = SessionManager::ACTIVE_SESSIONS[SessionManager.session_id_from(event)]
       if session
-        event.send_message('There is an active session running.')
+        event.send_message(ACTIVE_SESSION_EXISTS_ERR)
         return
       end
       session = Session.new(
