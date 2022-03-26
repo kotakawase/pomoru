@@ -6,6 +6,7 @@ require_relative './session_manager'
 require_relative './session_messenger'
 require_relative '../voice/voice_accessor'
 require_relative '../voice/voice_manager'
+require_relative '../voice/voice_player'
 require_relative '../settings'
 require_relative '../state_handler'
 
@@ -14,9 +15,9 @@ class SessionController
     def start(session)
       return unless VoiceManager.connect(session)
 
+      VoicePlayer.alert(session)
       SessionManager.activate(session)
       SessionMessenger.send_start_msg(session)
-      # session.event.voice.play_file()
       loop do
         break unless run(session)
       end
@@ -56,23 +57,23 @@ class SessionController
     private
 
     def run(session)
+      timer_end = session.timer.end
       if session.reminder.running
         return false unless session.reminder.run(session)
       else
-        timer_end = session.timer.end
         sleep session.timer.remaining
-        session = SessionManager::ACTIVE_SESSIONS[SessionManager.session_id_from(session.event)]
         return false unless latest_session?(session, timer_end)
       end
       return false if SessionManager.kill_if_thread(session)
 
-      # event.voice.play_file()
+      VoicePlayer.alert(session, timer_end)
       StateHandler.transition(session)
       session.message.edit(GREETINGS.sample.to_s, MessageBuilder.status_embed(session))
       session.event.send_message("Starting #{session.state}")
     end
 
     def latest_session?(session, timer_end)
+      session = SessionManager::ACTIVE_SESSIONS[SessionManager.session_id_from(session.event)]
       session&.timer&.running && timer_end == session.timer.end && !session.reminder.running
     end
   end
