@@ -115,7 +115,7 @@ module Bot::Commands
       session = SessionManager.get_session(event)
       if session
         if pomodoro.nil?
-          event.send_message(MISSING_ARG_ERR.to_s)
+          event.send_message(MISSING_ARG_ERR)
           return
         end
         if Settings.invalid?(pomodoro, short_break, long_break, intervals)
