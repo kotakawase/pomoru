@@ -17,6 +17,10 @@ Metrics/ModuleLength:
   Exclude:
     - lib/pomoru/commands/control.rb
 
+Metrics/MethodLength:
+  Exclude:
+    - lib/pomoru/message_builder.rb
+
 Minitest/MultipleAssertions:
   Max: 4
 
