@@ -79,6 +79,16 @@ class MessageBuilderTest < Minitest::Test
     assert_equal(start, MessageBuilder.help_embed('start').description)
   end
 
+  def test_countdown_embed
+    @session.state = State::COUNTDOWN
+    @session.timer.remaining = 60
+    title = 'Countdown'
+    countdown_str = "1minutes 00seconds remining on countdown! left!"
+
+    assert_equal(title, MessageBuilder.countdown_embed(@session, title).title)
+    assert_equal(countdown_str, MessageBuilder.countdown_embed(@session, title).description)
+  end
+
   def test_reminders_embed
     title = 'Reminder alerts'
     reminders_str = "Pomodoro: 5 min\n \

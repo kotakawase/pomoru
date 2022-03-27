@@ -20,12 +20,19 @@ module Bot::Commands
         event.send_message(ACTIVE_SESSION_EXISTS_ERR)
         return
       end
+      if duration.nil?
+        event.send_message(MISSING_ARG_ERR)
+        return
+      elsif Settings.invalid?(duration)
+        event.send_message("Use durations between 1 and #{MAX_INTERVAL_MINUTES} minutes.")
+        return
+      end
+
       session = Session.new(
         state: State::COUNTDOWN,
         set: Settings.new(duration),
         ctx: event
       )
-      # Countdown.handle_connection(event)
       SessionManager.activate(session)
       SessionMessenger.send_countdown_msg(session, title)
       Countdown.start(session)
@@ -33,6 +40,10 @@ module Bot::Commands
 
     command :remind do |event, pomodoro, short_break, long_break|
       session = SessionManager.get_session(event)
+      if session.state == State::COUNTDOWN
+        session.event.send_message(COUNTDOWN_RUNNING)
+        return
+      end
       if session
         if pomodoro.nil? && session.reminder.running
           SessionMessenger.send_remind_msg(session)
@@ -53,6 +64,10 @@ module Bot::Commands
 
     command :remind_off do |event|
       session = SessionManager.get_session(event)
+      if session.state == State::COUNTDOWN
+        session.event.send_message(COUNTDOWN_RUNNING)
+        return
+      end
       if session
         reminder = session.reminder
         unless reminder.running
@@ -67,6 +82,10 @@ module Bot::Commands
 
     command :volume do |event, volume = nil|
       session = SessionManager.get_session(event)
+      if session.state == State::COUNTDOWN
+        session.event.send_message(COUNTDOWN_RUNNING)
+        return
+      end
       if session
         if volume.nil?
           event.send_message("Volume is now #{event.voice.filter_volume}/2.")
