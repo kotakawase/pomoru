@@ -56,10 +56,10 @@ class MessageBuilder
     end
 
     def countdown_embed(session, title)
-      unless session == 'DONE'
-        create_embed(title, "#{session.timer.time_remaining(session)} left!")
-      else
+      if session == 'DONE'
         create_embed(title, session)
+      else
+        create_embed(title, "#{session.timer.time_remaining(session)} left!")
       end
     end
 

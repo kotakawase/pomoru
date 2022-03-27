@@ -13,6 +13,7 @@ class Countdown
       while Time.now < session.timer.end
         sleep 1
         return unless latest_session?(session, timer_remaining)
+
         embed = MessageBuilder.countdown_embed(session, title)
         session.message.edit('', embed)
       end

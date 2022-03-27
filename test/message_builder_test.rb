@@ -83,7 +83,7 @@ class MessageBuilderTest < Minitest::Test
     @session.state = State::COUNTDOWN
     @session.timer.remaining = 60
     title = 'Countdown'
-    countdown_str = "1minutes 00seconds remining on countdown! left!"
+    countdown_str = '1minutes 00seconds remining on countdown! left!'
 
     assert_equal(title, MessageBuilder.countdown_embed(@session, title).title)
     assert_equal(countdown_str, MessageBuilder.countdown_embed(@session, title).description)
