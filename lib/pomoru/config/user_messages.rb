@@ -5,7 +5,8 @@ GREETINGS = [
   'Hey there! Let\'s get started!',
   'It\'s productivity o\'clock!',
   'Let\'s ketchup on some work!',
-  'Hello pomodoro!'
+  'Hello! I hope I can concentrate today as well',
+  'The name of pomoru comes from "ポモる"'
 ].freeze
 
 MISSING_ARG_ERR = 'Pass in at least one number.'

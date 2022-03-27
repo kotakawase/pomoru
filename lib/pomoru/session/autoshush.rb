@@ -16,8 +16,6 @@ class AutoShush
     author = session.event.author
     vc_name = VoiceAccessor.get_voice_channel(session).name
 
-    # permission?でも検討する
-    # meは別途対応
     if (author.defined_permission?(:mute_members) && author.defined_permission?(:deafen_members)) || author.defined_permission?(:adminstrator)
       if @all
         @all = false
