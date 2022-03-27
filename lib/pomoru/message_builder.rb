@@ -4,8 +4,8 @@ require_relative './config/help'
 
 class MessageBuilder
   class << self
-    def status_embed(session, colour = nil)
-      colour = 0x2ecc71 unless colour
+    def status_embed(session, colour: nil)
+      colour ||= 0x2ecc71
       state = session.state.capitalize
       status = session.timer.running ? 'Running' : 'Pausing'
       reminder = session.reminder.running ? 'On' : 'Off'
@@ -58,8 +58,8 @@ class MessageBuilder
       end
     end
 
-    def countdown_embed(session, title, colour = nil)
-      colour = 0x1abc9c unless colour
+    def countdown_embed(session, title, colour: nil)
+      colour ||= 0x1abc9c
       if session == 'DONE'
         create_embed(title, session, colour)
       else
@@ -94,7 +94,7 @@ class MessageBuilder
       Discordrb::Webhooks::Embed.new(
         title:,
         description:,
-        colour:,
+        colour:
       )
     end
   end

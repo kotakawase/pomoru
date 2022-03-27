@@ -17,7 +17,7 @@ class Countdown
         embed = MessageBuilder.countdown_embed(session, title)
         session.message.edit('', embed)
       end
-      embed = MessageBuilder.countdown_embed('DONE', title, colour = 0xff0000)
+      embed = MessageBuilder.countdown_embed('DONE', title, colour: 0xff0000)
       session.message.edit('', embed)
       SessionController.end(session)
     end

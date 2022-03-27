@@ -24,7 +24,7 @@ module Bot::Commands
         return
       end
       if session
-        session.message.edit('', MessageBuilder.status_embed(session, colour = 0xff0000))
+        session.message.edit('', MessageBuilder.status_embed(session, colour: 0xff0000))
         session.message.unpin
         status_embed = MessageBuilder.status_embed(session)
         session.message = session.event.send_embed('', status_embed)
