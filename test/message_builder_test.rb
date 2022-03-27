@@ -31,9 +31,11 @@ class MessageBuilderTest < Minitest::Test
         Status: Pausing\n \
         Reminder alerts: Off\n \
         Autoshush: Off"
+    colour = 3066993
 
     assert_equal(title, MessageBuilder.status_embed(@session).title)
     assert_equal(status_str, MessageBuilder.status_embed(@session).description)
+    assert_equal(colour, MessageBuilder.status_embed(@session).colour)
   end
 
   def test_settings_embed
@@ -42,9 +44,11 @@ class MessageBuilderTest < Minitest::Test
         Short break: 5 min\n \
         Long break: 15 min\n \
         Interbals: 4"
+    colour = 16744448
 
     assert_equal(title, MessageBuilder.settings_embed(@session).title)
     assert_equal(settings_str, MessageBuilder.settings_embed(@session).description)
+    assert_equal(colour, MessageBuilder.settings_embed(@session).colour)
   end
 
   def test_stats_embed
@@ -60,9 +64,11 @@ class MessageBuilderTest < Minitest::Test
       Required parameters are enclosed in <> and optional parameters are enclosed in [].
       For example, you can do "pmt!start" to start a pomodoro session with the default values or "pmt!start 30 10" to customize the pomodoro and short break durations!
     TEXT
+    colour = 3447003
 
     assert_equal('Help menu', MessageBuilder.help_embed(nil).title)
     assert_equal(summary, MessageBuilder.help_embed(nil).description)
+    assert_equal(colour, MessageBuilder.help_embed(nil).colour)
   end
 
   def test_command_is_passed_to_help_embed
@@ -84,9 +90,11 @@ class MessageBuilderTest < Minitest::Test
     @session.timer.remaining = 60
     title = 'Countdown'
     countdown_str = '1minutes 00seconds remining on countdown! left!'
+    colour = 1752220
 
     assert_equal(title, MessageBuilder.countdown_embed(@session, title).title)
     assert_equal(countdown_str, MessageBuilder.countdown_embed(@session, title).description)
+    assert_equal(colour, MessageBuilder.countdown_embed(@session, title).colour)
   end
 
   def test_reminders_embed
@@ -94,8 +102,10 @@ class MessageBuilderTest < Minitest::Test
     reminders_str = "Pomodoro: 5 min\n \
         Short break: 1 min\n \
         Long break: 5 min"
+    colour = 16705372
 
     assert_equal(title, MessageBuilder.reminders_embed(@session).title)
     assert_equal(reminders_str, MessageBuilder.reminders_embed(@session).description)
+    assert_equal(colour, MessageBuilder.reminders_embed(@session).colour)
   end
 end

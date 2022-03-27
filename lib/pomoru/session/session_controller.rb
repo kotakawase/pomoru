@@ -24,6 +24,9 @@ class SessionController
     end
 
     def end(session)
+      unless session.state == State::COUNTDOWN
+        session.message.edit('', MessageBuilder.status_embed(session, colour = 0xff0000))
+      end
       session.message.unpin
       SessionManager.deactivate(session)
       VoiceManager.disconnect(session) if VoiceAccessor.get_voice_client(session)
