@@ -19,6 +19,10 @@ module Bot::Commands
 
     command :status do |event|
       session = SessionManager.get_session(event)
+      if session.state == State::COUNTDOWN
+        session.event.send_message(COUNTDOWN_RUNNING)
+        return
+      end
       if session
         session.message.unpin
         status_embed = MessageBuilder.status_embed(session)
@@ -30,6 +34,10 @@ module Bot::Commands
 
     command :stats do |event|
       session = SessionManager.get_session(event)
+      if session.state == State::COUNTDOWN
+        session.event.send_message(COUNTDOWN_RUNNING)
+        return
+      end
       if session
         stats = session.stats
         if stats.pomos_completed.positive?
@@ -42,6 +50,10 @@ module Bot::Commands
 
     command :settings do |event|
       session = SessionManager.get_session(event)
+      if session.state == State::COUNTDOWN
+        session.event.send_message(COUNTDOWN_RUNNING)
+        return
+      end
       event.send_embed('', MessageBuilder.settings_embed(session)) if session
       event.send_embed('', MessageBuilder.reminders_embed(session)) if session.reminder.running
     end

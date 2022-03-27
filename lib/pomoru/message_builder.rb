@@ -55,6 +55,14 @@ class MessageBuilder
       end
     end
 
+    def countdown_embed(session, title)
+      if session == 'DONE'
+        create_embed(title, session)
+      else
+        create_embed(title, "#{session.timer.time_remaining(session)} left!")
+      end
+    end
+
     def reminders_embed(session)
       reminders = session.reminder
       pomo_txt = molding_reminder_txt(reminders.pomodoro)
