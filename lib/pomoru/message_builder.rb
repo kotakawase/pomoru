@@ -4,7 +4,8 @@ require_relative './config/help'
 
 class MessageBuilder
   class << self
-    def status_embed(session)
+    def status_embed(session, colour: nil)
+      colour ||= 0x2ecc71
       state = session.state.capitalize
       status = session.timer.running ? 'Running' : 'Pausing'
       reminder = session.reminder.running ? 'On' : 'Off'
@@ -14,7 +15,7 @@ class MessageBuilder
         Reminder alerts: #{reminder}\n \
         Autoshush: #{autoshush}"
 
-      create_embed('Timer', status_str)
+      create_embed('Timer', status_str, colour)
     end
 
     def settings_embed(session)
@@ -23,8 +24,9 @@ class MessageBuilder
         Short break: #{settings.short_break} min\n \
         Long break: #{settings.long_break} min\n \
         Interbals: #{settings.intervals}"
+      colour = 0xFF8000
 
-      create_embed('Session settings', settings_str)
+      create_embed('Session settings', settings_str, colour)
     end
 
     def stats_msg(stats)
@@ -32,8 +34,9 @@ class MessageBuilder
     end
 
     def help_embed(command)
+      colour = 0x3498db
       if command.nil?
-        embed = create_embed('Help menu', SUMMARY)
+        embed = create_embed('Help menu', SUMMARY, colour)
         COMMANDS.each do |key, value|
           values = ''
           value.each_value { |v| values += "#{v[:command]}\n" }
@@ -49,17 +52,18 @@ class MessageBuilder
           cmd_info = value[command.intern]
           next unless cmd_info
 
-          embed = create_embed(cmd_info[:command], cmd_info[:use])
+          embed = create_embed(cmd_info[:command], cmd_info[:use], colour)
           return embed
         end
       end
     end
 
-    def countdown_embed(session, title)
+    def countdown_embed(session, title, colour: nil)
+      colour ||= 0x1abc9c
       if session == 'DONE'
-        create_embed(title, session)
+        create_embed(title, session, colour)
       else
-        create_embed(title, "#{session.timer.time_remaining(session)} left!")
+        create_embed(title, "#{session.timer.time_remaining(session)} left!", colour)
       end
     end
 
@@ -71,8 +75,9 @@ class MessageBuilder
       reminders_str = "Pomodoro: #{pomo_txt}\n \
         Short break: #{short_txt}\n \
         Long break: #{long_txt}"
+      colour = 0xFEE75C
 
-      create_embed('Reminder alerts', reminders_str)
+      create_embed('Reminder alerts', reminders_str, colour)
     end
 
     private
@@ -85,10 +90,11 @@ class MessageBuilder
       end
     end
 
-    def create_embed(title, description)
+    def create_embed(title, description, colour)
       Discordrb::Webhooks::Embed.new(
         title:,
-        description:
+        description:,
+        colour:
       )
     end
   end
