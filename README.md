@@ -52,7 +52,7 @@
 
 ### Info
 > **help \[command]**\
-> コマンドヘルプを表示します。\
+> コマンドヘルプを表示します。
 
 > **status**\
 > ポモドーロタイマーのステータスを取得します。
@@ -68,7 +68,7 @@
 
 ### Other
 > **countdown \<duration> \[task]**\
-> カウントダウンタイマーを開始します。\
+> カウントダウンタイマーを開始します。
 
 > **remind \[pomodoro] \[short_break] \[long_break]**\
 > リマインダーアラートを設定します。(デフォルト値：5 1 5)\
@@ -112,54 +112,6 @@ Botの作成
 6.　発行されたURLをコピーしてBotをサーバーへ招待する
 
 Docker imageを作成もしくはdockerhubからpullします
-
-<details><summary>Dockerを使用しずにセットアップする場合はこちらをご参照ください</summary><div>
-
-リポジトリをCloneしてフォルダに移動
-```bash
-$ git clone https://github.com/kotakawase/pomoru.git
-$ cd pomoru
-```
-discordrbで音声機能を扱うために必要なパッケージをローカル環境にインストールします。\
-参考： [discordrb - Dependencies Voice dependencies](https://github.com/shardlab/discordrb#voice-dependencies)
-
-```bash
-$ brew install libsodium
-$ brew install opus
-$ brew install ffmpeg
-```
-Bot起動に必要な環境変数を設定
-
-| 環境変数名 | 説明 |
-| --- | --- |
-| TOKEN | BotのTOKEN |
-| CLIENT_ID | BotのCLIENT ID |
-| PREFIX | コマンドプレフィックス |
-
-```bash
-$ touch .env
-```
-```env
-TOKEN=YOUR_DISCORD_ACCESS_TOKEN
-CLIENT_ID=YOUR_DISCORD_CLIENT_ID
-PREFIX=COMMAND_PREFIX_TO_USE
-```
-gemのインストール
-```bash
-$ bundle install
-```
-Botを起動
-```bash
-$ bin/run
-or
-$ bundle exec ruby run.rb
-```
-ここまでがDockerを使用しない場合の手順になります。
-
----
-
-</div></details>
-
 ```bash
 # Docker image
 $ git clone https://github.com/kotakawase/pomoru.git
@@ -200,6 +152,56 @@ Dockerを起動
 $ docker run --env-file ~/.env pomoru
 ```
 
+<details><summary>Dockerを使用しずに起動する場合はこちらをご参照ください</summary><div>
+
+リポジトリをCloneしてフォルダに移動
+```bash
+$ git clone https://github.com/kotakawase/pomoru.git
+$ cd pomoru
+```
+
+discordrbで音声機能を扱うために必要なパッケージをローカル環境にインストールします。\
+参考： [discordrb - Dependencies Voice dependencies](https://github.com/shardlab/discordrb#voice-dependencies)
+
+```bash
+$ brew install libsodium
+$ brew install opus
+$ brew install ffmpeg
+```
+
+Bot起動に必要な環境変数を設定
+
+| 環境変数名 | 説明 |
+| --- | --- |
+| TOKEN | BotのTOKEN |
+| CLIENT_ID | BotのCLIENT ID |
+| PREFIX | コマンドプレフィックス |
+
+```bash
+$ touch .env
+```
+```env
+TOKEN=YOUR_DISCORD_ACCESS_TOKEN
+CLIENT_ID=YOUR_DISCORD_CLIENT_ID
+PREFIX=COMMAND_PREFIX_TO_USE
+```
+
+gemのインストール
+```bash
+$ bundle install
+```
+
+Botを起動
+```bash
+$ bin/run
+or
+$ bundle exec ruby run.rb
+```
+
+---
+
+</div></details>
+
 ## Lint & Test
 
 | コマンド | 説明 |
@@ -225,22 +227,27 @@ $ docker run --env-file ~/.env pomoru
 $ git clone https://github.com/kotakawase/pomoru.git
 $ cd pomoru
 ```
+
 Heroku上に任意のアプリケーションを作成
 ```
 $ heroku create APPLICATTION_NAME
 ```
+
 Herokuデプロイに必要な環境変数を設定
 ```
 $ heroku config:set TOKEN=YOUR_DISCORD_ACCESS_TOKEN CLIENT_ID=YOUR_DISCORD_CLIENT_ID PREFIX=COMMAND_PREFIX_TO_USE
 ```
+
 アプリケーションのstackをcontainerに設定
 ```
 $ heroku stack:set container
 ```
+
 リポジトリをHerokuにpush
 ```
 $ git push heroku main
 ```
+
 web dynoをアクティブにする
 ```
 $ heroku ps:scale worker=1
