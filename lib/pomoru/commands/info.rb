@@ -3,6 +3,7 @@
 require 'discordrb'
 require_relative '../session/session_manager'
 require_relative '../message_builder'
+require_relative '../state'
 
 module Bot::Commands
   module Info
@@ -13,7 +14,7 @@ module Bot::Commands
       if help_embed
         event.send_embed('', help_embed)
       else
-        event.send_message('Enter a valid command.')
+        event.send_message('有効なコマンドを入力してください')
       end
     end
 
@@ -29,7 +30,7 @@ module Bot::Commands
         status_embed = MessageBuilder.status_embed(session)
         session.message = session.event.send_embed('', status_embed)
         session.message.pin
-        event.send_message(session.timer.time_remaining(session).to_s)
+        event.send_message(session.timer.time_remaining(session))
       end
     end
 
@@ -44,7 +45,7 @@ module Bot::Commands
         if stats.pomos_completed.positive?
           event.send_message(MessageBuilder.stats_msg(session.stats))
         else
-          event.send_message('You haven\'t completed any pomodoros yet.')
+          event.send_message('まだポモドーロは完了していません')
         end
       end
     end
@@ -60,7 +61,7 @@ module Bot::Commands
     end
 
     command :servers do |event|
-      event.send_message("pomoru is in #{event.bot.servers.count} servers.")
+      event.send_message("ポモるは、#{event.bot.servers.count}サーバーで使用されています")
     end
   end
 end

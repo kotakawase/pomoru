@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
 require_relative './reminder'
-require_relative './session'
 require_relative './session_manager'
 require_relative './session_messenger'
 require_relative '../voice/voice_accessor'
 require_relative '../voice/voice_manager'
 require_relative '../voice/voice_player'
+require_relative '../message_builder'
 require_relative '../settings'
 require_relative '../state_handler'
+require_relative '../state'
 
 class SessionController
   class << self
@@ -65,12 +66,12 @@ class SessionController
         sleep session.timer.remaining
         return false unless latest_session?(session, timer_end)
       end
-      return false if SessionManager.kill_if_thread(session)
+      return false if SessionManager.kill_if_thread_exists(session)
 
       VoicePlayer.alert(session, timer_end)
       StateHandler.transition(session)
-      session.message.edit(GREETINGS.sample.to_s, MessageBuilder.status_embed(session))
-      session.event.send_message("Starting #{session.state}")
+      session.message.edit('', MessageBuilder.status_embed(session))
+      session.event.send_message("#{session.state}を始めます")
     end
 
     def latest_session?(session, timer_end)

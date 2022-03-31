@@ -2,6 +2,7 @@
 
 require 'discordrb'
 require_relative './session_controller'
+require_relative './session_manager'
 require_relative '../message_builder'
 
 class Countdown

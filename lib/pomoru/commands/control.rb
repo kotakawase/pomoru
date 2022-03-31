@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'discordrb'
+require 'dotenv/load'
 require_relative '../config/config'
 require_relative '../config/user_messages'
 require_relative '../session/session'
@@ -8,8 +9,8 @@ require_relative '../session/session_controller'
 require_relative '../session/session_manager'
 require_relative '../message_builder'
 require_relative '../settings'
+require_relative '../state_handler'
 require_relative '../state'
-require_relative '../timer'
 
 module Bot::Commands
   module Control
@@ -17,7 +18,7 @@ module Bot::Commands
 
     command :start do |event, pomodoro = 25, short_break = 5, long_break = 15, intervals = 4|
       if event.user.voice_channel.nil?
-        event.send_message('Join a voice channel to use pomoru!')
+        event.send_message("ボイスチャンネルに参加して#{ENV['PREFIX']}#{event.command.name.to_s}を実行してください")
         return
       end
       session = SessionManager::ACTIVE_SESSIONS[SessionManager.session_id_from(event)]
@@ -26,7 +27,7 @@ module Bot::Commands
         return
       end
       if Settings.invalid?(pomodoro, short_break, long_break, intervals)
-        event.send_message("Use durations between 1 and #{MAX_INTERVAL_MINUTES} minutes.")
+        event.send_message("1〜#{MAX_INTERVAL_MINUTES}分までのパラメータを入力してください")
         return
       end
 
@@ -53,13 +54,13 @@ module Bot::Commands
       if session
         timer = session.timer
         unless timer.running
-          event.send_message('Timer is already paused.')
+          event.send_message("タイマーは既に一時停止しています")
           return
         end
         timer.running = false
         timer.remaining = timer.end.to_i - Time.now.to_i
-        session.message.edit(GREETINGS.sample.to_s, MessageBuilder.status_embed(session))
-        event.send_message("Pausing #{session.state}.")
+        session.message.edit('', MessageBuilder.status_embed(session))
+        event.send_message("#{session.state}を一時停止しました")
       end
     end
 
@@ -72,13 +73,13 @@ module Bot::Commands
       if session
         timer = session.timer
         if session.timer.running
-          event.send_message('Timer is already running.')
+          event.send_message('タイマーは既に実行されています')
           return
         end
         timer.running = true
         timer.end = Time.now + timer.remaining
-        session.message.edit(GREETINGS.sample.to_s, MessageBuilder.status_embed(session))
-        event.send_message("Resuming #{session.state}.")
+        session.message.edit('', MessageBuilder.status_embed(session))
+        event.send_message("#{session.state}を再開しました")
         SessionController.resume(session)
       end
     end
@@ -91,7 +92,7 @@ module Bot::Commands
       end
       if session
         session.timer.time_remaining_update(session)
-        event.send_message("Restarting #{session.state}.")
+        event.send_message("#{session.state}をリスタートしました")
         SessionController.resume(session)
       end
     end
@@ -108,9 +109,9 @@ module Bot::Commands
           stats.pomos_completed -= 1
           stats.minutes_completed -= session.settings.pomodoro
         end
-        event.send_message("Skipping #{session.state}.")
+        event.send_message("#{session.state}をスキップしました")
         StateHandler.transition(session)
-        session.message.edit(GREETINGS.sample.to_s, MessageBuilder.status_embed(session))
+        session.message.edit('', MessageBuilder.status_embed(session))
         SessionController.resume(session)
       end
     end
@@ -119,9 +120,11 @@ module Bot::Commands
       session = SessionManager.get_session(event)
       if session
         if session.stats.pomos_completed.positive?
-          event.send_message("Great job!#{MessageBuilder.stats_msg(session.stats)}")
+          completed_message = event.send_message("おつかれさまです！#{MessageBuilder.stats_msg(session.stats)}")
+          completed_message.create_reaction('👍')
         else
-          event.send_message('See you again soon!')
+          incomplete_message = event.send_message('また会いましょう！')
+          incomplete_message.create_reaction('👋')
         end
         SessionController.end(session)
       end
@@ -139,7 +142,7 @@ module Bot::Commands
           return
         end
         if Settings.invalid?(pomodoro, short_break, long_break, intervals)
-          event.send_message("Use durations between 1 and #{MAX_INTERVAL_MINUTES} minutes.")
+          event.send_message("1〜#{MAX_INTERVAL_MINUTES}分までのパラメータを入力してください")
           return
         end
         SessionController.edit(session, Settings.new(

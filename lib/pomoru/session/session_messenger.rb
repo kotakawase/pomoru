@@ -13,7 +13,7 @@ class SessionMessenger
     end
 
     def send_edit_msg(session)
-      session.event.send_embed('Continuing pomodoro session with new settings!',
+      session.event.send_embed('新しい設定でポモドーロタイマーを継続します',
                                MessageBuilder.settings_embed(session))
     end
 
@@ -26,9 +26,9 @@ class SessionMessenger
     def send_remind_msg(session)
       reminders = session.reminder
       if reminders.pomodoro == 'None' && reminders.short_break == 'None' && reminders.long_break == 'None'
-        session.event.send_message('All reminder times are 0.')
+        session.event.send_message('すべてのリマインダーは0です')
       else
-        session.event.send_embed('Reminder alerts turned on.', MessageBuilder.reminders_embed(session))
+        session.event.send_embed('リマインダーアラートがOnになりました', MessageBuilder.reminders_embed(session))
       end
     end
   end
