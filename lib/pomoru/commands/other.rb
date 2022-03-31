@@ -96,7 +96,7 @@ module Bot::Commands
         end
         volume = volume == '0.5' ? volume.to_f : volume.to_i
         if volume >= 3
-          event.send_message("0〜2までのパラメータを入力してください")
+          event.send_message('0〜2までのパラメータを入力してください')
           return
         end
         event.voice.filter_volume = volume

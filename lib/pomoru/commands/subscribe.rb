@@ -14,7 +14,7 @@ module Bot::Commands
       session = SessionManager.get_session(event)
       if session
         if event.user.voice_channel.nil?
-          event.send_message("ボイスチャンネルに参加して#{ENV['PREFIX']}#{event.command.name.to_s}を実行してください")
+          event.send_message("ボイスチャンネルに参加して#{ENV['PREFIX']}#{event.command.name}を実行してください")
           return
         end
         auto_shush = session.autoshush

@@ -18,7 +18,7 @@ module Bot::Commands
 
     command :start do |event, pomodoro = 25, short_break = 5, long_break = 15, intervals = 4|
       if event.user.voice_channel.nil?
-        event.send_message("ボイスチャンネルに参加して#{ENV['PREFIX']}#{event.command.name.to_s}を実行してください")
+        event.send_message("ボイスチャンネルに参加して#{ENV['PREFIX']}#{event.command.name}を実行してください")
         return
       end
       session = SessionManager::ACTIVE_SESSIONS[SessionManager.session_id_from(event)]
@@ -54,7 +54,7 @@ module Bot::Commands
       if session
         timer = session.timer
         unless timer.running
-          event.send_message("タイマーは既に一時停止しています")
+          event.send_message('タイマーは既に一時停止しています')
           return
         end
         timer.running = false
