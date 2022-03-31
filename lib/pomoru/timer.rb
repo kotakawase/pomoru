@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative './state'
+
 class Timer
   attr_accessor :running, :end, :remaining
 
@@ -31,6 +33,6 @@ class Timer
                      end
     remaining_minites = time_remaining / 60
     remaining_seconds = format('%02d', time_remaining - (remaining_minites * 60))
-    "#{remaining_minites}minutes #{remaining_seconds}seconds remining on #{session.state}!"
+    "#{session.state}は残り#{remaining_minites}分 #{remaining_seconds}秒です！"
   end
 end

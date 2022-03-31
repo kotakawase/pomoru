@@ -30,7 +30,7 @@ class MessageBuilder
     end
 
     def stats_msg(stats)
-      "You completed #{stats.pomos_completed} pomodoro (#{stats.minutes_completed}minutes)"
+      "#{stats.pomos_completed} pomodoro (#{stats.minutes_completed}分) 完了しました"
     end
 
     def help_embed(command)
@@ -55,6 +55,7 @@ class MessageBuilder
           embed = create_embed(cmd_info[:command], cmd_info[:use], colour)
           return embed
         end
+        nil
       end
     end
 
@@ -63,7 +64,7 @@ class MessageBuilder
       if session == 'DONE'
         create_embed(title, session, colour)
       else
-        create_embed(title, "#{session.timer.time_remaining(session)} left!", colour)
+        create_embed(title, session.timer.time_remaining(session), colour)
       end
     end
 

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'discordrb'
+require_relative '../config/config'
 require_relative '../config/user_messages'
 require_relative '../session/countdown'
 require_relative '../session/reminder'
@@ -8,7 +9,9 @@ require_relative '../session/session'
 require_relative '../session/session_controller'
 require_relative '../session/session_manager'
 require_relative '../session/session_messenger'
+require_relative '../message_builder'
 require_relative '../settings'
+require_relative '../state'
 
 module Bot::Commands
   module Other
@@ -24,7 +27,7 @@ module Bot::Commands
         event.send_message(MISSING_ARG_ERR)
         return
       elsif Settings.invalid?(duration)
-        event.send_message("Use durations between 1 and #{MAX_INTERVAL_MINUTES} minutes.")
+        event.send_message("1〜#{MAX_INTERVAL_MINUTES}分までのパラメータを入力してください")
         return
       end
 
@@ -56,7 +59,7 @@ module Bot::Commands
                                             ))
           SessionMessenger.send_remind_msg(session)
           session.reminder.running = true
-          session.message.edit(GREETINGS.sample.to_s, MessageBuilder.status_embed(session))
+          session.message.edit('', MessageBuilder.status_embed(session))
           SessionController.resume(session)
         end
       end
@@ -71,12 +74,12 @@ module Bot::Commands
       if session
         reminder = session.reminder
         unless reminder.running
-          event.send_message('Reminder alerts is already off.')
+          event.send_message('リマインダーは既にOffになっています')
           return
         end
         reminder.running = false
-        session.message.edit(GREETINGS.sample.to_s, MessageBuilder.status_embed(session))
-        event.send_message('Turning off reminder alerts.')
+        session.message.edit('', MessageBuilder.status_embed(session))
+        event.send_message('リマインダーをOffにしました')
       end
     end
 
@@ -88,16 +91,16 @@ module Bot::Commands
       end
       if session
         if volume.nil?
-          event.send_message("Volume is now #{event.voice.filter_volume}/2.")
+          event.send_message("今の音量は#{event.voice.filter_volume}/2です")
           return
         end
         volume = volume == '0.5' ? volume.to_f : volume.to_i
         if volume >= 3
-          event.send_message('Use a number between 0 and 2.')
+          event.send_message('0〜2までのパラメータを入力してください')
           return
         end
         event.voice.filter_volume = volume
-        event.send_message("Changed the volume to #{volume}/2.")
+        event.send_message("音量を#{volume}/2に変更しました")
       end
     end
   end

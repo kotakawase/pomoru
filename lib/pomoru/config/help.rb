@@ -1,50 +1,57 @@
 # frozen_string_literal: true
 
 SUMMARY = <<~TEXT
-  pomoru is a Discord bot that allows you to use the Pomodoro technique on Discord.
-  Set periods of focus to get work done and chat during the breaks.
+  ポモるで使えるコマンドヘルプ。
 
-  Required parameters are enclosed in <> and optional parameters are enclosed in [].
-  For example, you can do "pmt!start" to start a pomodoro session with the default values or "pmt!start 30 10" to customize the pomodoro and short break durations!
+  必須パラメータは<>で囲まれ、オプションパラメーターは[]で囲まれます。
+  たとえば「pmt!start」を実行してデフォルト値でポモドーロタイマーを開始したり、「pmt!start 30 10」を実行してポモドーロと休憩をカスタマイズしたりすることができます。
+
+  もっと詳しいヘルプが知りたいときは、「pmt!help [command]」を実行することで確認することができるでしょう！
 TEXT
 
 START = <<~TEXT
-  Start pomodoro session with optional custom settings.
+  オプションのカスタム設定でポモドーロタイマーを開始します。
+  各セッションは60分までパラメーターが有効です。
+  （デフォルト値：25 5 15 4）
 
-  pomodoro: duration of each pomodoro interval in minutes (default: 25 min)
-  short_break: duration of short breaks in minutes (default: 5 min)
-  long_break: duration of long breaks in minutes (default: 15 min)
-  intervals: number of pomodoro intervals between each long break (default: 4)
+  pomodoro: ポモドーロの継続時間（分単位）
+  short_break: 短い休憩の長さ（分単位）
+  long_break: 長い休憩の長さ（分単位）
+  intervals: 長い休憩をするまでにポモドーロする数
 TEXT
 
 EDIT = <<~TEXT
-  Continue session with new settings
+  ポモドーロタイマーを設定します。
+  各セッションは60分までパラメーターが有効です。
+  （デフォルト値：25 5 15 4）
 
-  pomodoro: duration of each pomodoro interval in minutes (default: 25 min)
-  short_break: duration of short breaks in minutes (default: 5 min)
-  long_break: duration of long breaks in minutes (default: 15 min)
-  intervals: number of pomodoro intervals between each long break (default: 4)
+  pomodoro: ポモドーロの継続時間（分単位）
+  short_break: 短い休憩の長さ（分単位）
+  long_break: 長い休憩の長さ（分単位）
+  intervals: 長い休憩をするまでにポモドーロする数
 TEXT
 
 COUNTDOWN = <<~TEXT
-  Start a timer that updates in real time.
+  カウントダウンタイマーを開始します。
+  タイマーは60分までパラメーターが有効です。
 
-  Enclose title in " " if longer than one word (default: "Countdown").
+  オプションでカウントダウンしたい内容を入力することができ、入力しなかったときは"Countdown"がデフォルト値として実行されます。
 
-  Example usage: pmt!countdown 5 "Finish homework!"
+  使用例：pmt!countdown 5 "宿題をやる！"
 TEXT
 
 REMIND = <<~TEXT
-  Turn on reminder alerts (Defaults: 5, 1, 5)
-  Pass in 0 if you do not want a reminder for the interval
+  リマインダーアラートをOnにします。
+  （デフォルト値：25 5 15 4）
+  リマインダーが必要ないセッションには0を渡すとこともできます。
 
-  For example, you can run "pmt!remind" to turn on reminders by the default values or run "pmt!remind 20 2" to set pomodoro and short break reminders!
+  たとえば「pmt!remind」を実行してデフォルト値でリマインダーをOnにしたり、「pmt!remind 20 2」を実行してポモドーロと休憩のリマインダーを設定したりすることができます。
 TEXT
 
 AUTOSHUSH = <<~TEXT
-  Get automatically deafened and muted during focus intervals.
+  ポモドーロタイマーの途中に自動的にミュートされます。
 
-  Only members with mute and deafen permissions can use the "all" parameter to autoshush everyone in the session voice channel.
+  管理者権限を持つメンバーのみが、"all"パラメーターを使用してボイスチャンネルに参加している全員を強制的にミュートできます。
 TEXT
 
 COMMANDS = {
@@ -55,23 +62,23 @@ COMMANDS = {
     },
     pause: {
       command: 'pause',
-      use: 'Pause session'
+      use: 'セッションの一時停止。'
     },
     resume: {
       command: 'resume',
-      use: 'Resume session'
+      use: 'セッションの再開。'
     },
     restart: {
       command: 'restart',
-      use: 'Restart timer'
+      use: 'セッションのリスタート。'
     },
     skip: {
       command: 'skip',
-      use: 'Skip current interval and start the next pomodoro or break.'
+      use: 'セッションのスキップ。'
     },
     end: {
       command: 'end',
-      use: 'End session'
+      use: 'セッションの終了。'
     },
     edit: {
       command: 'edit <pomodoro> [short_break] [long_break] [interval]',
@@ -81,28 +88,28 @@ COMMANDS = {
   'Info commands': {
     help: {
       command: 'help [command]',
-      use: 'Display help that summarizes how to use pomoru.'
+      use: 'コマンドヘルプを表示します。'
     },
     status: {
       command: 'status',
-      use: 'Get time remaining'
+      use: 'ポモドーロタイマーのステータスを取得します。'
     },
     stats: {
       command: 'stats',
-      use: 'Get session stats'
+      use: 'ポモドーロの統計を取得します。'
     },
     settings: {
       command: 'settings',
-      use: 'Get session settings'
+      use: 'ポモドーロタイマーの設定を取得します。'
     },
     servers: {
       command: 'servers',
-      use: 'See how many servers are using pomodro'
+      use: 'ポモるを使用しているサーバーの数を確認します。'
     }
   },
   'Other commands': {
     countdown: {
-      command: 'countdown <duration> [title]',
+      command: 'countdown <duration> [task]',
       use: COUNTDOWN
     },
     remind: {
@@ -111,16 +118,16 @@ COMMANDS = {
     },
     remind_off: {
       command: 'remind_off',
-      use: 'Turn off reminders'
+      use: 'リマインダーアラートをOffにします。'
     },
     volume: {
       command: 'volume [level]',
-      use: 'Change thevolume of alerts'
+      use: 'アラートの音量を変更します。'
     }
   },
   'Subscription commands': {
     autoshush: {
-      command: 'autoshush [all]',
+      command: 'autoshush <all>',
       use: AUTOSHUSH
     }
   }

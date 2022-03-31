@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative '../voice/voice_accessor'
+
 class SessionManager
   # rubocop:disable Style/MutableConstant
   ACTIVE_SESSIONS = {}
@@ -16,7 +18,7 @@ class SessionManager
 
     def get_session(event)
       session = ACTIVE_SESSIONS[session_id_from(event)]
-      event.send_message('No active session.') unless session
+      event.send_message('アクティブなセッションはありません') unless session
       session
     end
 
@@ -24,7 +26,7 @@ class SessionManager
       event.server.id.to_s + event.channel.id.to_s
     end
 
-    def kill_if_thread(session)
+    def kill_if_thread_exists(session)
       return unless !VoiceAccessor.get_voice_channel(session) || VoiceAccessor.get_members_in_voice_channel(session).length.zero?
     end
   end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative './session_manager'
+require_relative '../voice/voice_player'
 require_relative '../state'
 
 class Reminder
@@ -30,7 +31,7 @@ class Reminder
       return false unless latest_reminder?(session, time_executed, reminder_end) && session.reminder.running
 
       VoicePlayer.alert(session, reminder_end)
-      session.event.send_message("#{(session.timer.end.to_i - Time.now.to_i) / 60} minute left until end of #{session.state}!")
+      session.event.send_message("#{session.state}の終わりまで残り#{(session.timer.end.to_i - Time.now.to_i) / 60}分!")
     end
     time_remaining = session.timer.end.to_i - Time.now.to_i
     sleep time_remaining

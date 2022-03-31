@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative '../state'
+
 class VoicePlayer
   POMO_START = "#{Dir.pwd}/sounds/pomodoro_start.mp3".freeze
   POMO_END = "#{Dir.pwd}/sounds/pomodoro_end.mp3".freeze

@@ -52,17 +52,18 @@ class MessageBuilderTest < Minitest::Test
   end
 
   def test_stats_embed
-    stats_msg = 'You completed 0 pomodoro (0minutes)'
+    stats_msg = '0 pomodoro (0分) 完了しました'
     assert_equal(stats_msg, MessageBuilder.stats_msg(@session.stats))
   end
 
   def test_no_arguments_passed_to_help_embed
     summary = <<~TEXT
-      pomoru is a Discord bot that allows you to use the Pomodoro technique on Discord.
-      Set periods of focus to get work done and chat during the breaks.
+      ポモるで使えるコマンドヘルプ。
 
-      Required parameters are enclosed in <> and optional parameters are enclosed in [].
-      For example, you can do "pmt!start" to start a pomodoro session with the default values or "pmt!start 30 10" to customize the pomodoro and short break durations!
+      必須パラメータは<>で囲まれ、オプションパラメーターは[]で囲まれます。
+      たとえば「pmt!start」を実行してデフォルト値でポモドーロタイマーを開始したり、「pmt!start 30 10」を実行してポモドーロと休憩をカスタマイズしたりすることができます。
+
+      もっと詳しいヘルプが知りたいときは、「pmt!help [command]」を実行することで確認することができるでしょう！
     TEXT
     colour = 3_447_003
 
@@ -73,12 +74,14 @@ class MessageBuilderTest < Minitest::Test
 
   def test_command_is_passed_to_help_embed
     start = <<~TEXT
-      Start pomodoro session with optional custom settings.
+      オプションのカスタム設定でポモドーロタイマーを開始します。
+      各セッションは60分までパラメーターが有効です。
+      （デフォルト値：25 5 15 4）
 
-      pomodoro: duration of each pomodoro interval in minutes (default: 25 min)
-      short_break: duration of short breaks in minutes (default: 5 min)
-      long_break: duration of long breaks in minutes (default: 15 min)
-      intervals: number of pomodoro intervals between each long break (default: 4)
+      pomodoro: ポモドーロの継続時間（分単位）
+      short_break: 短い休憩の長さ（分単位）
+      long_break: 長い休憩の長さ（分単位）
+      intervals: 長い休憩をするまでにポモドーロする数
     TEXT
 
     assert_equal('start [pomodoro] [short_break] [long_break] [intervales]', MessageBuilder.help_embed('start').title)
@@ -89,7 +92,7 @@ class MessageBuilderTest < Minitest::Test
     @session.state = State::COUNTDOWN
     @session.timer.remaining = 60
     title = 'Countdown'
-    countdown_str = '1minutes 00seconds remining on countdown! left!'
+    countdown_str = 'countdownは残り1分 00秒です！'
     colour = 1_752_220
 
     assert_equal(title, MessageBuilder.countdown_embed(@session, title).title)
