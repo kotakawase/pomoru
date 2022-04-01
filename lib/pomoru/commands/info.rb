@@ -22,6 +22,7 @@ module Bot::Commands
     command :status do |event|
       session = SessionManager.get_session(event)
       return if Countdown.running?(session)
+
       if session
         session.message.edit('', MessageBuilder.status_embed(session, colour: 0xff0000))
         session.message.unpin
@@ -35,6 +36,7 @@ module Bot::Commands
     command :stats do |event|
       session = SessionManager.get_session(event)
       return if Countdown.running?(session)
+
       if session
         stats = session.stats
         if stats.pomos_completed.positive?
@@ -48,6 +50,7 @@ module Bot::Commands
     command :settings do |event|
       session = SessionManager.get_session(event)
       return if Countdown.running?(session)
+
       event.send_embed('', MessageBuilder.settings_embed(session)) if session
       event.send_embed('', MessageBuilder.reminders_embed(session)) if session.reminder.running
     end

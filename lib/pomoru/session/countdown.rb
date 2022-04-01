@@ -26,10 +26,10 @@ class Countdown
     end
 
     def running?(session)
-      if session.state == State::COUNTDOWN
-        session.event.send_message(COUNTDOWN_RUNNING)
-        return true
-      end
+      return unless session.state == State::COUNTDOWN
+
+      session.event.send_message(COUNTDOWN_RUNNING)
+      true
     end
 
     private

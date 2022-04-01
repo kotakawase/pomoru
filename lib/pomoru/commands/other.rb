@@ -44,6 +44,7 @@ module Bot::Commands
     command :remind do |event, pomodoro, short_break, long_break|
       session = SessionManager.get_session(event)
       return if Countdown.running?(session)
+
       if session
         if pomodoro.nil? && session.reminder.running
           SessionMessenger.send_remind_msg(session)
@@ -65,6 +66,7 @@ module Bot::Commands
     command :remind_off do |event|
       session = SessionManager.get_session(event)
       return if Countdown.running?(session)
+
       if session
         reminder = session.reminder
         unless reminder.running
@@ -80,6 +82,7 @@ module Bot::Commands
     command :volume do |event, volume = nil|
       session = SessionManager.get_session(event)
       return if Countdown.running?(session)
+
       if session
         if volume.nil?
           event.send_message("今の音量は#{event.voice.filter_volume}/2です")

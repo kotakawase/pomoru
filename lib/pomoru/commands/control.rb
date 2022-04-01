@@ -49,6 +49,7 @@ module Bot::Commands
     command :pause do |event|
       session = SessionManager.get_session(event)
       return if Countdown.running?(session)
+
       if session
         timer = session.timer
         unless timer.running
@@ -65,6 +66,7 @@ module Bot::Commands
     command :resume do |event|
       session = SessionManager.get_session(event)
       return if Countdown.running?(session)
+
       if session
         timer = session.timer
         if session.timer.running
@@ -82,6 +84,7 @@ module Bot::Commands
     command :restart do |event|
       session = SessionManager.get_session(event)
       return if Countdown.running?(session)
+
       if session
         session.timer.time_remaining_update(session)
         event.send_message("#{session.state}をリスタートしました")
@@ -92,6 +95,7 @@ module Bot::Commands
     command :skip do |event|
       session = SessionManager.get_session(event)
       return if Countdown.running?(session)
+
       if session
         stats = session.stats
         if stats.pomos_completed >= 0 && session.state == State::POMODORO
@@ -122,6 +126,7 @@ module Bot::Commands
     command :edit do |event, pomodoro = nil, short_break = nil, long_break = nil, intervals = nil|
       session = SessionManager.get_session(event)
       return if Countdown.running?(session)
+
       if session
         if pomodoro.nil?
           event.send_message(MISSING_ARG_ERR)

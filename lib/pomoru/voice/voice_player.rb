@@ -9,9 +9,7 @@ class VoicePlayer
 
   class << self
     def alert(session, value = nil)
-      return unless session.event.voice
-
-      if value.nil? || (value == session.timer.end && !(session.state == State::POMODORO))
+      if value.nil? || (value == session.timer.end && session.state != State::POMODORO)
         path = POMO_START # start and pomodoro
       elsif value == session.timer.end && session.state == State::POMODORO
         path = POMO_END # short break and long break
