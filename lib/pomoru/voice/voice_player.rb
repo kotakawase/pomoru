@@ -5,7 +5,7 @@ require_relative '../state'
 class VoicePlayer
   POMO_START = "#{Dir.pwd}/sounds/pomodoro_start.mp3".freeze
   POMO_END = "#{Dir.pwd}/sounds/pomodoro_end.mp3".freeze
-  REMIND_ALERT = "#{Dir.pwd}/sounds/remind_start.mp3".freeze
+  REMIND_ALERT = "#{Dir.pwd}/sounds/remind_alert.mp3".freeze
 
   class << self
     def alert(session, value = nil)

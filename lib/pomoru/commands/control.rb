@@ -2,7 +2,6 @@
 
 require 'discordrb'
 require 'dotenv/load'
-require_relative '../config/config'
 require_relative '../config/user_messages'
 require_relative '../session/countdown'
 require_relative '../session/session'
@@ -28,7 +27,7 @@ module Bot::Commands
         return
       end
       if Settings.invalid?(pomodoro, short_break, long_break, intervals)
-        event.send_message("1〜#{MAX_INTERVAL_MINUTES}分までのパラメータを入力してください")
+        event.send_message(NUM_OUTSIDE_ONE_AND_MAX_INTERVAL_ERR)
         return
       end
 
@@ -133,7 +132,7 @@ module Bot::Commands
           return
         end
         if Settings.invalid?(pomodoro, short_break, long_break, intervals)
-          event.send_message("1〜#{MAX_INTERVAL_MINUTES}分までのパラメータを入力してください")
+          event.send_message(NUM_OUTSIDE_ONE_AND_MAX_INTERVAL_ERR)
           return
         end
         SessionController.edit(session, Settings.new(

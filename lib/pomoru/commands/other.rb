@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'discordrb'
-require_relative '../config/config'
 require_relative '../config/user_messages'
 require_relative '../session/countdown'
 require_relative '../session/reminder'
@@ -27,7 +26,7 @@ module Bot::Commands
         event.send_message(MISSING_ARG_ERR)
         return
       elsif Settings.invalid?(duration)
-        event.send_message("1〜#{MAX_INTERVAL_MINUTES}分までのパラメータを入力してください")
+        event.send_message(NUM_OUTSIDE_ONE_AND_MAX_INTERVAL_ERR)
         return
       end
 

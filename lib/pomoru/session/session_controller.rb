@@ -43,7 +43,7 @@ class SessionController
       intervals = new_settings.intervals || session.settings.intervals
       session.settings = Settings.new(new_settings.pomodoro, short_break, long_break, intervals)
       if session.reminder.running
-        Reminder.automatically_update_reminders(session, new_settings.pomodoro, short_break, long_break, intervals)
+        Reminder.automatically_update(session, new_settings.pomodoro, short_break, long_break, intervals)
         session.reminder.running = true
       end
       session.settings
@@ -53,7 +53,7 @@ class SessionController
       pomodoro_reminder = new_reminder.pomodoro || session.reminder.pomodoro
       short_break_reminder = new_reminder.short_break || session.reminder.short_break
       long_break_reminder = new_reminder.long_break || session.reminder.long_break
-      Reminder.automatically_update_reminders(session, pomodoro_reminder.to_i, short_break_reminder.to_i, long_break_reminder.to_i)
+      Reminder.automatically_update(session, pomodoro_reminder.to_i, short_break_reminder.to_i, long_break_reminder.to_i)
     end
 
     private
