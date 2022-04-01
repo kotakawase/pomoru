@@ -27,10 +27,12 @@ class MessageBuilderTest < Minitest::Test
 
   def test_status_embed
     title = 'Timer'
-    status_str = "Current intervals: Pomodoro\n \
-        Status: Pausing\n \
-        Reminder alerts: Off\n \
-        Autoshush: Off"
+    status_str = <<~TEXT
+      Current intervals: Pomodoro
+      Status: Pausing
+      Reminder alerts: Off
+      Autoshush: Off
+    TEXT
     colour = 3_066_993
 
     assert_equal(title, MessageBuilder.status_embed(@session).title)
@@ -40,10 +42,12 @@ class MessageBuilderTest < Minitest::Test
 
   def test_settings_embed
     title = 'Session settings'
-    settings_str = "Pomodoro: 25 min\n \
-        Short break: 5 min\n \
-        Long break: 15 min\n \
-        Interbals: 4"
+    settings_str = <<~TEXT
+      Pomodoro: 25 min
+      Short break: 5 min
+      Long break: 15 min
+      Interbals: 4
+    TEXT
     colour = 16_744_448
 
     assert_equal(title, MessageBuilder.settings_embed(@session).title)
@@ -102,9 +106,11 @@ class MessageBuilderTest < Minitest::Test
 
   def test_reminders_embed
     title = 'Reminder alerts'
-    reminders_str = "Pomodoro: 5 min\n \
-        Short break: 1 min\n \
-        Long break: 5 min"
+    reminders_str = <<~TEXT
+      Pomodoro: 5 min
+      Short break: 1 min
+      Long break: 5 min
+    TEXT
     colour = 16_705_372
 
     assert_equal(title, MessageBuilder.reminders_embed(@session).title)
