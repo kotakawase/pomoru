@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'discordrb'
+require_relative '../session/countdown'
 require_relative '../session/session_manager'
 require_relative '../message_builder'
 require_relative '../state'
@@ -20,10 +21,8 @@ module Bot::Commands
 
     command :status do |event|
       session = SessionManager.get_session(event)
-      if session.state == State::COUNTDOWN
-        session.event.send_message(COUNTDOWN_RUNNING)
-        return
-      end
+      return if Countdown.running?(session)
+
       if session
         session.message.edit('', MessageBuilder.status_embed(session, colour: 0xff0000))
         session.message.unpin
@@ -36,10 +35,8 @@ module Bot::Commands
 
     command :stats do |event|
       session = SessionManager.get_session(event)
-      if session.state == State::COUNTDOWN
-        session.event.send_message(COUNTDOWN_RUNNING)
-        return
-      end
+      return if Countdown.running?(session)
+
       if session
         stats = session.stats
         if stats.pomos_completed.positive?
@@ -52,10 +49,8 @@ module Bot::Commands
 
     command :settings do |event|
       session = SessionManager.get_session(event)
-      if session.state == State::COUNTDOWN
-        session.event.send_message(COUNTDOWN_RUNNING)
-        return
-      end
+      return if Countdown.running?(session)
+
       event.send_embed('', MessageBuilder.settings_embed(session)) if session
       event.send_embed('', MessageBuilder.reminders_embed(session)) if session.reminder.running
     end

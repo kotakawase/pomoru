@@ -40,8 +40,30 @@ class Reminder
     true
   end
 
+  private
+
+  def to_i(timer)
+    timer&.to_i
+  end
+
+  def caculate_current_remind(session)
+    @end = case session.state
+           when State::SHORT_BREAK
+             session.timer.end - (to_i(@short_break) * 60)
+           when State::LONG_BREAK
+             session.timer.end - (to_i(@long_break) * 60)
+           else
+             session.timer.end - (to_i(@pomodoro) * 60)
+           end
+  end
+
+  def latest_reminder?(session, time_executed, reminder_end)
+    session = SessionManager::ACTIVE_SESSIONS[SessionManager.session_id_from(session.event)]
+    session&.timer&.running && reminder_end == session.reminder.end && time_executed == session.reminder.time_executed
+  end
+
   class << self
-    def automatically_update_reminders(session, pomodoro, short_break, long_break, intervals = nil)
+    def automatically_update(session, pomodoro, short_break, long_break, intervals = nil)
       if intervals # 4
         reminders = session.reminder
         pomodoro_reminder = convert_pomodoro_timer_reminders(pomodoro, reminders.pomodoro.to_i)
@@ -85,27 +107,5 @@ class Reminder
         remind
       end
     end
-  end
-
-  private
-
-  def to_i(timer)
-    timer&.to_i
-  end
-
-  def caculate_current_remind(session)
-    @end = case session.state
-           when State::SHORT_BREAK
-             session.timer.end - (to_i(@short_break) * 60)
-           when State::LONG_BREAK
-             session.timer.end - (to_i(@long_break) * 60)
-           else
-             session.timer.end - (to_i(@pomodoro) * 60)
-           end
-  end
-
-  def latest_reminder?(session, time_executed, reminder_end)
-    session = SessionManager::ACTIVE_SESSIONS[SessionManager.session_id_from(session.event)]
-    session&.timer&.running && reminder_end == session.reminder.end && time_executed == session.reminder.time_executed
   end
 end

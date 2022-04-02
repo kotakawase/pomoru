@@ -10,20 +10,23 @@ class MessageBuilder
       status = session.timer.running ? 'Running' : 'Pausing'
       reminder = session.reminder.running ? 'On' : 'Off'
       autoshush = session.autoshush.all ? 'On' : 'Off'
-      status_str = "Current intervals: #{state}\n \
-        Status: #{status}\n \
-        Reminder alerts: #{reminder}\n \
-        Autoshush: #{autoshush}"
-
+      status_str = <<~TEXT
+        Current intervals: #{state}
+        Status: #{status}
+        Reminder alerts: #{reminder}
+        Autoshush: #{autoshush}
+      TEXT
       create_embed('Timer', status_str, colour)
     end
 
     def settings_embed(session)
       settings = session.settings
-      settings_str = "Pomodoro: #{settings.pomodoro} min\n \
-        Short break: #{settings.short_break} min\n \
-        Long break: #{settings.long_break} min\n \
-        Interbals: #{settings.intervals}"
+      settings_str = <<~TEXT
+        Pomodoro: #{settings.pomodoro} min
+        Short break: #{settings.short_break} min
+        Long break: #{settings.long_break} min
+        Interbals: #{settings.intervals}
+      TEXT
       colour = 0xFF8000
 
       create_embed('Session settings', settings_str, colour)
@@ -73,9 +76,11 @@ class MessageBuilder
       pomo_txt = molding_reminder_txt(reminders.pomodoro)
       short_txt = molding_reminder_txt(reminders.short_break)
       long_txt = molding_reminder_txt(reminders.long_break)
-      reminders_str = "Pomodoro: #{pomo_txt}\n \
-        Short break: #{short_txt}\n \
-        Long break: #{long_txt}"
+      reminders_str = <<~TEXT
+        Pomodoro: #{pomo_txt}
+        Short break: #{short_txt}
+        Long break: #{long_txt}
+      TEXT
       colour = 0xFEE75C
 
       create_embed('Reminder alerts', reminders_str, colour)

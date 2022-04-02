@@ -2,8 +2,8 @@
 
 require 'discordrb'
 require 'dotenv/load'
-require_relative '../config/config'
 require_relative '../config/user_messages'
+require_relative '../session/countdown'
 require_relative '../session/session'
 require_relative '../session/session_controller'
 require_relative '../session/session_manager'
@@ -27,7 +27,7 @@ module Bot::Commands
         return
       end
       if Settings.invalid?(pomodoro, short_break, long_break, intervals)
-        event.send_message("1〜#{MAX_INTERVAL_MINUTES}分までのパラメータを入力してください")
+        event.send_message(NUM_OUTSIDE_ONE_AND_MAX_INTERVAL_ERR)
         return
       end
 
@@ -47,10 +47,8 @@ module Bot::Commands
 
     command :pause do |event|
       session = SessionManager.get_session(event)
-      if session.state == State::COUNTDOWN
-        session.event.send_message(COUNTDOWN_RUNNING)
-        return
-      end
+      return if Countdown.running?(session)
+
       if session
         timer = session.timer
         unless timer.running
@@ -66,10 +64,8 @@ module Bot::Commands
 
     command :resume do |event|
       session = SessionManager.get_session(event)
-      if session.state == State::COUNTDOWN
-        session.event.send_message(COUNTDOWN_RUNNING)
-        return
-      end
+      return if Countdown.running?(session)
+
       if session
         timer = session.timer
         if session.timer.running
@@ -86,10 +82,8 @@ module Bot::Commands
 
     command :restart do |event|
       session = SessionManager.get_session(event)
-      if session.state == State::COUNTDOWN
-        session.event.send_message(COUNTDOWN_RUNNING)
-        return
-      end
+      return if Countdown.running?(session)
+
       if session
         session.timer.time_remaining_update(session)
         event.send_message("#{session.state}をリスタートしました")
@@ -99,10 +93,8 @@ module Bot::Commands
 
     command :skip do |event|
       session = SessionManager.get_session(event)
-      if session.state == State::COUNTDOWN
-        session.event.send_message(COUNTDOWN_RUNNING)
-        return
-      end
+      return if Countdown.running?(session)
+
       if session
         stats = session.stats
         if stats.pomos_completed >= 0 && session.state == State::POMODORO
@@ -132,17 +124,15 @@ module Bot::Commands
 
     command :edit do |event, pomodoro = nil, short_break = nil, long_break = nil, intervals = nil|
       session = SessionManager.get_session(event)
-      if session.state == State::COUNTDOWN
-        session.event.send_message(COUNTDOWN_RUNNING)
-        return
-      end
+      return if Countdown.running?(session)
+
       if session
         if pomodoro.nil?
           event.send_message(MISSING_ARG_ERR)
           return
         end
         if Settings.invalid?(pomodoro, short_break, long_break, intervals)
-          event.send_message("1〜#{MAX_INTERVAL_MINUTES}分までのパラメータを入力してください")
+          event.send_message(NUM_OUTSIDE_ONE_AND_MAX_INTERVAL_ERR)
           return
         end
         SessionController.edit(session, Settings.new(
