@@ -2,7 +2,6 @@
 
 require 'dotenv/load'
 require_relative '../config/user_messages'
-require_relative './voice_accessor'
 
 class VoiceConnection
   # rubocop:disable Style/MutableConstant
@@ -20,14 +19,12 @@ class VoiceConnection
       end
       voice_client = event.bot.voice_connect(event.user.voice_channel)
       event.bot.member(event.server.id, CLIENT_ID).server_deafen
-      event.bot.game = VoiceAccessor.voice_channel(session).name.to_s
       CONNECTED_SESSIONS[voice_channel_id_from(event)] = session if voice_client
       true
     end
 
     def disconnect(session)
       CONNECTED_SESSIONS.delete(voice_channel_id_from(session.event))
-      session.event.bot.update_status('online', nil, nil)
       session.event.bot.voice_destroy(session.event.server.id)
     end
 
