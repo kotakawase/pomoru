@@ -4,13 +4,14 @@ require 'discordrb'
 require 'dotenv/load'
 require_relative '../config/user_messages'
 require_relative '../session/countdown'
+require_relative '../session/session_activation'
+require_relative '../session/session_fetcher'
+require_relative '../session/session_manipulation'
 require_relative '../session/session'
-require_relative '../session/session_controller'
-require_relative '../session/session_manager'
 require_relative '../message_builder'
-require_relative '../settings'
 require_relative '../state_handler'
 require_relative '../state'
+require_relative '../timer_setting'
 
 module Bot::Commands
   module Control
@@ -21,19 +22,19 @@ module Bot::Commands
         event.send_message("ボイスチャンネルに参加して#{ENV['PREFIX']}#{event.command.name}を実行してください")
         return
       end
-      session = SessionManager::ACTIVE_SESSIONS[SessionManager.session_id_from(event)]
+      session = SessionActivation::ACTIVE_SESSIONS[SessionActivation.session_id_from(event)]
       if session
         event.send_message(ACTIVE_SESSION_EXISTS_ERR)
         return
       end
-      if Settings.invalid?(pomodoro, short_break, long_break, intervals)
+      if TimerSetting.invalid?(pomodoro, short_break, long_break, intervals)
         event.send_message(NUM_OUTSIDE_ONE_AND_MAX_INTERVAL_ERR)
         return
       end
 
       session = Session.new(
         state: State::POMODORO,
-        set: Settings.new(
+        set: TimerSetting.new(
           pomodoro,
           short_break,
           long_break,
@@ -42,11 +43,11 @@ module Bot::Commands
         ctx: event
       )
       session.timer.running = true
-      SessionController.start(session)
+      SessionManipulation.start(session)
     end
 
     command :pause do |event|
-      session = SessionManager.get_session(event)
+      session = SessionFetcher.current_session(event)
       return if Countdown.running?(session)
 
       if session
@@ -63,7 +64,7 @@ module Bot::Commands
     end
 
     command :resume do |event|
-      session = SessionManager.get_session(event)
+      session = SessionFetcher.current_session(event)
       return if Countdown.running?(session)
 
       if session
@@ -76,23 +77,23 @@ module Bot::Commands
         timer.end = Time.now + timer.remaining
         session.message.edit('', MessageBuilder.status_embed(session))
         event.send_message("#{session.state}を再開しました")
-        SessionController.resume(session)
+        SessionManipulation.resume(session)
       end
     end
 
     command :restart do |event|
-      session = SessionManager.get_session(event)
+      session = SessionFetcher.current_session(event)
       return if Countdown.running?(session)
 
       if session
         session.timer.time_remaining_update(session)
         event.send_message("#{session.state}をリスタートしました")
-        SessionController.resume(session)
+        SessionManipulation.resume(session)
       end
     end
 
     command :skip do |event|
-      session = SessionManager.get_session(event)
+      session = SessionFetcher.current_session(event)
       return if Countdown.running?(session)
 
       if session
@@ -104,12 +105,12 @@ module Bot::Commands
         event.send_message("#{session.state}をスキップしました")
         StateHandler.transition(session)
         session.message.edit('', MessageBuilder.status_embed(session))
-        SessionController.resume(session)
+        SessionManipulation.resume(session)
       end
     end
 
     command :end do |event|
-      session = SessionManager.get_session(event)
+      session = SessionFetcher.current_session(event)
       if session
         if session.stats.pomos_completed.positive?
           completed_message = event.send_message("おつかれさまです！#{MessageBuilder.stats_msg(session.stats)}")
@@ -118,12 +119,12 @@ module Bot::Commands
           incomplete_message = event.send_message('また会いましょう！')
           incomplete_message.create_reaction('👋')
         end
-        SessionController.end(session)
+        SessionManipulation.end(session)
       end
     end
 
     command :edit do |event, pomodoro = nil, short_break = nil, long_break = nil, intervals = nil|
-      session = SessionManager.get_session(event)
+      session = SessionFetcher.current_session(event)
       return if Countdown.running?(session)
 
       if session
@@ -131,19 +132,19 @@ module Bot::Commands
           event.send_message(MISSING_ARG_ERR)
           return
         end
-        if Settings.invalid?(pomodoro, short_break, long_break, intervals)
+        if TimerSetting.invalid?(pomodoro, short_break, long_break, intervals)
           event.send_message(NUM_OUTSIDE_ONE_AND_MAX_INTERVAL_ERR)
           return
         end
-        SessionController.edit(session, Settings.new(
-                                          pomodoro,
-                                          short_break,
-                                          long_break,
-                                          intervals
-                                        ))
+        SessionManipulation.edit(session, TimerSetting.new(
+                                            pomodoro,
+                                            short_break,
+                                            long_break,
+                                            intervals
+                                          ))
         SessionMessenger.send_edit_msg(session)
         SessionMessenger.send_remind_msg(session) if session.reminder.running
-        SessionController.resume(session)
+        SessionManipulation.resume(session)
       end
     end
   end

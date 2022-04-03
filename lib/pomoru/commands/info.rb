@@ -2,7 +2,7 @@
 
 require 'discordrb'
 require_relative '../session/countdown'
-require_relative '../session/session_manager'
+require_relative '../session/session_fetcher'
 require_relative '../message_builder'
 require_relative '../state'
 
@@ -20,7 +20,7 @@ module Bot::Commands
     end
 
     command :status do |event|
-      session = SessionManager.get_session(event)
+      session = SessionFetcher.current_session(event)
       return if Countdown.running?(session)
 
       if session
@@ -34,7 +34,7 @@ module Bot::Commands
     end
 
     command :stats do |event|
-      session = SessionManager.get_session(event)
+      session = SessionFetcher.current_session(event)
       return if Countdown.running?(session)
 
       if session
@@ -48,7 +48,7 @@ module Bot::Commands
     end
 
     command :settings do |event|
-      session = SessionManager.get_session(event)
+      session = SessionFetcher.current_session(event)
       return if Countdown.running?(session)
 
       event.send_embed('', MessageBuilder.settings_embed(session)) if session

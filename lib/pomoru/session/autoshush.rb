@@ -14,7 +14,7 @@ class AutoShush
 
   def handle_all(session)
     author = session.event.author
-    vc_name = VoiceAccessor.get_voice_channel(session).name
+    vc_name = VoiceAccessor.voice_channel(session).name
 
     if (author.defined_permission?(:mute_members) && author.defined_permission?(:deafen_members)) || author.defined_permission?(:adminstrator)
       if @all
@@ -37,7 +37,7 @@ class AutoShush
   private
 
   def shush(session)
-    vc_members = VoiceAccessor.get_members_in_voice_channel(session)
+    vc_members = VoiceAccessor.members_in_voice_channel(session)
     vc_members.each do |member|
       member.server_mute
       member.server_deafen
@@ -45,7 +45,7 @@ class AutoShush
   end
 
   def unshush(session)
-    vc_members = VoiceAccessor.get_members_in_voice_channel(session)
+    vc_members = VoiceAccessor.members_in_voice_channel(session)
     vc_members.each do |member|
       member.server_unmute
       member.server_undeafen

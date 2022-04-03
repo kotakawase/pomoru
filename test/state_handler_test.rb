@@ -2,9 +2,9 @@
 
 require 'minitest/autorun'
 require_relative '../lib/pomoru/session/session'
-require_relative '../lib/pomoru/settings'
 require_relative '../lib/pomoru/state_handler'
 require_relative '../lib/pomoru/state'
+require_relative '../lib/pomoru/timer_setting'
 
 class StateHandlerTest < Minitest::Test
   def setup
@@ -14,7 +14,7 @@ class StateHandlerTest < Minitest::Test
     intervals = 4
     @session = Session.new(
       state: State::POMODORO,
-      set: Settings.new(
+      set: TimerSetting.new(
         pomodoro,
         short_break,
         long_break,

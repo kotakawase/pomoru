@@ -5,14 +5,14 @@ require 'dotenv/load'
 require_relative '../config/user_messages'
 require_relative '../session/autoshush'
 require_relative '../session/countdown'
-require_relative '../session/session_manager'
+require_relative '../session/session_fetcher'
 
 module Bot::Commands
   module Subscribe
     extend Discordrb::Commands::CommandContainer
 
     command :autoshush do |event, who = ''|
-      session = SessionManager.get_session(event)
+      session = SessionFetcher.current_session(event)
       return if Countdown.running?(session)
 
       if session

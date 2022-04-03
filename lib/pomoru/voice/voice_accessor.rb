@@ -2,19 +2,22 @@
 
 class VoiceAccessor
   class << self
-    def get_voice_client(session)
-      session.event.voice
+    def voice_client(session)
+      voice_client = session.event.voice
+      return unless voice_client && session.event.bot.connected?
+
+      voice_client
     end
 
-    def get_voice_channel(session)
-      vc = get_voice_client(session)
+    def voice_channel(session)
+      vc = voice_client(session)
       return unless vc
 
       vc.channel
     end
 
-    def get_members_in_voice_channel(session)
-      vc = get_voice_channel(session)
+    def members_in_voice_channel(session)
+      vc = voice_channel(session)
       return [] unless vc
 
       members = vc.users
