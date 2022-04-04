@@ -116,17 +116,17 @@ Docker imageを作成もしくは[dockerhub](https://hub.docker.com/r/kotakawase
 # Docker image
 $ git clone https://github.com/kotakawase/pomoru.git
 $ cd pomoru
-$ docker build -t pomoru .
+$ docker build -t kotakawase/pomoru:main .
 
 # dockerhubからpull
-$ docker pull kotakawase/pomoru
+$ docker pull kotakawase/pomoru:main
 ```
 
 Docker imageが作成されていることを確認
-```
+```bash
 $ docker images
-REPOSITORY                 TAG       IMAGE ID       CREATED        SIZE
-pomoru                     latest    XXXXXXXXXXXX   X weeks ago    XXXMB
+REPOSITORY                 TAG       IMAGE ID       CREATED          SIZE
+kotakawase/pomoru          main      XXXXXXXXXXXX   X hours ago      XXXGB
 ```
 
 Docker起動に必要な環境変数を設定
@@ -149,7 +149,7 @@ PREFIX=COMMAND_PREFIX_TO_USE
 ## 起動
 Dockerを起動
 ```bash
-$ docker run --env-file ~/.env pomoru
+$ docker run --env-file ~/.env kotakawase/pomoru:main
 ```
 
 <details><summary>Dockerを使用しずに起動する場合はこちらをご参照ください</summary><div>
