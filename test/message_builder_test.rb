@@ -4,9 +4,9 @@ require 'discordrb'
 require 'minitest/autorun'
 require_relative '../lib/pomoru/message_builder'
 require_relative '../lib/pomoru/session/session'
-require_relative '../lib/pomoru/settings'
 require_relative '../lib/pomoru/state'
 require_relative '../lib/pomoru/stats'
+require_relative '../lib/pomoru/timer_setting'
 
 class MessageBuilderTest < Minitest::Test
   def setup
@@ -16,7 +16,7 @@ class MessageBuilderTest < Minitest::Test
     intervals = 4
     @session = Session.new(
       state: State::POMODORO,
-      set: Settings.new(
+      set: TimerSetting.new(
         pomodoro,
         short_break,
         long_break,
@@ -55,7 +55,7 @@ class MessageBuilderTest < Minitest::Test
     assert_equal(colour, MessageBuilder.settings_embed(@session).colour)
   end
 
-  def test_stats_embed
+  def test_stats_msg
     stats_msg = '0 pomodoro (0分) 完了しました'
     assert_equal(stats_msg, MessageBuilder.stats_msg(@session.stats))
   end

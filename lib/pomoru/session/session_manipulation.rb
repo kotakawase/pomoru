@@ -1,23 +1,24 @@
 # frozen_string_literal: true
 
 require_relative './reminder'
-require_relative './session_manager'
+require_relative './session_activation'
+require_relative './session_fetcher'
 require_relative './session_messenger'
 require_relative '../voice/voice_accessor'
-require_relative '../voice/voice_manager'
+require_relative '../voice/voice_connection'
 require_relative '../voice/voice_player'
 require_relative '../message_builder'
-require_relative '../settings'
 require_relative '../state_handler'
 require_relative '../state'
+require_relative '../timer_setting'
 
-class SessionController
+class SessionManipulation
   class << self
     def start(session)
-      return unless VoiceManager.connect(session)
+      return unless VoiceConnection.connect(session)
 
       VoicePlayer.alert(session)
-      SessionManager.activate(session)
+      SessionActivation.activate(session)
       SessionMessenger.send_start_msg(session)
       loop do
         break unless run(session)
@@ -27,8 +28,8 @@ class SessionController
     def end(session)
       session.message.edit('', MessageBuilder.status_embed(session, colour: 0xff0000)) unless session.state == State::COUNTDOWN
       session.message.unpin
-      SessionManager.deactivate(session)
-      VoiceManager.disconnect(session) if VoiceAccessor.get_voice_client(session)
+      SessionActivation.deactivate(session)
+      VoiceConnection.disconnect(session) if VoiceAccessor.voice_client(session)
     end
 
     def resume(session)
@@ -41,7 +42,7 @@ class SessionController
       short_break = new_settings.short_break || session.settings.short_break
       long_break = new_settings.long_break || session.settings.long_break
       intervals = new_settings.intervals || session.settings.intervals
-      session.settings = Settings.new(new_settings.pomodoro, short_break, long_break, intervals)
+      session.settings = TimerSetting.new(new_settings.pomodoro, short_break, long_break, intervals)
       if session.reminder.running
         Reminder.automatically_update(session, new_settings.pomodoro, short_break, long_break, intervals)
         session.reminder.running = true
@@ -66,8 +67,6 @@ class SessionController
         sleep session.timer.remaining
         return false unless latest_session?(session, timer_end)
       end
-      return false if SessionManager.kill_if_thread_exists(session)
-
       VoicePlayer.alert(session, timer_end)
       StateHandler.transition(session)
       session.message.edit('', MessageBuilder.status_embed(session))
@@ -75,7 +74,7 @@ class SessionController
     end
 
     def latest_session?(session, timer_end)
-      session = SessionManager::ACTIVE_SESSIONS[SessionManager.session_id_from(session.event)]
+      session = SessionActivation::ACTIVE_SESSIONS[SessionActivation.session_id_from(session.event)]
       session&.timer&.running && timer_end == session.timer.end && !session.reminder.running
     end
   end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative './session_manager'
+require_relative './session_activation'
 require_relative '../voice/voice_player'
 require_relative '../state'
 
@@ -58,7 +58,7 @@ class Reminder
   end
 
   def latest_reminder?(session, time_executed, reminder_end)
-    session = SessionManager::ACTIVE_SESSIONS[SessionManager.session_id_from(session.event)]
+    session = SessionActivation::ACTIVE_SESSIONS[SessionActivation.session_id_from(session.event)]
     session&.timer&.running && reminder_end == session.reminder.end && time_executed == session.reminder.time_executed
   end
 

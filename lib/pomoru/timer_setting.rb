@@ -2,7 +2,7 @@
 
 require_relative './config/config'
 
-class Settings
+class TimerSetting
   attr_reader :pomodoro, :short_break, :long_break, :intervals
 
   def initialize(*timers)

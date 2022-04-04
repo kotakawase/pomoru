@@ -4,20 +4,21 @@ require 'discordrb'
 require_relative '../config/user_messages'
 require_relative '../session/countdown'
 require_relative '../session/reminder'
-require_relative '../session/session'
-require_relative '../session/session_controller'
-require_relative '../session/session_manager'
+require_relative '../session/session_activation'
+require_relative '../session/session_fetcher'
+require_relative '../session/session_manipulation'
 require_relative '../session/session_messenger'
+require_relative '../session/session'
 require_relative '../message_builder'
-require_relative '../settings'
 require_relative '../state'
+require_relative '../timer_setting'
 
 module Bot::Commands
   module Other
     extend Discordrb::Commands::CommandContainer
 
     command :countdown do |event, duration = nil, title = 'Countdown'|
-      session = SessionManager::ACTIVE_SESSIONS[SessionManager.session_id_from(event)]
+      session = SessionActivation::ACTIVE_SESSIONS[SessionActivation.session_id_from(event)]
       if session
         event.send_message(ACTIVE_SESSION_EXISTS_ERR)
         return
@@ -25,23 +26,23 @@ module Bot::Commands
       if duration.nil?
         event.send_message(MISSING_ARG_ERR)
         return
-      elsif Settings.invalid?(duration)
+      elsif TimerSetting.invalid?(duration)
         event.send_message(NUM_OUTSIDE_ONE_AND_MAX_INTERVAL_ERR)
         return
       end
 
       session = Session.new(
         state: State::COUNTDOWN,
-        set: Settings.new(duration),
+        set: TimerSetting.new(duration),
         ctx: event
       )
-      SessionManager.activate(session)
+      SessionActivation.activate(session)
       SessionMessenger.send_countdown_msg(session, title)
       Countdown.start(session)
     end
 
     command :remind do |event, pomodoro, short_break, long_break|
-      session = SessionManager.get_session(event)
+      session = SessionFetcher.current_session(event)
       return if Countdown.running?(session)
 
       if session
@@ -49,21 +50,21 @@ module Bot::Commands
           SessionMessenger.send_remind_msg(session)
           return
         else
-          SessionController.remind(session, Reminder.new(
-                                              pomodoro,
-                                              short_break,
-                                              long_break
-                                            ))
+          SessionManipulation.remind(session, Reminder.new(
+                                                pomodoro,
+                                                short_break,
+                                                long_break
+                                              ))
           session.reminder.running = true
           session.message.edit('', MessageBuilder.status_embed(session))
           SessionMessenger.send_remind_msg(session)
-          SessionController.resume(session)
+          SessionManipulation.resume(session)
         end
       end
     end
 
     command :remind_off do |event|
-      session = SessionManager.get_session(event)
+      session = SessionFetcher.current_session(event)
       return if Countdown.running?(session)
 
       if session
@@ -79,7 +80,7 @@ module Bot::Commands
     end
 
     command :volume do |event, volume = nil|
-      session = SessionManager.get_session(event)
+      session = SessionFetcher.current_session(event)
       return if Countdown.running?(session)
 
       if session

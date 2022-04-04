@@ -11,7 +11,6 @@ group :development do
   gem 'rubocop-fjord', '~> 0.2.0', require: false
   gem 'rubocop-minitest', require: false
   gem 'rubocop-rake', require: false
-  gem 'timecop'
 end
 
 group :test do

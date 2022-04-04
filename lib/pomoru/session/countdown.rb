@@ -2,8 +2,8 @@
 
 require 'discordrb'
 require_relative '../config/user_messages'
-require_relative './session_controller'
-require_relative './session_manager'
+require_relative './session_activation'
+require_relative './session_manipulation'
 require_relative '../message_builder'
 require_relative '../state'
 
@@ -22,11 +22,11 @@ class Countdown
       end
       embed = MessageBuilder.countdown_embed('DONE', title, colour: 0xff0000)
       session.message.edit('', embed)
-      SessionController.end(session)
+      SessionManipulation.end(session)
     end
 
     def running?(session)
-      return unless session.state == State::COUNTDOWN
+      return unless session&.state == State::COUNTDOWN
 
       session.event.send_message(COUNTDOWN_RUNNING)
       true
@@ -35,7 +35,7 @@ class Countdown
     private
 
     def latest_session?(session, timer_remaining)
-      session = SessionManager::ACTIVE_SESSIONS[SessionManager.session_id_from(session.event)]
+      session = SessionActivation::ACTIVE_SESSIONS[SessionActivation.session_id_from(session.event)]
       session&.timer&.running && timer_remaining == session.timer.remaining
     end
   end
