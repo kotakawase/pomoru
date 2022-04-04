@@ -64,7 +64,7 @@
 > ポモドーロタイマーの設定を取得します。
 
 > **servers**\
-> ポモるを仕様しているサーバーの数を確認します。
+> ポモるを使用しているサーバーの数を確認します。
 
 ### Other
 > **countdown \<duration> \[task]**\
@@ -111,7 +111,7 @@ Botの作成
 
 6.　発行されたURLをコピーしてBotをサーバーへ招待する
 
-Docker imageを作成もしくはdockerhubからpullします
+Docker imageを作成もしくは[dockerhub](https://hub.docker.com/r/kotakawase/pomoru)からpullします
 ```bash
 # Docker image
 $ git clone https://github.com/kotakawase/pomoru.git
@@ -119,7 +119,7 @@ $ cd pomoru
 $ docker build -t pomoru .
 
 # dockerhubからpull
-$ docker pull pomoru
+$ docker pull kotakawase/pomoru
 ```
 
 Docker imageが作成されていることを確認
@@ -211,15 +211,15 @@ $ bundle exec ruby run.rb
 
 ## スクリーンショット
 
-![スクリーンショット 2022-03-28 23 31 36](https://user-images.githubusercontent.com/74460623/160422031-087eb352-9674-4a89-b20c-045f395b5f9c.png)
+![スクリーンショット 2022-04-04 12 34 01](https://user-images.githubusercontent.com/74460623/161469535-e9b4f858-4d2b-4b78-9e4c-16b49a59f074.png)
 
-![スクリーンショット 2022-03-28 23 31 47](https://user-images.githubusercontent.com/74460623/160422608-10018e0f-5140-40d6-8f61-04478dc12f45.png)
+![スクリーンショット 2022-04-04 12 25 47](https://user-images.githubusercontent.com/74460623/161469266-2377be82-bf0c-4a0a-aa03-1f516ec2aad3.png)
 
-![スクリーンショット 2022-03-28 23 42 54](https://user-images.githubusercontent.com/74460623/160423700-feae7ca0-b0b2-487d-8152-0de5babfd203.png)
+![スクリーンショット 2022-04-04 12 26 05](https://user-images.githubusercontent.com/74460623/161469433-bdaf9cc4-8a6e-4194-a6a8-87bd0306d533.png)
 
 ## デモ
 
-![https://gyazo.com/f2476c2d9fa1ac43242abc439e89f1b7](https://gyazo.com/f2476c2d9fa1ac43242abc439e89f1b7.gif)
+![https://gyazo.com/a4a46a2bc6ba099e32d695095e3585d2](https://gyazo.com/a4a46a2bc6ba099e32d695095e3585d2.gif)
 
 ## Herokuへのデプロイ
 リポジトリをCloneしてフォルダに移動
@@ -261,4 +261,4 @@ $ heroku ps:scale worker=1
 ありがとうございます！
 
 ## ライセンス
-The Bot is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+このBotは[MIT License](https://opensource.org/licenses/MIT)の条件下でオープンソースとして利用できます。
