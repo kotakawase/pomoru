@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require_relative './reminder'
-require_relative './session_activation'
-require_relative './session_fetcher'
-require_relative './session_messenger'
+require_relative 'reminder'
+require_relative 'session_activation'
+require_relative 'session_fetcher'
+require_relative 'session_messenger'
 require_relative '../voice/voice_accessor'
 require_relative '../voice/voice_connection'
 require_relative '../voice/voice_player'

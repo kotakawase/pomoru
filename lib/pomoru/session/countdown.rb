@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require 'discordrb'
+require_relative 'session_activation'
+require_relative 'session_manipulation'
 require_relative '../config/user_messages'
-require_relative './session_activation'
-require_relative './session_manipulation'
 require_relative '../message_builder'
 require_relative '../state'
 

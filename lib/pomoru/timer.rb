@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative './state'
+require_relative 'state'
 
 class Timer
   attr_accessor :running, :end, :remaining

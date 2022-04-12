@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative './config/config'
+require_relative 'config/config'
 
 class TimerSetting
   attr_reader :pomodoro, :short_break, :long_break, :intervals

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative './config/help'
+require_relative 'config/help'
 
 class MessageBuilder
   class << self

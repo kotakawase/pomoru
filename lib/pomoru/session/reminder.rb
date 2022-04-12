@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative './session_activation'
+require_relative 'session_activation'
 require_relative '../voice/voice_player'
 require_relative '../state'
 
