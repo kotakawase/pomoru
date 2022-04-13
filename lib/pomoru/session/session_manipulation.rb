@@ -26,7 +26,7 @@ class SessionManipulation
     end
 
     def end(session)
-      session.message.edit('', MessageBuilder.status_embed(session, colour: 0xff0000)) unless session.state == State::COUNTDOWN
+      session.message.edit('', MessageBuilder.status_template(session, colour: 0xff0000)) unless session.state == State::COUNTDOWN
       session.message.unpin
       SessionActivation.deactivate(session)
       VoiceConnection.disconnect(session) if VoiceAccessor.voice_client(session)
@@ -69,7 +69,7 @@ class SessionManipulation
       end
       VoicePlayer.alert(session, timer_end)
       StateHandler.transition(session)
-      session.message.edit('', MessageBuilder.status_embed(session))
+      session.message.edit('', MessageBuilder.status_template(session))
       session.event.send_message("#{session.state}を始めます")
     end
 

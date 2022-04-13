@@ -4,7 +4,7 @@ require_relative 'config/help'
 
 class MessageBuilder
   class << self
-    def status_embed(session, colour: nil)
+    def status_template(session, colour: nil)
       colour ||= 0x2ecc71
       state = session.state.capitalize
       status = session.timer.running ? 'Running' : 'Pausing'
@@ -19,7 +19,7 @@ class MessageBuilder
       create_embed('Timer', status_str, colour)
     end
 
-    def settings_embed(session)
+    def settings_template(session)
       settings = session.settings
       settings_str = <<~TEXT
         Pomodoro: #{settings.pomodoro} min
@@ -32,11 +32,11 @@ class MessageBuilder
       create_embed('Session settings', settings_str, colour)
     end
 
-    def stats_msg(stats)
+    def stats_template(stats)
       "#{stats.pomos_completed} pomodoro (#{stats.minutes_completed}分) 完了しました"
     end
 
-    def help_embed(command)
+    def help_template(command)
       colour = 0x3498db
       if command.nil?
         embed = create_embed('Help menu', SUMMARY, colour)
@@ -62,7 +62,7 @@ class MessageBuilder
       end
     end
 
-    def countdown_embed(session, title, colour: nil)
+    def countdown_template(session, title, colour: nil)
       colour ||= 0x1abc9c
       if session == 'DONE'
         create_embed(title, session, colour)
@@ -71,7 +71,7 @@ class MessageBuilder
       end
     end
 
-    def reminders_embed(session)
+    def reminder_template(session)
       reminders = session.reminder
       pomo_txt = molding_reminder_txt(reminders.pomodoro)
       short_txt = molding_reminder_txt(reminders.short_break)

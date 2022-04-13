@@ -17,10 +17,10 @@ class Countdown
         sleep 1
         return unless latest_session?(session, timer_remaining)
 
-        embed = MessageBuilder.countdown_embed(session, title)
+        embed = MessageBuilder.countdown_template(session, title)
         session.message.edit('', embed)
       end
-      embed = MessageBuilder.countdown_embed('DONE', title, colour: 0xff0000)
+      embed = MessageBuilder.countdown_template('DONE', title, colour: 0xff0000)
       session.message.edit('', embed)
       SessionManipulation.end(session)
     end

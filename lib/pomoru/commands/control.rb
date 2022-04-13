@@ -58,7 +58,7 @@ module Bot::Commands
         end
         timer.running = false
         timer.remaining = timer.end.to_i - Time.now.to_i
-        session.message.edit('', MessageBuilder.status_embed(session))
+        session.message.edit('', MessageBuilder.status_template(session))
         event.send_message("#{session.state}を一時停止しました")
       end
     end
@@ -75,7 +75,7 @@ module Bot::Commands
         end
         timer.running = true
         timer.end = Time.now + timer.remaining
-        session.message.edit('', MessageBuilder.status_embed(session))
+        session.message.edit('', MessageBuilder.status_template(session))
         event.send_message("#{session.state}を再開しました")
         SessionManipulation.resume(session)
       end
@@ -104,7 +104,7 @@ module Bot::Commands
         end
         event.send_message("#{session.state}をスキップしました")
         StateHandler.transition(session)
-        session.message.edit('', MessageBuilder.status_embed(session))
+        session.message.edit('', MessageBuilder.status_template(session))
         SessionManipulation.resume(session)
       end
     end
@@ -113,7 +113,7 @@ module Bot::Commands
       session = SessionFetcher.current_session(event)
       if session
         if session.stats.pomos_completed.positive?
-          completed_message = event.send_message("おつかれさまです！#{MessageBuilder.stats_msg(session.stats)}")
+          completed_message = event.send_message("おつかれさまです！#{MessageBuilder.stats_template(session.stats)}")
           completed_message.create_reaction('👍')
         else
           incomplete_message = event.send_message('また会いましょう！')
