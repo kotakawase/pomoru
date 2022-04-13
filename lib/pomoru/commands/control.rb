@@ -9,7 +9,6 @@ require_relative '../session/session_fetcher'
 require_relative '../session/session_manipulation'
 require_relative '../session/session'
 require_relative '../message_builder'
-require_relative '../state_handler'
 require_relative '../state'
 require_relative '../timer_setting'
 
@@ -103,7 +102,7 @@ module Bot::Commands
           stats.minutes_completed -= session.settings.pomodoro
         end
         event.send_message("#{session.state}をスキップしました")
-        StateHandler.transition(session)
+        State.transition(session)
         session.message.edit('', MessageBuilder.status_template(session))
         SessionManipulation.resume(session)
       end

@@ -8,7 +8,6 @@ require_relative '../voice/voice_accessor'
 require_relative '../voice/voice_connection'
 require_relative '../voice/voice_player'
 require_relative '../message_builder'
-require_relative '../state_handler'
 require_relative '../state'
 require_relative '../timer_setting'
 
@@ -68,7 +67,7 @@ class SessionManipulation
         return false unless latest_session?(session, timer_end)
       end
       VoicePlayer.alert(session, timer_end)
-      StateHandler.transition(session)
+      State.transition(session)
       session.message.edit('', MessageBuilder.status_template(session))
       session.event.send_message("#{session.state}を始めます")
     end

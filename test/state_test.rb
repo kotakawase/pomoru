@@ -2,11 +2,10 @@
 
 require 'minitest/autorun'
 require_relative '../lib/pomoru/session/session'
-require_relative '../lib/pomoru/state_handler'
 require_relative '../lib/pomoru/state'
 require_relative '../lib/pomoru/timer_setting'
 
-class StateHandlerTest < Minitest::Test
+class StateTest < Minitest::Test
   def setup
     pomodoro = 25
     short_break = 5
@@ -23,7 +22,7 @@ class StateHandlerTest < Minitest::Test
     )
   end
 
-  def test_state_handler_before_transition
+  def test_state_before_transition
     state = @session.state
     stats = @session.stats
     pomos_completed = stats.pomos_completed
@@ -34,8 +33,8 @@ class StateHandlerTest < Minitest::Test
     assert_equal(0, minutes_completed)
   end
 
-  def test_first_state_handler_after_transition
-    StateHandler.transition(@session)
+  def test_first_state_after_transition
+    State.transition(@session)
     state = @session.state
     stats = @session.stats
     pomos_completed = stats.pomos_completed
@@ -52,7 +51,7 @@ class StateHandlerTest < Minitest::Test
     stats.pomos_completed = 1
     stats.minutes_completed = 25
 
-    StateHandler.transition(@session)
+    State.transition(@session)
 
     state = @session.state
     stats = @session.stats
@@ -69,7 +68,7 @@ class StateHandlerTest < Minitest::Test
     stats.pomos_completed = 3
     stats.minutes_completed = 75
 
-    StateHandler.transition(@session)
+    State.transition(@session)
 
     state = @session.state
     stats = @session.stats
@@ -87,7 +86,7 @@ class StateHandlerTest < Minitest::Test
     stats.pomos_completed = 4
     stats.minutes_completed = 100
 
-    StateHandler.transition(@session)
+    State.transition(@session)
 
     state = @session.state
     stats = @session.stats
