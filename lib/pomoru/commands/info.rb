@@ -28,7 +28,7 @@ module Bot::Commands
         session.message.unpin
         session.message = session.event.send_embed('', MessageBuilder.status_template(session))
         session.message.pin
-        event.send_message(session.timer.time_remaining(session))
+        event.send_message(session.timer.time_remaining_to_str(session))
       end
     end
 

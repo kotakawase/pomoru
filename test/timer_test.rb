@@ -51,20 +51,20 @@ class TimerTest < Minitest::Test
 
   def test_remaining_time_of_pomodoro
     time_remaining = 'pomodoroは残り25分 00秒です！'
-    assert_equal(time_remaining, @session.timer.time_remaining(@session))
+    assert_equal(time_remaining, @session.timer.time_remaining_to_str(@session))
   end
 
   def test_remaining_time_of_short_break
     time_remaining = 'short breakは残り5分 00秒です！'
     @session.state = 'short break'
     @session.timer.time_remaining_update(@session)
-    assert_equal(time_remaining, @session.timer.time_remaining(@session))
+    assert_equal(time_remaining, @session.timer.time_remaining_to_str(@session))
   end
 
   def test_remaining_time_of_long_break
     time_remaining = 'long breakは残り15分 00秒です！'
     @session.state = 'long break'
     @session.timer.time_remaining_update(@session)
-    assert_equal(time_remaining, @session.timer.time_remaining(@session))
+    assert_equal(time_remaining, @session.timer.time_remaining_to_str(@session))
   end
 end

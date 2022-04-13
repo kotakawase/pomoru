@@ -67,7 +67,7 @@ class MessageBuilder
       if session == 'DONE'
         create_embed(title, session, colour)
       else
-        create_embed(title, session.timer.time_remaining(session), colour)
+        create_embed(title, session.timer.time_remaining_to_str(session), colour)
       end
     end
 
