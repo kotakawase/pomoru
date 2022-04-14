@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative './state'
+require_relative 'state'
 
 class Timer
   attr_accessor :running, :end, :remaining
@@ -25,7 +25,7 @@ class Timer
     @end = Time.now + delay
   end
 
-  def time_remaining(session)
+  def time_remaining_to_str(session)
     time_remaining = if session.timer.running
                        @end.to_i - Time.now.to_i
                      else

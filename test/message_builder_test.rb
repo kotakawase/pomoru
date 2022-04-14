@@ -25,7 +25,7 @@ class MessageBuilderTest < Minitest::Test
     )
   end
 
-  def test_status_embed
+  def test_status_template
     title = 'Timer'
     status_str = <<~TEXT
       Current intervals: Pomodoro
@@ -35,12 +35,12 @@ class MessageBuilderTest < Minitest::Test
     TEXT
     colour = 3_066_993
 
-    assert_equal(title, MessageBuilder.status_embed(@session).title)
-    assert_equal(status_str, MessageBuilder.status_embed(@session).description)
-    assert_equal(colour, MessageBuilder.status_embed(@session).colour)
+    assert_equal(title, MessageBuilder.status_template(@session).title)
+    assert_equal(status_str, MessageBuilder.status_template(@session).description)
+    assert_equal(colour, MessageBuilder.status_template(@session).colour)
   end
 
-  def test_settings_embed
+  def test_settings_template
     title = 'Session settings'
     settings_str = <<~TEXT
       Pomodoro: 25 min
@@ -50,17 +50,17 @@ class MessageBuilderTest < Minitest::Test
     TEXT
     colour = 16_744_448
 
-    assert_equal(title, MessageBuilder.settings_embed(@session).title)
-    assert_equal(settings_str, MessageBuilder.settings_embed(@session).description)
-    assert_equal(colour, MessageBuilder.settings_embed(@session).colour)
+    assert_equal(title, MessageBuilder.settings_template(@session).title)
+    assert_equal(settings_str, MessageBuilder.settings_template(@session).description)
+    assert_equal(colour, MessageBuilder.settings_template(@session).colour)
   end
 
-  def test_stats_msg
-    stats_msg = '0 pomodoro (0分) 完了しました'
-    assert_equal(stats_msg, MessageBuilder.stats_msg(@session.stats))
+  def test_stats_template
+    stats_str = '0 pomodoro (0分) 完了しました'
+    assert_equal(stats_str, MessageBuilder.stats_template(@session.stats))
   end
 
-  def test_no_arguments_passed_to_help_embed
+  def test_no_arguments_passed_to_help_template
     summary = <<~TEXT
       ポモるで使えるコマンドヘルプ。
 
@@ -71,12 +71,12 @@ class MessageBuilderTest < Minitest::Test
     TEXT
     colour = 3_447_003
 
-    assert_equal('Help menu', MessageBuilder.help_embed(nil).title)
-    assert_equal(summary, MessageBuilder.help_embed(nil).description)
-    assert_equal(colour, MessageBuilder.help_embed(nil).colour)
+    assert_equal('Help menu', MessageBuilder.help_template(nil).title)
+    assert_equal(summary, MessageBuilder.help_template(nil).description)
+    assert_equal(colour, MessageBuilder.help_template(nil).colour)
   end
 
-  def test_command_is_passed_to_help_embed
+  def test_command_is_passed_to_help_template
     start = <<~TEXT
       オプションのカスタム設定でポモドーロタイマーを開始します。
       各セッションは60分までパラメーターが有効です。
@@ -88,23 +88,23 @@ class MessageBuilderTest < Minitest::Test
       intervals: 長い休憩をするまでにポモドーロする数
     TEXT
 
-    assert_equal('start [pomodoro] [short_break] [long_break] [intervales]', MessageBuilder.help_embed('start').title)
-    assert_equal(start, MessageBuilder.help_embed('start').description)
+    assert_equal('start [pomodoro] [short_break] [long_break] [intervales]', MessageBuilder.help_template('start').title)
+    assert_equal(start, MessageBuilder.help_template('start').description)
   end
 
-  def test_countdown_embed
+  def test_countdown_template
     @session.state = State::COUNTDOWN
     @session.timer.remaining = 60
     title = 'Countdown'
     countdown_str = 'countdownは残り1分 00秒です！'
     colour = 1_752_220
 
-    assert_equal(title, MessageBuilder.countdown_embed(@session, title).title)
-    assert_equal(countdown_str, MessageBuilder.countdown_embed(@session, title).description)
-    assert_equal(colour, MessageBuilder.countdown_embed(@session, title).colour)
+    assert_equal(title, MessageBuilder.countdown_template(@session, title).title)
+    assert_equal(countdown_str, MessageBuilder.countdown_template(@session, title).description)
+    assert_equal(colour, MessageBuilder.countdown_template(@session, title).colour)
   end
 
-  def test_reminders_embed
+  def test_reminder_template
     title = 'Reminder alerts'
     reminders_str = <<~TEXT
       Pomodoro: 5 min
@@ -113,8 +113,8 @@ class MessageBuilderTest < Minitest::Test
     TEXT
     colour = 16_705_372
 
-    assert_equal(title, MessageBuilder.reminders_embed(@session).title)
-    assert_equal(reminders_str, MessageBuilder.reminders_embed(@session).description)
-    assert_equal(colour, MessageBuilder.reminders_embed(@session).colour)
+    assert_equal(title, MessageBuilder.reminder_template(@session).title)
+    assert_equal(reminders_str, MessageBuilder.reminder_template(@session).description)
+    assert_equal(colour, MessageBuilder.reminder_template(@session).colour)
   end
 end

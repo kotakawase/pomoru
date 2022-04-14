@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
-require_relative './reminder'
-require_relative './session_activation'
-require_relative './session_fetcher'
-require_relative './session_messenger'
+require_relative 'reminder'
+require_relative 'session_activation'
+require_relative 'session_fetcher'
+require_relative 'session_messenger'
 require_relative '../voice/voice_accessor'
 require_relative '../voice/voice_connection'
 require_relative '../voice/voice_player'
 require_relative '../message_builder'
-require_relative '../state_handler'
 require_relative '../state'
 require_relative '../timer_setting'
 
@@ -26,7 +25,7 @@ class SessionManipulation
     end
 
     def end(session)
-      session.message.edit('', MessageBuilder.status_embed(session, colour: 0xff0000)) unless session.state == State::COUNTDOWN
+      session.message.edit('', MessageBuilder.status_template(session, colour: 0xff0000)) unless session.state == State::COUNTDOWN
       session.message.unpin
       SessionActivation.deactivate(session)
       VoiceConnection.disconnect(session) if VoiceAccessor.voice_client(session)
@@ -68,8 +67,8 @@ class SessionManipulation
         return false unless latest_session?(session, timer_end)
       end
       VoicePlayer.alert(session, timer_end)
-      StateHandler.transition(session)
-      session.message.edit('', MessageBuilder.status_embed(session))
+      State.transition(session)
+      session.message.edit('', MessageBuilder.status_template(session))
       session.event.send_message("#{session.state}を始めます")
     end
 

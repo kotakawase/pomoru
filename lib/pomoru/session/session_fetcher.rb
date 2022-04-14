@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative './session_activation'
+require_relative 'session_activation'
 
 class SessionFetcher < SessionActivation
   def self.current_session(event)

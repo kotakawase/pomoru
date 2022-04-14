@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../config/config'
+require_relative 'config'
 
 GREETINGS = [
   'こんにちは！今日も集中できるといいですね',

@@ -20,12 +20,12 @@ class AutoShush
       if @all
         @all = false
         unshush(session)
-        session.message.edit('', MessageBuilder.status_embed(session))
+        session.message.edit('', MessageBuilder.status_template(session))
         session.event.send_message("#{vc_name}チャンネルのautoshushをOffにしました")
       else
         @all = true
         shush(session)
-        session.message.edit('', MessageBuilder.status_embed(session))
+        session.message.edit('', MessageBuilder.status_template(session))
         session.event.send_message("#{vc_name}チャンネルのautoshushをOnにしました")
       end
     else

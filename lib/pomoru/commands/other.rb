@@ -56,7 +56,7 @@ module Bot::Commands
                                                 long_break
                                               ))
           session.reminder.running = true
-          session.message.edit('', MessageBuilder.status_embed(session))
+          session.message.edit('', MessageBuilder.status_template(session))
           SessionMessenger.send_remind_msg(session)
           SessionManipulation.resume(session)
         end
@@ -74,7 +74,7 @@ module Bot::Commands
           return
         end
         reminder.running = false
-        session.message.edit('', MessageBuilder.status_embed(session))
+        session.message.edit('', MessageBuilder.status_template(session))
         event.send_message('リマインダーをOffにしました')
       end
     end
