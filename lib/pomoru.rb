@@ -11,7 +11,8 @@ module Bot
     token: TOKEN,
     client_id: CLIENT_ID,
     prefix: PREFIX,
-    help_command: false
+    help_command: false,
+    intents: :all
   )
 
   def self.load_modules(cls, path)
