@@ -69,12 +69,23 @@ class SessionManipulation
       VoicePlayer.alert(session, timer_end)
       State.transition(session)
       session.message.edit('', MessageBuilder.status_template(session))
-      session.event.send_message("#{session.state}を始めます")
+      session.event.send_message(session_stating_to_str(session.state))
     end
 
     def latest_session?(session, timer_end)
       session = SessionActivation::ACTIVE_SESSIONS[SessionActivation.session_id_from(session.event)]
       session&.timer&.running && timer_end == session.timer.end && !session.reminder.running
+    end
+
+    def session_stating_to_str(state)
+      case state
+      when State::POMODORO
+        '作業を開始しましょう！'
+      when State::SHORT_BREAK
+        'ちょっと休憩をしましょう！'
+      when State::LONG_BREAK
+        '気分をリフレッシュしましょう！'
+      end
     end
   end
 end
