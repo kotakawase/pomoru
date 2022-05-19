@@ -26,7 +26,5 @@ module Bot
 
   load_modules(:Commands, 'commands')
 
-  BOT.run :async
-  puts 'pomoru is running!'
-  BOT.sync
+  BOT.run
 end
