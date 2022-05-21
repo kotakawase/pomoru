@@ -12,7 +12,6 @@ module Bot
     client_id: CLIENT_ID,
     prefix: PREFIX,
     help_command: false,
-    intents: :all
   )
 
   def self.load_modules(cls, path)

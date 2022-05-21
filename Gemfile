@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-gem 'discordrb'
+gem 'discordrb', github: 'shardlab/discordrb', branch: 'main'
 gem 'dotenv'
 gem 'rake'
 

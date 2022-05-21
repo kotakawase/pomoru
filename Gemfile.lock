@@ -1,15 +1,21 @@
-GEM
-  remote: https://rubygems.org/
+GIT
+  remote: https://github.com/shardlab/discordrb.git
+  revision: e384e4a68e93981b3394844614e27972f22ba706
+  branch: main
   specs:
-    ast (2.4.2)
-    discordrb (3.4.0)
-      discordrb-webhooks (~> 3.3.0)
+    discordrb (3.4.2)
+      discordrb-webhooks (~> 3.4.2)
       ffi (>= 1.9.24)
       opus-ruby
       rest-client (>= 2.0.0)
       websocket-client-simple (>= 0.3.0)
-    discordrb-webhooks (3.3.0)
-      rest-client (>= 2.1.0.rc1)
+    discordrb-webhooks (3.4.2)
+      rest-client (>= 2.0.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    ast (2.4.2)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.7.6)
@@ -73,7 +79,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  discordrb
+  discordrb!
   dotenv
   minitest
   rake
