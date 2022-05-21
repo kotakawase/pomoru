@@ -1,15 +1,21 @@
-GEM
-  remote: https://rubygems.org/
+GIT
+  remote: https://github.com/shardlab/discordrb.git
+  revision: e384e4a68e93981b3394844614e27972f22ba706
+  branch: main
   specs:
-    ast (2.4.2)
-    discordrb (3.4.0)
-      discordrb-webhooks (~> 3.3.0)
+    discordrb (3.4.2)
+      discordrb-webhooks (~> 3.4.2)
       ffi (>= 1.9.24)
       opus-ruby
       rest-client (>= 2.0.0)
       websocket-client-simple (>= 0.3.0)
-    discordrb-webhooks (3.3.0)
-      rest-client (>= 2.1.0.rc1)
+    discordrb-webhooks (3.4.2)
+      rest-client (>= 2.0.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    ast (2.4.2)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.7.6)
@@ -25,35 +31,35 @@ GEM
     netrc (0.11.0)
     opus-ruby (1.0.1)
       ffi
-    parallel (1.21.0)
-    parser (3.1.0.0)
+    parallel (1.22.1)
+    parser (3.1.2.0)
       ast (~> 2.4.1)
     rainbow (3.1.1)
     rake (13.0.6)
-    regexp_parser (2.2.0)
+    regexp_parser (2.4.0)
     rest-client (2.1.0)
       http-accept (>= 1.7.0, < 2.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     rexml (3.2.5)
-    rubocop (1.25.0)
+    rubocop (1.29.1)
       parallel (~> 1.10)
       parser (>= 3.1.0.0)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
-      rexml
-      rubocop-ast (>= 1.15.1, < 2.0)
+      rexml (>= 3.2.5, < 4.0)
+      rubocop-ast (>= 1.17.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.15.1)
-      parser (>= 3.0.1.1)
+    rubocop-ast (1.18.0)
+      parser (>= 3.1.1.0)
     rubocop-fjord (0.2.0)
       rubocop (>= 1.0)
       rubocop-performance
-    rubocop-minitest (0.18.0)
+    rubocop-minitest (0.19.1)
       rubocop (>= 0.90, < 2.0)
-    rubocop-performance (1.13.2)
+    rubocop-performance (1.13.3)
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
     rubocop-rake (0.6.0)
@@ -61,7 +67,7 @@ GEM
     ruby-progressbar (1.11.0)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.8)
+    unf_ext (0.0.8.1)
     unicode-display_width (2.1.0)
     websocket (1.2.9)
     websocket-client-simple (0.5.1)
@@ -73,7 +79,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  discordrb
+  discordrb!
   dotenv
   minitest
   rake
