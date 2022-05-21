@@ -8,7 +8,7 @@ class VoiceConnection
   CONNECTED_SESSIONS = {}
   # rubocop:enable Style/MutableConstant
 
-  CLIENT_ID = ENV['CLIENT_ID']
+  CLIENT_ID = ENV.fetch('CLIENT_ID', nil)
 
   class << self
     def connect(session)

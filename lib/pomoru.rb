@@ -4,14 +4,14 @@ require 'discordrb'
 require 'dotenv/load'
 
 module Bot
-  TOKEN = ENV['TOKEN']
-  CLIENT_ID = ENV['CLIENT_ID']
-  PREFIX = ENV['PREFIX']
+  TOKEN = ENV.fetch('TOKEN', nil)
+  CLIENT_ID = ENV.fetch('CLIENT_ID', nil)
+  PREFIX = ENV.fetch('PREFIX', nil)
   BOT = Discordrb::Commands::CommandBot.new(
     token: TOKEN,
     client_id: CLIENT_ID,
     prefix: PREFIX,
-    help_command: false,
+    help_command: false
   )
 
   def self.load_modules(cls, path)
