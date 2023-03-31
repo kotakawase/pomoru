@@ -1,6 +1,7 @@
 # ポモる [![Lint](https://github.com/kotakawase/pomoru/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/kotakawase/pomoru/actions/workflows/lint.yml) [![Test](https://github.com/kotakawase/pomoru/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/kotakawase/pomoru/actions/workflows/test.yml) [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-あなたのDiscordサーバーへ招待するには、<a href="https://discord.com/api/oauth2/authorize?client_id=928807564567797821&permissions=15739904&scope=bot">ここ</a>をクリックしてください！
+あなたのDiscordサーバーへ招待するには、<a href="https://discord.com/api/oauth2/authorize?client_id=928807564567797821&permissions=15739904&scope=bot">ここ</a>をクリックしてください！\
+（注意: 2023年3月31日をもちまして、当面の間Botをクローズさせていただいております）
 
 ![スクリーンショット 2022-03-29 0 01 23](https://user-images.githubusercontent.com/74460623/160427795-1e04fcdb-10c4-4f23-8051-a1f0f469947f.png)
 
